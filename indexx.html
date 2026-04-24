@@ -1,0 +1,1083 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>智能仓储货物管理系统</title>
+  <style>
+    /* 全局样式 */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f5f5f5;
+  color: #333;
+  line-height: 1.6;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* 头部样式 */
+header {
+  background-color: #333;
+  color: white;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+header h1 {
+  font-size: 28px;
+}
+
+/* 导航栏样式 */
+nav {
+  background-color: #4CAF50;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  overflow: hidden;
+}
+
+nav ul {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+nav ul li {
+  flex: 1;
+  min-width: 100px;
+}
+
+nav ul li a {
+  display: block;
+  padding: 15px;
+  color: white;
+  text-decoration: none;
+  text-align: center;
+  transition: background-color 0.3s;
+}
+
+nav ul li a:hover {
+  background-color: #45a049;
+}
+
+nav ul li a.active {
+  background-color: #388E3C;
+  font-weight: bold;
+}
+
+/* 主内容区域样式 */
+main {
+  background-color: white;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.tab-content {
+  display: none;
+}
+
+.tab-content.active {
+  display: block;
+}
+
+/* 表单样式 */
+form {
+  margin-top: 20px;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: inline-block;
+  width: 150px;
+  font-weight: bold;
+}
+
+.form-group input,
+.form-group select {
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  width: 300px;
+}
+
+button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  margin-top: 10px;
+}
+
+button:hover {
+  background-color: #45a049;
+}
+
+/* 消息提示样式 */
+.message {
+  margin-top: 15px;
+  padding: 10px;
+  border-radius: 4px;
+  font-weight: bold;
+}
+
+.message.success {
+  background-color: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+}
+
+.message.error {
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+}
+
+/* 查询选项卡样式 */
+.query-tabs,
+.inventory-tabs {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.query-tabs button,
+.inventory-tabs button {
+  margin-right: 10px;
+  padding: 8px 16px;
+  background-color: #f0f0f0;
+  color: #333;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.query-tabs button.active,
+.inventory-tabs button.active {
+  background-color: #4CAF50;
+  color: white;
+  border-color: #4CAF50;
+}
+
+.query-content {
+  display: none;
+}
+
+.query-content.active {
+  display: block;
+}
+
+/* 结果展示样式 */
+.result {
+  margin-top: 20px;
+  padding: 15px;
+  background-color: #f9f9f9;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+}
+
+.result table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+.result table th,
+.result table td {
+  padding: 8px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.result table th {
+  background-color: #f2f2f2;
+  font-weight: bold;
+}
+
+.result table tr:hover {
+  background-color: #f5f5f5;
+}
+
+/* 文件操作样式 */
+.file-actions {
+  margin-top: 20px;
+}
+
+.file-actions button {
+  margin-right: 10px;
+}
+
+/* 页脚样式 */
+footer {
+  margin-top: 20px;
+  text-align: center;
+  padding: 15px;
+  background-color: #333;
+  color: white;
+  border-radius: 8px;
+}
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <header>
+      <h1>智能仓储货物管理系统</h1>
+    </header>
+
+    <nav>
+      <ul>
+        <li><a href="#" data-tab="inbound">货物入库</a></li>
+        <li><a href="#" data-tab="outbound">货物出库</a></li>
+        <li><a href="#" data-tab="transfer">库存调拨</a></li>
+        <li><a href="#" data-tab="query">货物查询</a></li>
+        <li><a href="#" data-tab="inventory">库存盘点</a></li>
+        <li><a href="#" data-tab="cleanup">数据清理</a></li>
+        <li><a href="#" data-tab="file">文件操作</a></li>
+      </ul>
+    </nav>
+
+    <main>
+      <!-- 货物入库 -->
+      <section id="inbound" class="tab-content">
+        <h2>货物入库</h2>
+        <form id="inbound-form">
+          <div class="form-group">
+            <label for="inbound-id">货号：</label>
+            <input type="text" id="inbound-id" placeholder="6位整数，前2位为类别编码">
+          </div>
+          <div class="form-group">
+            <label for="inbound-name">货物名称：</label>
+            <input type="text" id="inbound-name" placeholder="最长20个字符">
+          </div>
+          <div class="form-group">
+            <label for="inbound-spec">规格型号：</label>
+            <input type="text" id="inbound-spec" placeholder="最长15个字符">
+          </div>
+          <div class="form-group">
+            <label for="inbound-manufacturer">生产厂家：</label>
+            <input type="text" id="inbound-manufacturer" placeholder="最长25个字符">
+          </div>
+          <div class="form-group">
+            <label for="inbound-location">存储位置：</label>
+            <input type="text" id="inbound-location" placeholder="格式：库区-货架-层号，如A-10-1">
+          </div>
+          <div class="form-group">
+            <label for="inbound-quantity">库存数量：</label>
+            <input type="number" id="inbound-quantity" min="0" value="0">
+          </div>
+          <div class="form-group">
+            <label for="inbound-weight">单位重量(kg/件)：</label>
+            <input type="number" id="inbound-weight" step="0.01" min="0" value="0">
+          </div>
+          <div class="form-group">
+            <label for="inbound-volume">单位体积(m³/件)：</label>
+            <input type="number" id="inbound-volume" step="0.001" min="0" value="0">
+          </div>
+          <div class="form-group">
+            <label for="inbound-date">入库日期：</label>
+            <input type="text" id="inbound-date" placeholder="格式：YYYYMMDD">
+          </div>
+          <div class="form-group">
+            <label for="inbound-expiry">保质期：</label>
+            <input type="text" id="inbound-expiry" placeholder="食品类必填，格式：YYYYMMDD，非食品类填00000000">
+          </div>
+          <div class="form-group">
+            <label for="inbound-warranty">保修期限(月)：</label>
+            <input type="number" id="inbound-warranty" min="0" value="0">
+          </div>
+          <button type="submit">提交入库</button>
+        </form>
+        <div id="inbound-message" class="message"></div>
+      </section>
+
+      <!-- 货物出库 -->
+      <section id="outbound" class="tab-content">
+        <h2>货物出库</h2>
+        <form id="outbound-form">
+          <div class="form-group">
+            <label for="outbound-id">货号：</label>
+            <input type="text" id="outbound-id" placeholder="6位整数">
+          </div>
+          <div class="form-group">
+            <label for="outbound-quantity">出库数量：</label>
+            <input type="number" id="outbound-quantity" min="1" value="1">
+          </div>
+          <button type="submit">提交出库</button>
+        </form>
+        <div id="outbound-message" class="message"></div>
+      </section>
+
+      <!-- 库存调拨 -->
+      <section id="transfer" class="tab-content">
+        <h2>库存调拨</h2>
+        <form id="transfer-form">
+          <div class="form-group">
+            <label for="transfer-id">货号：</label>
+            <input type="text" id="transfer-id" placeholder="6位整数">
+          </div>
+          <div class="form-group">
+            <label for="transfer-location">新存储位置：</label>
+            <input type="text" id="transfer-location" placeholder="格式：库区-货架-层号，如A-10-1">
+          </div>
+          <button type="submit">提交调拨</button>
+        </form>
+        <div id="transfer-message" class="message"></div>
+      </section>
+
+      <!-- 货物查询 -->
+      <section id="query" class="tab-content">
+        <h2>货物查询</h2>
+        <div class="query-tabs">
+          <button data-query-type="precise">精准查询</button>
+          <button data-query-type="category">分类查询</button>
+          <button data-query-type="warning">库存预警查询</button>
+        </div>
+
+        <!-- 精准查询 -->
+        <div id="precise-query" class="query-content">
+          <form id="precise-form">
+            <div class="form-group">
+              <label for="precise-id">货号：</label>
+              <input type="text" id="precise-id" placeholder="6位整数">
+            </div>
+            <button type="submit">查询</button>
+          </form>
+          <div id="precise-result" class="result"></div>
+        </div>
+
+        <!-- 分类查询 -->
+        <div id="category-query" class="query-content">
+          <form id="category-form">
+            <div class="form-group">
+              <label for="category-type">类别：</label>
+              <select id="category-type">
+                <option value="01">电子产品</option>
+                <option value="02">日用品</option>
+                <option value="03">食品</option>
+              </select>
+            </div>
+            <button type="submit">查询</button>
+          </form>
+          <div id="category-result" class="result"></div>
+        </div>
+
+        <!-- 库存预警查询 -->
+        <div id="warning-query" class="query-content">
+          <form id="warning-form">
+            <div class="form-group">
+              <label for="warning-threshold">最低库存阈值：</label>
+              <input type="number" id="warning-threshold" min="0" value="0">
+            </div>
+            <button type="submit">查询</button>
+          </form>
+          <div id="warning-result" class="result"></div>
+        </div>
+      </section>
+
+      <!-- 库存盘点 -->
+      <section id="inventory" class="tab-content">
+        <h2>库存盘点</h2>
+        <div class="inventory-tabs">
+          <button data-inventory-type="all">全量盘点</button>
+          <button data-inventory-type="category">分类盘点</button>
+        </div>
+        <div id="inventory-result" class="result"></div>
+      </section>
+
+      <!-- 数据清理 -->
+      <section id="cleanup" class="tab-content">
+        <h2>数据清理</h2>
+        <p>清理入库日期超过3年且当前库存为0的货物记录</p>
+        <button id="cleanup-button">执行清理</button>
+        <div id="cleanup-message" class="message"></div>
+      </section>
+
+      <!-- 文件操作 -->
+      <section id="file" class="tab-content">
+        <h2>文件操作</h2>
+        <div class="file-actions">
+          <button id="import-button">导入数据</button>
+          <input type="file" id="file-input" style="display: none;" accept=".txt,.csv">
+          <button id="export-button">导出数据</button>
+        </div>
+        <div id="file-message" class="message"></div>
+      </section>
+    </main>
+
+    <footer>
+      <p>智能仓储货物管理系统 &copy; 2026</p>
+    </footer>
+  </div>
+  <script>
+    //存储货物数据的数组
+let goodsArray = [];
+
+
+// 初始化表单提交事件
+initFormSubmissions();
+
+// 初始化按钮点击事件
+initButtonClicks();
+
+// 加载原始数据
+loadFromLocalStorage();
+function loadFromLocalStorage() {
+  const storedData = localStorage.getItem('inventoryData');
+  if (storedData) {
+    goodsArray = JSON.parse(storedData);
+  }
+}
+
+// top-选项切换
+!(function () {
+
+  // top-选项切换
+  initTabs();
+
+  // top-查询选项卡
+  initQueryTabs();
+
+  // top-盘点选项卡
+  initInventoryTabs();
+
+
+
+
+
+
+
+
+  function initTabs() {
+    const navLinks = document.querySelectorAll('nav ul li a');
+    const tabContents = document.querySelectorAll('.tab-content');
+
+    navLinks.forEach(link => {
+      link.addEventListener('click', function (e) {
+        e.preventDefault();
+        // 移除所有选项卡的active类
+        navLinks.forEach(l => l.classList.remove('active'));
+        tabContents.forEach(content => content.classList.remove('active'));
+
+        // 添加当前选项卡的active类
+        this.classList.add('active');
+        const tabId = this.getAttribute('data-tab');
+        document.getElementById(tabId).classList.add('active');
+      });
+    });
+    navLinks[0].click();
+  }
+
+
+
+  function initQueryTabs() {
+    const queryButtons = document.querySelectorAll('.query-tabs button');
+    const queryContents = document.querySelectorAll('.query-content');
+    queryButtons.forEach(button => {
+      button.addEventListener('click', function () {
+        queryButtons.forEach(btn => btn.classList.remove('active'));
+        queryContents.forEach(content => content.classList.remove('active'));
+        this.classList.add('active');
+        const queryType = this.getAttribute('data-query-type');
+        document.getElementById(`${queryType}-query`).classList.add('active');
+      });
+    });
+    queryButtons[0].click();
+  }
+
+  function initInventoryTabs() {
+    const inventoryButtons = document.querySelectorAll('.inventory-tabs button');
+    inventoryButtons.forEach(button => {
+      button.addEventListener('click', function () {
+        inventoryButtons.forEach(btn => btn.classList.remove('active'));
+        this.classList.add('active');
+        const inventoryType = this.getAttribute('data-inventory-type');
+        if (inventoryType === 'all') {
+          performFullInventory();
+        } else if (inventoryType === 'category') {
+          performCategoryInventory();
+        }
+      });
+    });
+    inventoryButtons[0].click();
+  }
+
+
+
+})()
+
+// 初始化表单提交事件
+//用于提交之后的调用对应处理函数
+function initFormSubmissions() {
+  const forms = [
+    { id: 'inbound-form', handler: handleInbound }, // 货物入库表单
+    { id: 'outbound-form', handler: handleOutbound },// 货物出库表单
+    { id: 'transfer-form', handler: handleTransfer },// 货物转移表单
+    { id: 'precise-form', handler: handlePreciseQuery },// 精确查询表单
+    { id: 'category-form', handler: handleCategoryQuery },// 分类查询表单
+    { id: 'warning-form', handler: handleWarningQuery }// 警告查询表单
+  ];
+  forms.forEach(form => {
+    const element = document.getElementById(form.id);
+    if (element) {
+      element.addEventListener('submit', (e) => {
+        e.preventDefault();
+        form.handler();
+      });
+    }
+  });
+}
+
+// 初始化按钮点击事件
+function initButtonClicks() {
+  // 数据清理按钮
+  document.getElementById('cleanup-button').addEventListener('click', handleCleanup);
+
+  // 导入数据按钮
+  document.getElementById('import-button').addEventListener('click', function () {
+    document.getElementById('file-input').click();
+  });
+
+  // 文件输入变化事件
+  document.getElementById('file-input').addEventListener('change', handleFileImport);
+
+  // 导出数据按钮
+  document.getElementById('export-button').addEventListener('click', handleFileExport);
+}
+
+// 处理货物入库
+function handleInbound() {
+  // 获取表单数据
+  const id = document.getElementById('inbound-id').value;
+  const name = document.getElementById('inbound-name').value;
+  const spec = document.getElementById('inbound-spec').value;
+  const manufacturer = document.getElementById('inbound-manufacturer').value;
+  const location = document.getElementById('inbound-location').value;
+  const quantity = parseInt(document.getElementById('inbound-quantity').value);
+  const weight = parseFloat(document.getElementById('inbound-weight').value);
+  const volume = parseFloat(document.getElementById('inbound-volume').value);
+  const date = document.getElementById('inbound-date').value;
+  const expiry = document.getElementById('inbound-expiry').value;
+  const warranty = parseInt(document.getElementById('inbound-warranty').value);
+
+  // 验证货号
+  if (!/^\d{6}$/.test(id)) {
+    showMessage('inbound-message', '货号必须是6位整数', 'error');
+    return;
+  }
+
+  // 验证货号唯一性
+  if (goodsArray.some(good => good.id === id)) {
+    showMessage('inbound-message', `货号 ${id} 已存在，入库失败`, 'error');
+    return;
+  }
+
+  // 验证存储位置
+  if (!/^[ABC]-\d{2}-0[1-4]$/.test(location)) {
+    showMessage('inbound-message', '存储位置无效，格式应为：库区-货架-层号，如A-10-1', 'error');
+    return;
+  }
+
+  // 验证入库日期
+  if (!/^\d{8}$/.test(date)) {
+    showMessage('inbound-message', '入库日期格式无效，应为YYYYMMDD', 'error');
+    return;
+  }
+
+  // 验证保质期
+  if (!/^\d{8}$/.test(expiry)) {
+    showMessage('inbound-message', '保质期格式无效，应为YYYYMMDD', 'error');
+    return;
+  }
+
+  // 创建货物对象
+  const newGood = {
+    id,
+    name,
+    spec,
+    manufacturer,
+    location,
+    quantity,
+    weight,
+    volume,
+    date,
+    expiry,
+    warranty
+  };
+
+  // 添加到数组
+  goodsArray.push(newGood);
+
+  // 保存到localStorage
+  saveToLocalStorage();
+
+  // 显示成功消息
+  showMessage('inbound-message', '货物入库成功', 'success');
+
+  // 清空表单
+  document.getElementById('inbound-form').reset();
+}
+
+// 处理货物出库
+function handleOutbound() {
+  const id = document.getElementById('outbound-id').value;
+  const quantity = parseInt(document.getElementById('outbound-quantity').value);
+
+  // 验证货号
+  if (!/^\d{6}$/.test(id)) {
+    showMessage('outbound-message', '货号必须是6位整数', 'error');
+    return;
+  }
+
+  // 查找货物
+  const index = goodsArray.findIndex(good => good.id === id);
+  if (index === -1) {
+    showMessage('outbound-message', '货物未登记', 'error');
+    return;
+  }
+
+  const good = goodsArray[index];
+
+  // 验证出库数量
+  if (quantity > good.quantity) {
+    showMessage('outbound-message', '库存不足', 'error');
+    return;
+  }
+
+  // 更新库存
+  good.quantity -= quantity;
+
+  // 如果库存为0，删除记录
+  if (good.quantity === 0) {
+    goodsArray.splice(index, 1);
+  }
+
+  // 保存到localStorage
+  saveToLocalStorage();
+
+  // 显示成功消息
+  showMessage('outbound-message', '货物出库成功', 'success');
+
+  // 清空表单
+  document.getElementById('outbound-form').reset();
+}
+
+// 处理库存调拨
+function handleTransfer() {
+  const id = document.getElementById('transfer-id').value;
+  const newLocation = document.getElementById('transfer-location').value;
+
+  // 验证货号
+  if (!/^\d{6}$/.test(id)) {
+    showMessage('transfer-message', '货号必须是6位整数', 'error');
+    return;
+  }
+
+  // 验证存储位置
+  if (!/^[ABC]-\d{2}-[1-4]$/.test(newLocation)) {
+    showMessage('transfer-message', '存储位置无效，格式应为：库区-货架-层号，如A-10-1', 'error');
+    return;
+  }
+
+  // 查找货物
+  const good = goodsArray.find(good => good.id === id);
+  if (!good) {
+    showMessage('transfer-message', '货物未登记', 'error');
+    return;
+  }
+
+  // 更新存储位置
+  good.location = newLocation;
+
+  // 保存到localStorage
+  saveToLocalStorage();
+
+  // 显示成功消息
+  showMessage('transfer-message', '库存调拨成功', 'success');
+
+  // 清空表单
+  document.getElementById('transfer-form').reset();
+}
+
+// 处理精准查询
+function handlePreciseQuery() {
+  const id = document.getElementById('precise-id').value;
+
+  // 验证货号
+  if (!/^\d{6}$/.test(id)) {
+    document.getElementById('precise-result').innerHTML = '<p>货号必须是6位整数</p>';
+    return;
+  }
+
+  // 查找货物
+  const good = goodsArray.find(good => good.id === id);
+
+  if (!good) {
+    document.getElementById('precise-result').innerHTML = '<p>无匹配货物</p>';
+    return;
+  }
+
+  // 显示货物信息
+  const resultHTML = `
+    <h3>货物详情</h3>
+    <table>
+      <tr><th>货号</th><td>${good.id}</td></tr>
+      <tr><th>货物名称</th><td>${good.name}</td></tr>
+      <tr><th>规格型号</th><td>${good.spec}</td></tr>
+      <tr><th>生产厂家</th><td>${good.manufacturer}</td></tr>
+      <tr><th>存储位置</th><td>${good.location}</td></tr>
+      <tr><th>库存数量</th><td>${good.quantity}</td></tr>
+      <tr><th>单位重量(kg/件)</th><td>${good.weight.toFixed(2)}</td></tr>
+      <tr><th>单位体积(m³/件)</th><td>${good.volume.toFixed(3)}</td></tr>
+      <tr><th>入库日期</th><td>${good.date}</td></tr>
+      <tr><th>保质期</th><td>${good.expiry}</td></tr>
+      <tr><th>保修期限(月)</th><td>${good.warranty}</td></tr>
+    </table>
+  `;
+
+  document.getElementById('precise-result').innerHTML = resultHTML;
+}
+
+// 处理分类查询
+function handleCategoryQuery() {
+  const category = document.getElementById('category-type').value;
+
+  // 过滤货物
+  const filteredGoods = goodsArray.filter(good => good.id.startsWith(category));
+
+  // 按货号升序排序
+  filteredGoods.sort((a, b) => a.id.localeCompare(b.id));
+
+  if (filteredGoods.length === 0) {
+    document.getElementById('category-result').innerHTML = '<p>该类别下无货物</p>';
+    return;
+  }
+
+  // 显示货物列表
+  let resultHTML = `
+    <h3>分类查询结果</h3>
+    <table>
+      <tr>
+        <th>货号</th>
+        <th>名称</th>
+        <th>库存</th>
+        <th>存储位置</th>
+        <th>保质期</th>
+      </tr>
+  `;
+
+  filteredGoods.forEach(good => {
+    resultHTML += `
+      <tr>
+        <td>${good.id}</td>
+        <td>${good.name}</td>
+        <td>${good.quantity}</td>
+        <td>${good.location}</td>
+        <td>${good.expiry}</td>
+      </tr>
+    `;
+  });
+
+  resultHTML += '</table>';
+  document.getElementById('category-result').innerHTML = resultHTML;
+}
+
+// 处理库存预警查询
+function handleWarningQuery() {
+  const threshold = parseInt(document.getElementById('warning-threshold').value);
+
+  // 过滤货物
+  const filteredGoods = goodsArray.filter(good => good.quantity <= threshold);
+
+  // 按库存降序排序
+  filteredGoods.sort((a, b) => b.quantity - a.quantity);
+
+  if (filteredGoods.length === 0) {
+    document.getElementById('warning-result').innerHTML = '<p>无库存预警货物</p>';
+    return;
+  }
+
+  // 显示货物列表
+  let resultHTML = `
+    <h3>库存预警查询结果</h3>
+    <table>
+      <tr>
+        <th>货号</th>
+        <th>名称</th>
+        <th>库存</th>
+        <th>存储位置</th>
+      </tr>
+  `;
+
+  filteredGoods.forEach(good => {
+    resultHTML += `
+      <tr>
+        <td>${good.id}</td>
+        <td>${good.name}</td>
+        <td>${good.quantity}</td>
+        <td>${good.location}</td>
+      </tr>
+    `;
+  });
+
+  resultHTML += '</table>';
+  document.getElementById('warning-result').innerHTML = resultHTML;
+}
+
+// 执行全量盘点
+function performFullInventory() {
+  // 计算统计数据
+  const totalTypes = goodsArray.length;
+  const totalQuantity = goodsArray.reduce((sum, good) => sum + good.quantity, 0);
+  const totalWeight = goodsArray.reduce((sum, good) => sum + good.quantity * good.weight, 0);
+  const totalVolume = goodsArray.reduce((sum, good) => sum + good.quantity * good.volume, 0);
+
+  // 显示盘点结果
+  let resultHTML = `
+    <h3>全量盘点结果</h3>
+    <p>总种类数：${totalTypes}</p>
+    <p>总库存件数：${totalQuantity}</p>
+    <p>总重量：${totalWeight.toFixed(2)} kg</p>
+    <p>总体积：${totalVolume.toFixed(3)} m³</p>
+    <h4>货物列表</h4>
+    <table>
+      <tr>
+        <th>货号</th>
+        <th>名称</th>
+        <th>库存</th>
+        <th>存储位置</th>
+      </tr>
+  `;
+
+  goodsArray.forEach(good => {
+    resultHTML += `
+      <tr>
+        <td>${good.id}</td>
+        <td>${good.name}</td>
+        <td>${good.quantity}</td>
+        <td>${good.location}</td>
+      </tr>
+    `;
+  });
+
+  resultHTML += '</table>';
+  document.getElementById('inventory-result').innerHTML = resultHTML;
+}
+
+// 执行分类盘点
+function performCategoryInventory() {
+  // 按类别分组
+  const categories = {
+    '01': { name: '电子产品', goods: [], totalQuantity: 0, totalWeight: 0, totalVolume: 0 },
+    '02': { name: '日用品', goods: [], totalQuantity: 0, totalWeight: 0, totalVolume: 0 },
+    '03': { name: '食品', goods: [], totalQuantity: 0, totalWeight: 0, totalVolume: 0 }
+  };
+
+  // 统计数据
+  goodsArray.forEach(good => {
+    const category = good.id.substring(0, 2);
+    if (categories[category]) {
+      categories[category].goods.push(good);
+      categories[category].totalQuantity += good.quantity;
+      categories[category].totalWeight += good.quantity * good.weight;
+      categories[category].totalVolume += good.quantity * good.volume;
+    }
+  });
+
+  // 显示盘点结果
+  let resultHTML = '<h3>分类盘点结果</h3>';
+
+  for (const [code, data] of Object.entries(categories)) {
+    resultHTML += `
+      <h4>${data.name}</h4>
+      <p>种类数：${data.goods.length}</p>
+      <p>库存件数：${data.totalQuantity}</p>
+      <p>总重量：${data.totalWeight.toFixed(2)} kg</p>
+      <p>总体积：${data.totalVolume.toFixed(3)} m³</p>
+      <table>
+        <tr>
+          <th>货号</th>
+          <th>名称</th>
+          <th>库存</th>
+          <th>存储位置</th>
+        </tr>
+    `;
+
+    data.goods.forEach(good => {
+      resultHTML += `
+        <tr>
+          <td>${good.id}</td>
+          <td>${good.name}</td>
+          <td>${good.quantity}</td>
+          <td>${good.location}</td>
+        </tr>
+      `;
+    });
+
+    resultHTML += '</table><br>';
+  }
+
+  document.getElementById('inventory-result').innerHTML = resultHTML;
+}
+
+// 处理数据清理
+function handleCleanup() {
+  // 获取当前日期
+  const now = new Date();
+  const currentYear = now.getFullYear();
+  const currentMonth = String(now.getMonth() + 1).padStart(2, '0');
+  const currentDay = String(now.getDate()).padStart(2, '0');
+  const currentDateStr = `${currentYear}${currentMonth}${currentDay}`;
+
+  // 过滤出需要保留的货物
+  const filteredGoods = goodsArray.filter(good => {
+    // 计算入库日期与当前日期的差值
+    const inboundYear = parseInt(good.date.substring(0, 4));
+    const yearsDiff = currentYear - inboundYear;
+
+    // 保留条件：入库日期不超过3年，或库存不为0
+    return yearsDiff < 3 || good.quantity > 0;
+  });
+
+  // 计算删除的数量
+  const deletedCount = goodsArray.length - filteredGoods.length;
+
+  // 更新数组
+  goodsArray = filteredGoods;
+
+  // 保存到localStorage
+  saveToLocalStorage();
+
+  // 显示成功消息
+  showMessage('cleanup-message', `数据清理完成，删除了 ${deletedCount} 条记录`, 'success');
+}
+
+// 处理文件导入
+function handleFileImport(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = function (e) {
+    const content = e.target.result;
+    const lines = content.split('\n');
+
+    // 跳过注释行
+    let importedCount = 0;
+    for (let i = 1; i < lines.length; i++) {
+      const line = lines[i].trim();
+      if (!line) continue;
+
+      // 解析CSV格式
+      const fields = line.split(',');
+      if (fields.length !== 11) continue;
+
+      const [id, name, spec, manufacturer, location, quantity, weight, volume, date, expiry, warranty] = fields;
+
+      // 验证货号唯一性
+      if (goodsArray.some(good => good.id === id)) continue;
+
+      // 创建货物对象
+      const newGood = {
+        id,
+        name,
+        spec,
+        manufacturer,
+        location,
+        quantity: parseInt(quantity),
+        weight: parseFloat(weight),
+        volume: parseFloat(volume),
+        date,
+        expiry,
+        warranty: parseInt(warranty)
+      };
+
+      // 添加到数组
+      goodsArray.push(newGood);
+      importedCount++;
+    }
+
+    // 保存到localStorage
+    saveToLocalStorage();
+
+    // 显示成功消息
+    showMessage('file-message', `数据导入完成，成功导入 ${importedCount} 条记录`, 'success');
+  };
+
+  reader.readAsText(file, 'UTF-8');
+}
+
+// 处理文件导出
+function handleFileExport() {
+  // 按货号升序排序
+  const sortedGoods = [...goodsArray].sort((a, b) => a.id.localeCompare(b.id));
+
+  // 计算统计数据
+  const totalTypes = sortedGoods.length;
+  const totalQuantity = sortedGoods.reduce((sum, good) => sum + good.quantity, 0);
+  const totalWeight = sortedGoods.reduce((sum, good) => sum + good.quantity * good.weight, 0);
+  const totalVolume = sortedGoods.reduce((sum, good) => sum + good.quantity * good.volume, 0);
+
+  // 构建CSV内容
+  let csvContent = '# 货号,货物名称,规格型号,生产厂家,存储位置,库存数量,单位重量,单位体积,入库日期,保质期,保修期限\n';
+
+  sortedGoods.forEach(good => {
+    csvContent += `${good.id},${good.name},${good.spec},${good.manufacturer},${good.location},${good.quantity},${good.weight},${good.volume},${good.date},${good.expiry},${good.warranty}\n`;
+  });
+
+  // 添加统计行
+  csvContent += `# 总种类数：${totalTypes}, 总库存件数：${totalQuantity}, 总重量：${totalWeight.toFixed(2)} kg, 总体积：${totalVolume.toFixed(3)} m³`;
+
+  // 创建下载链接
+  const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.setAttribute('href', url);
+  link.setAttribute('download', `inventory_${new Date().toISOString().split('T')[0]}.csv`);
+  link.style.visibility = 'hidden';
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+
+  // 显示成功消息
+  showMessage('file-message', '数据导出成功', 'success');
+}
+
+//弹窗显示
+function showMessage(elementId, message, type) {
+  const element = document.getElementById(elementId);
+  element.textContent = message;
+  element.className = `message ${type}`;
+
+  // 3秒后清除消息
+  setTimeout(() => {
+    element.textContent = '';
+    element.className = 'message';
+  }, 3000);
+}
+
+// 保存数据到localStorage
+function saveToLocalStorage() {
+  localStorage.setItem('inventoryData', JSON.stringify(goodsArray));
+}
+  </script>
+</body>
+
+</html>
