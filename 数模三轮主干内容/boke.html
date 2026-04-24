@@ -1,0 +1,650 @@
+<!-- 结构与布局
+head导航栏+背景
+首页 homepage
+日历 calendar
+项目 project
+朋友圈/小随笔 moments
+固定定位 popup  
+
+分为body-left>box(诺只有左右则分为lfet和right)>boxx>boxxx
+  body-rigth>缩写-rigth>box(诺只有左右则分为lfet和right)>boxx>boxxx
+-->
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>喵(៸៸᳐⦁⩊⦁៸៸᳐ )੭ﾞ</title>
+  <link rel="stylesheet" href="./css.css">
+  <link rel="stylesheet" href="./小琳琳的图标库/iconfont.css">
+  <link rel="icon" href="./图片库/logo.jpg" type="image/png">
+  <style>
+    :root {
+      --bg-hei0: #02152c;
+      --bg-hei1: #00263c;
+      --bg-hei2: #021825;
+      --bg-hei3: #444;
+      --bg-hei4: #222;
+      --bg-hei5: #111;
+      --bg-hei6: #000;
+      --bg-hei7: #fff;
+      --bg-hei8: rgba(225, 225, 225, 0.2);
+      --bg-hei9: rgba(225, 225, 225, 0.5);
+    }
+  </style>
+  <!-- 用于透镜坐标 -->
+  <style>
+    :root {
+      --x: 50%;
+      --y: 50%;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- 画布，用于雪花背景 -->
+  <canvas></canvas>
+  <!-- 导航栏和背景 -->
+  <div class="head">
+    <div class="head-left">
+      <img src="./图片库/logo.jpg" alt="">
+      <p>首页</p>
+      <p><i class="iconfont icon-setting"></i></p>
+      <div class="box">
+        <div class="boxx">
+          <p>雪花个数：</p><input type="range">
+        </div>
+        <div class="boxx">
+          <p>雪花速度：</p><input type="range">
+        </div>
+      </div>
+    </div>
+    <div class="head-right">
+      <ul>
+        <li>首页</li>
+        <li>日历</li>
+        <li>项目</li>
+        <li>朋友圈/任务</li>
+        <div class="box"></div>
+      </ul>
+      <div class="head-right1">
+        <i class="iconfont icon-taiyang" style="display: none;"></i>
+        <i class="iconfont icon-moon-fill"></i>
+      </div>
+    </div>
+  </div>
+  <div class="bg"></div>
+  <!-- 首页 简称为ho -->
+  <div class="homepage">
+    <!-- 首页左侧 -->
+    <div class="body-left">
+      <div class="body-left1">
+        <img src="./图片库/logo.jpg" alt="">
+        <p>小琳琳的个人空间</p>
+        <i>
+          <div></div>zlc<div></div>
+        </i>
+      </div>
+      <div class="body-left2">
+        <p>联系方式</p>
+        <i class="iconfont icon-weixin">
+          <div>
+            加我一起聊天吧~
+            <img src="./图片库/vx.jpg" alt="">
+          </div>
+        </i>
+        <i class="iconfont icon-QQ">
+          <div>
+            加我一起聊天吧~
+            <img src="./图片库/qq.jpg" alt="">
+          </div>
+        </i>
+        <i class="iconfont icon-youxiang">
+          <div>
+            加我一起聊天吧~
+            <img src="./图片库/yx.jpg" alt="">
+          </div>
+        </i>
+        <i class="iconfont icon-lianxifangshi-xianxing">
+          <div>
+            <p>不愿透露</p>
+            <p>去别的地方看看风景吧~</p><br>
+            <p>嘿嘿嘿</p>
+            <!-- <img src="./图片库/vx.jpg" alt=""> -->
+          </div>
+        </i>
+      </div>
+      <div class="body-left3">
+        <p>基本信息</p>
+        <div class="jbxx">
+          <div class="lfet">
+            <p>所在院校</p>
+            <p>所在城市</p>
+            <p>年纪</p>
+          </div>
+          <div class="right">
+            <p>广东海洋大学</p>
+            <p>广东 梅州/广东 湛江</p>
+            <p>大一</p>
+          </div>
+        </div>
+      </div>
+      <div class="body-left4">
+        <!-- 彩蛋 -->
+        <div class="left">
+          <ul>
+            <li>行行代码，皆创世之力</li>
+            <li>我以代码铸世界之基</li>
+            <li>修bug\</li>
+            <li>伟大的程序员在cv代码</li>
+            <li>“代码能跑就别动它”</li>
+            <li>嘻嘻</li>
+          </ul>
+          <img src="./图片库/数模logo1.jpg" alt="">
+        </div>
+        <div class="right">
+          <p>鼠标放在这里<i class="iconfont icon-arrowright"></i></p>
+        </div>
+        <div class="box box1"><i class="iconfont icon-right"></i></div>
+        <div class="box box2"><i class="iconfont icon-left"></i></div>
+      </div>
+    </div>
+
+
+
+
+
+    <!-- 首页右侧 -->
+    <div class="body-right">
+      <div class="ho-right1">
+        <p>"Hello, world!"</p>
+        <p>欢迎来到小琳琳的个人空间</p>
+        <div>了解一下我？</div>
+      </div>
+      <div class="ho-right2">
+        <div class="box">
+          <p>我的前端项目</p>
+          <ul>
+            <li>中国知网</li>
+            <li>Gitee</li>
+            <li>番茄小说</li>
+          </ul>
+        </div>
+        <div class="box">
+          <p>我的获奖（不只前端）</p>
+          <ul>
+            <li>全球气象青年证书</li>
+            <li>乡村振兴践行者</li>
+            <li>xx证书</li>
+          </ul>
+        </div>
+        <div class="box">
+          <p>我的爱好与梦想</p>
+          <ul>
+            <li>羽毛球<i></i></li>
+            <li>和平精英</li>
+            <li>没想好先放个unll</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="ho-right3">
+        <div>我的故事（功能说明）</div>
+        <div></div>
+        <div>1~部分</div>
+      </div>
+      <div class="ho-right4">
+        <p>
+          我来自一个普普通通的家庭，考到了一个普普通通学校，心存梦想，想猛攻数模，凑字数凑字数凑字数凑字数凑字数凑字数凑字数凑字数凑字数凑字数凑字数，其实悬浮框里面有个神秘链接，点进去看看吧~~，凑字数凑字数凑字数凑字数凑字数凑字数，日历右键可以添加日程（都设计了回车添加），添加后对应还有星标显示，可以在朋友圈/任务里面的任务栏里看到任务，点击右上角太阳可以切换白天黑夜，可在左上角设置里调节雪花，凑字数凑字数凑字数凑字数凑字数凑字数凑字数凑字数其实首页的那个轮播图是可以拖拽的，日历的添加日程回车就可以添加，凑字数凑字数凑字数凑字数凑字数凑字数每一次刷新都会有丝滑的衔接效果（透明度0~1，位置-10px~0）凑字数凑字数凑字数凑字数凑字数凑字数凑字数凑字数html
+          css文件开头前几行都有结构布局1说明凑字数凑字数凑字数凑字数凑字数凑字数 <b>最后祝师哥师姐元旦快乐~</b></p>
+      </div>
+      <!-- 第二部分我的能力-技术 -->
+      <div class="ho-right3">
+        <div>我的能力-技术</div>
+        <div></div>
+        <div>2~部分</div>
+      </div>
+      <div class="ho-right5">
+        <div class="box1 box0 ">
+          <p>纯css斜向轮播图</p>
+          <p>灵感：Gitee</p>
+
+          <div class="img">
+            <div class="img1">
+              <div>
+                <img src="./图片库/kaiyuan0.png" alt="">
+                <img src="./图片库/kaiyuan1.png" alt="">
+                <img src="./图片库/kaiyuan2.png" alt="">
+                <img src="./图片库/kaiyuan3.png" alt="">
+                <img src="./图片库/kaiyuan4.png" alt="">
+
+                <img src="./图片库/kaiyuan0.png" alt="">
+                <img src="./图片库/kaiyuan1.png" alt="">
+                <img src="./图片库/kaiyuan2.png" alt="">
+              </div>
+            </div>
+            <div class="img2">
+              <div>
+                <img src="./图片库/kaiyuan0.png" alt="">
+                <img src="./图片库/kaiyuan1.png" alt="">
+                <img src="./图片库/kaiyuan2.png" alt="">
+                <img src="./图片库/kaiyuan3.png" alt="">
+                <img src="./图片库/kaiyuan4.png" alt="">
+
+                <img src="./图片库/kaiyuan0.png" alt="">
+                <img src="./图片库/kaiyuan1.png" alt="">
+                <img src="./图片库/kaiyuan2.png" alt="">
+              </div>
+            </div>
+            <div class="img3">
+              <div>
+                <img src="./图片库/kaiyuan0.png" alt="">
+                <img src="./图片库/kaiyuan1.png" alt="">
+                <img src="./图片库/kaiyuan2.png" alt="">
+                <img src="./图片库/kaiyuan3.png" alt="">
+                <img src="./图片库/kaiyuan4.png" alt="">
+
+                <img src="./图片库/kaiyuan0.png" alt="">
+                <img src="./图片库/kaiyuan1.png" alt="">
+                <img src="./图片库/kaiyuan2.png" alt="">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="box2 box0">
+          <p>毛玻璃</p>
+          <p>灵感：@艾恩小灰灰</p>
+          <div class="mbl">
+            <div>
+              <h1>01</h1>总有人会赢
+            </div>
+            <div>
+              <h1>02</h1>那为什么
+            </div>
+            <div>
+              <h1>03</h1>不能是我呢
+            </div>
+          </div>
+        </div>
+
+        <div class="box3 box0">
+          <p>透镜</p>
+          <p>灵感：追逐小球</p>
+          <div class="boxx1 boxx0"></div>
+          <div class="boxx2 boxx0"></div>
+        </div>
+        <div class="box4 box0">
+          <p>追逐小球</p>
+          <p>灵感：@小k师兄</p>
+          <div class="div">
+            <div class="boxx"></div>
+          </div>
+        </div>
+      </div>
+      <div class="ho-right6">
+        看看项目咯&nbsp;&nbsp;<i class="iconfont icon-arrowright"></i>
+      </div>
+      <!-- 第三部分关于我 -->
+      <div class="ho-right3">
+        <div>关于我</div>
+        <div></div>
+        <div>3~部分</div>
+      </div>
+      <div class="ho-right7">
+        <div class="box1">
+          <h2>☀️ 每一天，都在代码中...</h2>
+          <div class="ul">
+            <ul>
+              <li><i></i><i class="iconfont icon-yumaoqiu"></i>羽毛球的修炼</li>
+              <li><i></i><i class="iconfont icon-wangzherongyao"></i>王者荣耀~</li>
+              <li><i></i><i class="iconfont icon-jiaxiangx"></i>故地重游</li>
+              <li><i></i><i class="iconfont icon-sanjitou"></i>和平精英~</li>
+              <li><i></i><i class="iconfont icon-location"></i>世界客都</li>
+              <li><i></i><i class="iconfont icon-dianshiju"></i>三十年河东，三十年河西</li>
+              <li><i></i><i class="iconfont icon-w_cunzhuang"></i>村</li>
+              <li><i></i><i class="iconfont icon-jiaxiangrenzaishenzhen"></i>城</li>
+              <li><i></i><i class="iconfont icon-xuexi"></i>初三</li>
+              <li><i></i><i class="iconfont icon-xuexi1"></i>高三</li>
+              <li><i></i><i class="iconfont icon-yumaoqiu"></i>羽毛球的修炼</li>
+              <li><i></i><i class="iconfont icon-wangzherongyao"></i>王者荣耀~</li>
+              <li><i></i><i class="iconfont icon-jiaxiangx"></i>故地重游</li>
+              <li><i></i><i class="iconfont icon-sanjitou"></i>和平精英~</li>
+              <li><i></i><i class="iconfont icon-location"></i>世界客都</li>
+              <li><i></i><i class="iconfont icon-dianshiju"></i>三十年河东，三十年河西</li>
+              <li><i></i><i class="iconfont icon-w_cunzhuang"></i>村</li>
+            </ul>
+          </div>
+        </div>
+        <div class="box2">
+          <h2>丰富每一天</h2>
+          <ul>
+            <li><img src="./图片库/tu0.jpg" alt="">
+              <p>羽毛球的修炼</p>
+            </li>
+            <li><img src="./图片库/tu1.jpg" alt="">
+              <p>王者荣耀~</p>
+            </li>
+            <li><img src="./图片库/tu2.jpg" alt="">
+              <p>故地重游</p>
+            </li>
+            <li><img src="./图片库/tu3.jpg" alt="">
+              <p>和平精英~</p>
+            </li>
+            <li><img src="./图片库/tu4.jpg" alt="">
+              <p>世界客都</p>
+            </li>
+            <li><img src="./图片库/tu5.jpg" alt="">
+              <p>三十年河东，三十年河西</p>
+            </li>
+            <li><img src="./图片库/tu6.jpg" alt="">
+              <p>村</p>
+            </li>
+            <li><img src="./图片库/tu7.jpg" alt="">
+              <p>城</p>
+            </li>
+            <li><img src="./图片库/tu8.jpg" alt="">
+              <p>初三</p>
+            </li>
+            <li><img src="./图片库/tu9.jpg" alt="">
+              <p>高三</p>
+            </li>
+            <li><img src="./图片库/tu0.jpg" alt="">
+              <p>羽毛球的修炼</p>
+            </li>
+          </ul>
+          <div class="lbt">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+          </div>
+        </div>
+      </div>
+      <!-- 第四部分音乐 -->
+      <div class="ho-right3">
+        <div>无聊？听听音乐🎵🎵🎵🎵</div>
+        <div></div>
+        <div>4~部分</div>
+      </div>
+      <div class="ho-right8">
+        <div class="box1">
+          <div class="boxx1">
+            搜索：<input type="text" name="" id="" placeholder="歌曲、作者、歌词">
+            <button>搜索</button>
+          </div>
+          <div class="boxx2">
+            <ul>
+              <div>期待你的输入...</div>
+            </ul>
+          </div>
+          <p>右键可以收藏音乐哦ヽ(；▽；)ノ</p>
+        </div>
+        <div class="box2">
+          <div class="boxx1">
+            <p>
+              搜索不到？去别处看看~
+              <a href="https://y.qq.com/" class="iconfont icon-QQyinle1" target="_blank"></a>
+              <a href="https://music.163.com/" class="iconfont icon-wangyiyunyinle" target="_blank"></a>
+            </p>
+            <img src="./图片库/geshou1.png" alt="">
+          </div>
+          <div class="boxx2">
+            <p>歌名：</p>
+            <p>歌手：</p>
+            <p>专辑：</p>
+            <audio src="" controls>
+          </div>
+        </div>
+      </div>
+      <div class="ho-right9">
+        <ul>
+          <!-- 收藏内容，由js渲染 -->
+        </ul>
+        <ul>
+          <div>这里是评论区，不是无人区(゜-゜)つロ </div>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <!-- 日历 简称ca -->
+  <div class="calendar" style="display: none;">
+    <div class="body-left">
+      <div class="body-left1">
+        <!-- 依次对应 年月星期、号数、年份农历、天干地支、节气节日 -->
+        <p></p>
+        <p></p>
+        <p></p>
+        <p></p>
+        <p></p>
+      </div>
+      <div class="body-left2">
+        <div class="box1">
+          <h2>宜</h2>
+          <p></p>
+        </div>
+        <div class="box2">
+          <h2>忌</h2>
+          <p></p>
+        </div>
+      </div>
+      <div class="body-left3">
+        <div class="box">
+          <p>值神</p>
+          <p></p>
+        </div>
+        <div class="box">
+          <p>五行</p>
+          <p></p>
+        </div>
+        <div class="box">
+          <p>今日星座</p>
+          <p></p>
+        </div>
+        <div class="box">
+          <p>二十八宿</p>
+          <p></p>
+        </div>
+        <div class="box">
+          <p>今日胎神</p>
+          <p></p>
+        </div>
+        <div class="box">
+          <p>彭祖百忌</p>
+          <p></p>
+        </div>
+      </div>
+      <div class="body-left4">
+        右键日历可添加任务（日程）ヽ(；▽；)ノ
+      </div>
+    </div>
+    <div class="body-right">
+      <div class="ca-right">
+        <div class="box1">
+          <div class="boxx1">
+            <div class="boxxx1">
+              <p><b></b>年</p>
+            </div>
+            <div class="boxxx2">
+              <i class="iconfont icon-left"></i>
+              <p></p><i class="iconfont icon-right"></i>
+            </div>
+          </div>
+          <div class="boxx2">
+            <p>输入你想跳转的时间~</p>
+            <div>
+              年：<input type="text" value="" placeholder="输入年">
+              月：<input type="text" value="" placeholder="输入月">
+            </div>
+            <p>出发<i class="iconfont icon-arrowright"></i></p>
+          </div>
+          <div class="boxx3">
+            <textarea name="" id="" placeholder="请输入那天的任务吧~"></textarea>
+            <i class="iconfont icon-quxiao"></i>
+          </div>
+        </div>
+        <div class="box2">
+          <ul>
+            <li>日</li>
+            <li>一</li>
+            <li>二</li>
+            <li>三</li>
+            <li>四</li>
+            <li>五</li>
+            <li>六</li>
+          </ul>
+        </div>
+        <div class="box3">
+          <!-- js渲染 -->
+          <ul>
+            <!-- li*42>div*3+i -->
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- 项目 简称pr -->
+  <div class="project" style="display: none;">
+    <!-- <div class="body-left"></div>         左侧模板此部分不用-->
+    <div class="body-right">
+      <div class="pr-right1 pr-right0">
+        <div class="box">
+          <div class="boxx">
+            <p>中国知网的页面复刻</p>
+            <a href="../其他项目文件夹/中国知网/数模考核.html" target="_blank">前去看看<i class="iconfont icon-zhifeiji"></i></a>
+          </div>
+          <samp>2025年11月16日</samp>
+        </div>
+      </div>
+      <div class="pr-right2 pr-right0">
+        <div class="box">
+          <div class="boxx">
+            <p>gitee的页面复刻</p>
+            <a href="../其他项目文件夹/gitee/cpp.html" target="_blank">前去看看<i class="iconfont icon-zhifeiji"></i></a>
+          </div>
+          <samp>2025年12月14日</samp>
+        </div>
+      </div>
+      <div class="pr-right3 pr-right0">
+        <div class="box">
+          <div class="boxx">
+            <p>99行代码敲出来的打地鼠小游戏</p>
+            <a href="../其他项目文件夹/99行的打地鼠/打地鼠.html" target="_blank">前去看看<i class="iconfont icon-zhifeiji"></i></a>
+          </div>
+          <samp>2025年11月30日</samp>
+        </div>
+      </div>
+      <div class="pr-right4 pr-right0">
+        <div class="box">
+          <div class="boxx">
+            <p>番茄小说的页面复刻</p>
+            <a href="../其他项目文件夹/番茄小说/番茄小说.html" target="_blank">前去看看<i class="iconfont icon-zhifeiji"></i></a>
+          </div>
+          <samp>2025年11月12日</samp>
+        </div>
+      </div>
+      <div class="pr-right5 pr-right0">
+        <div class="box">
+          <div class="boxx">
+            <p>小兔鲜儿的页面复刻</p>
+            <a href="../其他项目文件夹/小兔鲜/兔鲜儿.html" target="_blank">前去看看<i class="iconfont icon-zhifeiji"></i></a>
+          </div>
+          <samp>2025年...忘了..</samp>
+        </div>
+      </div>
+      <div class="pr-right6 pr-right0">
+        <p>等待更新，尽情期待~</p>
+      </div>
+
+    </div>
+  </div>
+  <!-- 朋友圈/小随笔 简称mo -->
+  <div class="moments" style="display: none;">
+    <div class="body-left">
+      <div class="body-left1">
+        <img src="./图片库/logo.jpg" alt="">
+        <p>小琳琳的个人空间</p>
+        <i>
+          <div></div>zlc<div></div>
+        </i>
+      </div>
+      <div class="body-left2">
+        <p>统计</p>
+      </div>
+      <div class="body-left3">
+        <div class="box0 pyq">
+          <p>朋友圈</p>
+          <samp>22</samp>
+        </div>
+        <div class="box0 rw">
+          <p>任务</p>
+          <samp>22</samp>
+        </div>
+        <div class="box0 zj">
+          <p>总计</p>
+          <samp>22</samp>
+        </div>
+      </div>
+      <div class="body-left4">
+        <div class="box0">
+          发一个动态吧~
+        </div>
+        <br>
+        <p>朋友圈记录美好生活</p>
+      </div>
+    </div>
+    <div class="body-right" style="display: block;">
+      <div class="mo-right1">
+        <div class="box1">
+          <img src="./图片库/logo.jpg" alt="">
+        </div>
+        <div class="box2">
+          <textarea name="" id="" placeholder="发表一下今天的感悟吧~"></textarea>
+          <samp>0/200</samp>
+        </div>
+        <div class="box3"><button>发布</button></div>
+      </div>
+      <div class="mo-right2">
+        <!-- 朋友圈部分 由js渲染 -->
+      </div>
+    </div>
+    <div class="body-right" style="display: none;">
+      <div class="mo-right1-rw">
+        <!-- 任务部分 由js渲染-->
+      </div>
+    </div>
+  </div>
+  <!-- 固定定位 -->
+  <div class="popup">
+    <i class="i1 iconfont icon-huiyuanxiaohuojian"></i>
+    <div class="popup0 popup1">
+      <p>回到顶部</p>
+      <i class="i2 iconfont icon-huiyuanxiaohuojian"></i>
+    </div>
+    <div class="popup0 popup2">
+      <p>回到首页</p>
+      <i class="i2 iconfont icon-home"></i>
+    </div>
+    <div class="popup0 popup3">
+      <p>刷新页面</p>
+      <i class="i2 iconfont icon-shuaxin"></i>
+    </div>
+    <div class="popup0 popup4">
+      <p>神秘按钮</p>
+      <i class="i2 iconfont icon-a-fenxiang2"></i>
+    </div>
+  </div>
+
+  <script src="./js1.js"></script>
+</body>
+
+</html>

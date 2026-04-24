@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>小琳琳的个人空间</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #222;
+    }
+
+    .go-div {
+      position: relative;
+      width: 300px;
+      height: 300px;
+      border: 1px solid purple;
+      border-radius: 30px;
+      box-shadow: 0px 0px 30px purple;
+      background: #000;
+      animation: go-div 2s linear forwards;
+    }
+
+    .go-div::before {
+      content: '';
+      position: absolute;
+      left: 21px;
+      top: 21px;
+      width: 250px;
+      height: 250px;
+      border-radius: 30px;
+      border: 1px solid #004f80;
+      border-radius: 30px;
+      box-shadow: 0px 0px 30px #004f80;
+      animation: go-div-before 2.1s linear forwards;
+    }
+
+    @keyframes go-div {
+      0% {
+        border: 1px solid purple;
+        box-shadow: 0px 0px 30px purple;
+        transform: rotate(0deg);
+      }
+
+      50% {
+        border: 1px solid #004f80;
+        box-shadow: 0px 0px 30px #004f80;
+      }
+
+      100% {
+        transform: rotate(90deg);
+      }
+    }
+
+    @keyframes go-div-before {
+      0% {
+        transform: rotate(0deg);
+        border: 1px solid #004f80;
+        box-shadow: 0px 0px 30px #004f80;
+      }
+
+      25% {
+        border: 1px solid purple;
+        box-shadow: 0px 0px 30px purple;
+      }
+
+      75% {
+        border: 1px solid #004f80;
+        box-shadow: 0px 0px 30px #004f80;
+      }
+
+      100% {
+        transform: rotate(-135deg);
+      }
+    }
+
+    .go-div1 {
+      position: relative;
+      margin: 140px auto;
+      height: 2px;
+      width: 200px;
+      background: #fff;
+      animation: go-div1 2s linear forwards;
+    }
+
+    @keyframes go-div1 {
+      0% {
+        transform: rotate(0deg);
+      }
+
+      100% {
+        transform: rotate(-90deg);
+      }
+    }
+
+    .go-div1 .box {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 2px;
+      background: #1b80ff;
+      animation: go-div1-before 2s linear forwards;
+    }
+
+    @keyframes go-div1-before {
+      0% {
+        width: 0;
+      }
+
+      100% {
+        width: 200px;
+      }
+    }
+
+    .go-logo {
+      position: relative;
+      height: 500px;
+      width: 500px;
+      text-align: center;
+    }
+
+    .go-logo {
+      opacity: 0;
+      animation: go-logo 2s linear forwards;
+    }
+
+    @keyframes go-logo {
+      0% {
+        opacity: 0;
+      }
+
+      100% {
+        opacity: 1;
+      }
+    }
+
+    .go-logo img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100px;
+      width: 100px;
+    }
+
+    .go-logo h1 {
+      display: block;
+      color: #fff;
+      line-height: 100px;
+    }
+
+    .go-logo i {
+      position: relative;
+      font-size: 70px;
+      background: linear-gradient(90deg, #1b80ff, #fff);
+      background-clip: text;
+      color: transparent;
+    }
+
+    .go-logo i::before {
+      content: '';
+      position: absolute;
+      top: 60px;
+      left: -120px;
+      width: 120px;
+      height: 2px;
+      background: linear-gradient(90deg, #222, #1b80ff);
+    }
+
+    .go-logo i::after {
+      content: '';
+      position: absolute;
+      top: 60px;
+      left: 100px;
+      width: 120px;
+      height: 2px;
+      background: linear-gradient(90deg, #1b80ff, #222);
+    }
+
+    .go-logo .go {
+      width: 240px;
+      height: 65px;
+      margin: 0 auto;
+      border-radius: 40px;
+      background: linear-gradient(90deg, #1b80ff, #f441a5, #ffa500, #1b80ff);
+      background-size: 400%;
+      box-shadow: 0px 0px 10px orange;
+      color: #fff;
+      font-size: 35px;
+      line-height: 65px;
+      cursor: pointer;
+    }
+
+    .go-logo .go:hover {
+      animation: go 2s linear infinite;
+    }
+
+    @keyframes go {
+      0% {
+        background-position: 0%;
+      }
+
+      100% {
+        background-position: 100%;
+      }
+    }
+  </style>
+</head>
+
+<body> <!-- 两个旋转的盒子 -->
+  <div class="go-div">
+    <div class="go-div1">
+      <div class="box"></div>
+    </div>
+  </div>
+  <div class="go-logo" style="display: none;"> <img src="./数模三轮主干内容/图片库/logo.jpg" alt="">
+    <h1>喵呜的个人空间</h1> <i>zlc</i>
+    <div class="go"> 开始 </div>
+  </div>
+  <script>
+    const go_div = document.querySelector('.go-div');
+    const go_logo = document.querySelector('.go-logo');
+    const go = document.querySelector('.go')
+     /*  随时记录进度条满的时候出现按钮div*/;
+    setInterval(function () {
+      if (document.querySelector('.go-div1 .box').offsetWidth === 200) { go_div.style.display = 'none'; go_logo.style.display = 'block'; }
+      console.log(document.querySelector('.go-div1 .box').offsetWidth);
+    }, 1);
+    go.addEventListener('click', function () { location.href = 'C:\Users\hhhh1\OneDrive\HTML前端练习\css\数模三轮\数模三轮主干内容\boke.html' })   
+  </script>
+</body>
+
+</html>
