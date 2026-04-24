@@ -1,0 +1,3516 @@
+<!-- 结构与布局
+head导航栏+背景
+首页 homepage
+日历 calendar
+项目 project
+朋友圈/小随笔 moments
+固定定位 popup  
+
+分为body-left>box(诺只有左右则分为lfet和right)>boxx>boxxx
+  body-rigth>缩写-rigth>box(诺只有左右则分为lfet和right)>boxx>boxxx
+-->
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>喵(៸៸᳐⦁⩊⦁៸៸᳐ )੭ﾞ</title>
+  <link rel="stylesheet" href="./css.css">
+  <!-- <link rel="stylesheet" href="./小琳琳的图标库/iconfont.css"> -->
+  <link rel="icon" href="./图片库/logo.jpg" type="image/png">
+  <style>
+    :root {
+      --bg-hei0: #02152c;
+      --bg-hei1: #00263c;
+      --bg-hei2: #021825;
+      --bg-hei3: #444;
+      --bg-hei4: #222;
+      --bg-hei5: #111;
+      --bg-hei6: #000;
+      --bg-hei7: #fff;
+      --bg-hei8: rgba(225, 225, 225, 0.2);
+      --bg-hei9: rgba(225, 225, 225, 0.5);
+    }
+  </style>
+  <style>
+    /* 结构与布局
+css{
+    定位
+    布局flex
+    宽高
+    内外边距/边框/圆角
+    背景
+    字体样式
+    鼠标样式
+    过渡/动画/溢出隐藏
+    其他
+    &：hover{}
+    &：nth-child(x){}
+    &:li{}
+    &:i{}
+}
+*/
+
+
+/* 部署默认属性 */
+* {
+  /* 使页面平滑与小球流畅 */
+  transition: all 0.25s;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+li {
+  list-style: none;
+}
+
+a {
+  color: var(--bg-hei7);
+}
+
+body {
+  background: var(--bg-hei0);
+  color: var(--bg-hei7);
+}
+
+.moments,
+.homepage,
+.project {
+  display: none;
+}
+
+/* 刷新和切换top栏时调用 */
+@keyframes shuaxin {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 10px, 0);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+
+
+
+/* 导航栏 */
+.head {
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: space-between;
+  height: 80px;
+  width: 100%;
+  border-bottom: 5px solid var(--bg-hei2);
+  border-radius: 0 0 20px 20px;
+  background: var(--bg-hei1);
+}
+
+.head-left {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  width: 240px;
+  text-align: center;
+  line-height: 80px;
+
+  & i {
+    font-size: 24px;
+    cursor: pointer;
+  }
+}
+
+.head-left .box {
+  position: absolute;
+  right: -200px;
+  display: none;
+}
+
+.head-left .boxx {
+  display: flex;
+  height: 40px;
+
+  & p {
+    font-size: 14px;
+    line-height: 30px;
+  }
+}
+
+.head-left input {
+  margin: 15px 0;
+  height: 5px;
+  width: 100px;
+}
+
+.head-left img {
+  width: 75px;
+  height: 75px;
+  margin-left: 20px;
+  border-radius: 50%;
+}
+
+
+
+
+
+
+.head-right {
+  display: flex;
+}
+
+.head-right ul {
+  position: relative;
+  display: flex;
+  width: 400px;
+}
+
+.head-right ul li {
+  width: 100px;
+  text-align: center;
+  line-height: 80px;
+  cursor: pointer;
+}
+
+.head-right ul .box {
+  position: absolute;
+  top: 76px;
+  left: 0px;
+  height: 4px;
+  border-radius: 2px;
+  width: 100px;
+  background: #f3b4bc;
+  transition: all 0.4s;
+}
+
+.head-right1 {
+  margin: 20px 45px;
+  width: 40px;
+  height: 40px;
+  border-radius: 20px;
+  cursor: pointer;
+
+  & i {
+    font-size: 40px;
+  }
+}
+
+.bg {
+  position: fixed;
+  z-index: -2;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, 0);
+  width: 90%;
+  height: 75%;
+  border-radius: 30px;
+  background: url(./图片库/bg1.jpg) no-repeat center;
+  background-size: cover;
+}
+
+canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1;
+}
+
+
+
+
+
+
+/* 左右基本框架 */
+.homepage,
+.calendar,
+.project,
+.moments {
+  display: flex;
+  /* flex-wrap: wrap; */
+  justify-content: center;
+  width: 80%;
+  margin: 0px auto;
+}
+
+.body-right,
+.body-left {
+  margin-top: 120px;
+  border-radius: 20px;
+  box-shadow: 0 0 20px var(--bg-hei1);
+  background: var(--bg-hei1);
+  animation: shuaxin 0.4s linear;
+}
+
+.body-left {
+  /* 粘性定位 */
+  position: sticky;
+  top: 82px;
+  height: 600px;
+  width: 350px;
+  margin-right: 50px;
+}
+
+.body-left4,
+.body-left3,
+.body-left2,
+.body-left1 {
+  margin: 0 20px;
+  border-bottom: 2px dashed #444;
+  padding: 10px 0 0 0;
+  text-align: center;
+}
+
+.body-left1 img {
+  width: 100px;
+  border-radius: 50%;
+}
+
+.body-left1 {
+  height: 250px;
+}
+
+.body-left2 {
+  height: 80px;
+}
+
+.body-left3 {
+  height: 160px;
+}
+
+.body-left4 {
+  height: 100px;
+}
+
+.body-right {
+  width: 800px;
+  background: transparent;
+  padding: 0 5px;
+}
+
+
+
+
+
+
+
+
+
+
+/* 首页 */
+.homepage .body-left2 i {
+  position: relative;
+  display: inline-block;
+  margin: 10px;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.homepage .body-left2 i div {
+  position: absolute;
+  top: -120px;
+  left: -90px;
+  display: none;
+  height: 120px;
+  width: 120px;
+  padding-top: 4px;
+  border-radius: 15px;
+  box-shadow: 0 0 10px rgba(225, 225, 225, 0.5);
+  font-size: 13px;
+  overflow: hidden;
+  /* 仅仅模糊背景 */
+  backdrop-filter: blur(2px);
+}
+
+.homepage .body-left2 i div img {
+  height: 90px;
+  width: 90px;
+  border-radius: 5px;
+}
+
+.homepage .body-left2 i:hover div {
+  display: block;
+}
+
+.moments .body-left1 i,
+.homepage .body-left1 i {
+  position: relative;
+  background: linear-gradient(90deg, #1b80ff, #fff);
+  background-clip: text;
+  color: transparent;
+  font-size: 50px;
+
+  & div:nth-child(1) {
+    position: absolute;
+    top: 45px;
+    left: -130px;
+    width: 120px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #1b80ff);
+  }
+
+  & div:nth-child(2) {
+    position: absolute;
+    top: 45px;
+    left: 78px;
+    width: 120px;
+    height: 2px;
+    background: linear-gradient(90deg, #1b80ff, transparent);
+  }
+}
+
+.homepage .body-left3 .jbxx {
+  display: flex;
+  justify-content: space-between;
+  height: 100px;
+  width: 310px;
+  text-align: left;
+  line-height: 30px;
+}
+
+.homepage .body-left3 .jbxx .right {
+  text-align: end;
+  color: #999;
+}
+
+
+
+
+/* 彩蛋 */
+.homepage .body-left4 {
+  display: flex;
+  width: 600px;
+  border: 0;
+  /* 溢出隐藏 */
+  overflow: hidden;
+}
+
+.homepage .body-left4 .right,
+.homepage .body-left4 .left {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.homepage .body-left4 .left ul li {
+  line-height: 80px;
+}
+
+.homepage .body-left4 .left img {
+  width: 80px;
+}
+
+.homepage .body-left4 .right p {
+  line-height: 80px;
+}
+
+
+
+
+
+.homepage .body-left4 .box {
+  position: absolute;
+  top: 520px;
+  height: 40px;
+  width: 100px;
+  border-radius: 20px;
+  background: transparent;
+
+  & i {
+    display: none;
+    width: 40px;
+    background: var(--bg-hei1);
+    font-size: 20px;
+    line-height: 40px;
+    cursor: pointer;
+  }
+
+  &:hover i {
+    display: inline-block;
+  }
+}
+
+.homepage .body-left4 .box1 {
+  left: 250px;
+
+  & i {
+    margin-left: 75px;
+    border-radius: 0 20px 20px 0;
+  }
+
+  &:hover {
+    left: 255px;
+  }
+}
+
+.homepage .body-left4 .box2 {
+  left: 0;
+
+  & i {
+    margin-left: -75px;
+    border-radius: 20px 0 0 20px;
+  }
+
+  &:hover {
+    left: -18px;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.ho-right1 {
+  height: 240px;
+  padding: 20px 0 0 20px;
+  font-size: 40px;
+}
+
+.ho-right1 div {
+  width: 140px;
+  height: 35px;
+  padding: 1px 0 0 12px;
+  border-radius: 17px;
+  border: 1px solid var(--bg-hei7);
+  font-size: 20px;
+  cursor: pointer;
+
+  &:hover {
+    box-shadow: 0 0 10px #fff;
+  }
+}
+
+.ho-right2 {
+  display: flex;
+  justify-content: space-between;
+  height: 220px;
+  width: 100%;
+}
+
+.ho-right2 .box {
+  width: 32%;
+  height: 220px;
+  padding: 10px 0 0 0;
+  border-radius: 10px;
+  background: var(--bg-hei1);
+  text-align: center;
+}
+
+.ho-right2 .box ul {
+  height: 150px;
+  width: 80%;
+  margin: 20px auto;
+  padding-top: 10px;
+  border-top: 1px dashed #999;
+}
+
+.ho-right2 .box ul li {
+  list-style: disc;
+  margin-left: 20px;
+  text-align: left;
+}
+
+.ho-right3 {
+  display: flex;
+  height: 50px;
+  align-items: center;
+}
+
+.ho-right3 div:nth-child(2) {
+  flex: 1;
+  margin: 2px 15px;
+  border-top: 2px dashed #444;
+
+}
+
+.ho-right4 {
+  height: 300px;
+  padding: 30px;
+  border-radius: 10px;
+  background: var(--bg-hei1);
+}
+
+.ho-right5 {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  height: 600px;
+  padding: 0 30px;
+}
+
+.ho-right5 .box0 {
+  width: 350px;
+  height: 280px;
+  border-radius: 10px;
+  background: var(--bg-hei1);
+  overflow: hidden;
+}
+
+.ho-right5 .box0 p {
+  margin: 10px 0 0 20px;
+}
+
+
+.ho-right5 .img {
+  margin-top: 90px;
+}
+
+.ho-right5 .img img {
+  width: 150px;
+  margin-left: 5px;
+}
+
+.ho-right5 .img .img2,
+.ho-right5 .img .img1,
+.ho-right5 .img .img3 {
+  transform: rotate(-20deg);
+  margin-bottom: 8px;
+}
+
+.ho-right5 .img .img1 div,
+.ho-right5 .img .img2 div,
+.ho-right5 .img .img3 div {
+  display: flex;
+  animation: img-lbt 30s linear infinite;
+
+  &:hover {
+    animation-play-state: paused !important;
+  }
+}
+
+.ho-right5 .img .img2 div {
+  animation: img-lbt 30s linear infinite reverse;
+}
+
+@keyframes img-lbt {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-775px);
+  }
+}
+
+.ho-right5 .box2 {
+  position: relative;
+}
+
+.ho-right5 .box2::before {
+  content: "";
+  position: absolute;
+  left: 195px;
+  top: 145px;
+  height: 160px;
+  width: 160px;
+  background: linear-gradient(90deg, #053bfc, #02dffc);
+  /* 裁剪★ */
+  clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+}
+
+.ho-right5 .box2 .mbl {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  height: 160px;
+  margin: 30px 20px;
+}
+
+.ho-right5 .box2 .mbl::before {
+  content: "";
+  position: absolute;
+  left: -15px;
+  top: -15px;
+  height: 60px;
+  width: 60px;
+  border-radius: 50%;
+  background: pink;
+}
+
+.ho-right5 .box2 .mbl div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 95px;
+  border-radius: 10px;
+  border-top: 0.5px solid rgba(225, 225, 225, 0.5);
+  border-left: 0.5px solid rgba(225, 225, 225, 0.5);
+  background-color: rgba(225, 225, 225, 0.1);
+  box-shadow: 6px 6px 16px rgba(0, 0, 0, 0.5);
+  /* 背景模糊 */
+  backdrop-filter: blur(2px);
+  font-size: 14px;
+}
+
+.ho-right5 .box2 .mbl div h1 {
+  position: absolute;
+  top: 0;
+  right: 0;
+  font-size: 50px;
+  color: rgba(225, 225, 225, 0.05);
+}
+
+.ho-right5 .box3 {
+  position: relative;
+}
+
+.ho-right5 .box3 .boxx0 {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 210px;
+  width: 350px;
+  border-radius: 5px;
+  transition: all 0;
+}
+
+.ho-right5 .box3 .boxx1 {
+  background: url(./图片库/落日.jpg) center;
+  background-size: cover;
+  /* 元素自身及内容 */
+  filter: blur(2.5px);
+}
+
+.ho-right5 .box3 .boxx2 {
+  position: relative;
+  background: url(./图片库/落日.jpg) center;
+  background-size: cover;
+  clip-path: circle(30px at var(--x) var(--y));
+
+  &::before {
+    content: "";
+    position: absolute;
+    left: var(--x);
+    top: var(--y);
+    transform: translate(-50%, -50%);
+    width: 25px;
+    height: 25px;
+    clip-path: polygon(0 49%, 45% 42%, 50% 0, 51% 0, 53% 43%, 100% 50%, 100% 50%, 53% 51%, 47% 100%, 48% 100%, 46% 51%, 0 49%);
+    border-radius: 50%;
+    background: #1b80ff;
+  }
+}
+
+
+
+
+
+
+.ho-right5 .box4 .div {
+  height: 205px;
+  width: 350px;
+  border-radius: 10px;
+  margin-top: 10px;
+  border: 1px solid var(--bg-hei5);
+
+  & .boxx {
+    height: 8px;
+    width: 8px;
+    border-radius: 50%;
+    background: var(--bg-hei7);
+    box-shadow: 0 0 10px var(--bg-hei7);
+  }
+}
+
+
+
+
+
+
+
+
+.ho-right6 {
+  height: 40px;
+  width: 170px;
+  margin: 20px auto;
+  border-radius: 12px;
+  border: 1px solid var(--bg-hei7);
+  text-align: center;
+  font-size: 20px;
+  line-height: 34px;
+  cursor: pointer;
+
+  &:hover {
+    box-shadow: 0 0 15px rgba(225, 225, 225, 0.4);
+  }
+}
+
+.ho-right7 {
+  display: flex;
+  justify-content: space-between;
+  height: 450px;
+  padding: 10px;
+  border-radius: 12px;
+  background: var(--bg-hei1);
+}
+
+.ho-right7 .box1 {
+  width: 40%;
+  border-radius: 12px;
+}
+
+.ho-right7 .box1 .ul {
+  height: 350px;
+  margin-top: 20px;
+  /* 溢出隐藏 */
+  overflow: hidden;
+}
+
+.ho-right7 .box1 .ul ul {
+  border-left: 1px solid #1b80ff;
+  margin-left: 13px;
+  transition: all 1s;
+}
+
+.ho-right7 .box1 .ul ul li {
+  height: 52px;
+  margin-left: -5px;
+  align-content: center;
+  cursor: pointer;
+}
+
+.ho-right7 .box1 .ul ul li i:nth-child(1) {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #1b80ff;
+  margin-left: 1px;
+}
+
+.ho-right7 .box1 .ul ul li i:nth-child(2) {
+  margin-left: 9px;
+  margin-right: 9px;
+}
+
+.ho-right7 .box2 {
+  width: 59%;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.ho-right7 .box2 h2 {
+  line-height: 50px;
+  text-align: center;
+}
+
+.ho-right7 .box2 ul {
+  display: flex;
+  margin-left: 10px;
+}
+
+.ho-right7 .box2 ul p {
+  text-align: center;
+}
+
+.ho-right7 .box2 ul img {
+  width: 400px;
+  height: 230px;
+  margin: 0 30px;
+  border-radius: 10px;
+  -webkit-user-drag: none;
+
+}
+
+.ho-right7 .box2 .lbt {
+  display: flex;
+  justify-content: space-between;
+  margin: 20px auto;
+  width: 420px;
+  height: 3px;
+}
+
+.ho-right7 .box2 .lbt div {
+  width: 40px;
+  background: var(--bg-hei0);
+  cursor: pointer;
+
+  &:div:nth-child(1) {
+    background: orange;
+  }
+}
+
+.ho-right8 {
+  display: flex;
+  justify-content: space-between;
+  height: 460px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+  padding: 10px;
+  background: var(--bg-hei1);
+
+}
+
+.ho-right8 .box1 .boxx1 {
+  display: flex;
+  justify-content: space-between;
+  width: 400px;
+}
+
+.ho-right8 .box1 .boxx1 input {
+  height: 30px;
+  width: 280px;
+  padding-left: 4px;
+  border: 1px solid #767676;
+  border-radius: 5px;
+  outline: none;
+}
+
+.ho-right8 .box1 .boxx1 button {
+  height: 30px;
+  width: 50px;
+  border: 0;
+  border-radius: 8px;
+  background: #5fccfe;
+  cursor: pointer;
+}
+
+.ho-right8 .box1 .boxx2 {
+  height: 380px;
+  width: 400px;
+  margin-top: 5px;
+  border: 1px solid var(--bg-hei8);
+  border-radius: 12px;
+}
+
+.ho-right8 .box1 ul {
+  padding: 5px 8px;
+}
+
+.ho-right8 .box1 ul div {
+  color: var(--bg-hei8);
+  font-size: 40px;
+}
+
+.ho-right8 .box1 ul li {
+  display: flex;
+  justify-content: space-between;
+  height: 36px;
+  cursor: pointer;
+  line-height: 36px;
+
+  &:hover {
+    background: var(--bg-hei2);
+  }
+
+  & p {
+    width: 45%;
+    flex-shrink: 0;
+    height: 36px;
+    overflow: hidden;
+  }
+
+  & samp {
+    overflow: hidden;
+  }
+}
+
+.ho-right8 .box2 .boxx1 {
+  height: 300px;
+  padding: 10px;
+
+  & img {
+    height: 250px;
+    width: 350px;
+  }
+}
+
+.ho-right8 .box2 .boxx1 p {
+  display: flex;
+  justify-content: space-between;
+  font-size: 20px;
+
+  & a {
+    font-size: 40px;
+    text-decoration: none;
+  }
+}
+
+.ho-right8 .box2 .boxx2 {
+  padding: 10px;
+}
+
+.ho-right9 {
+  display: flex;
+  justify-content: space-between;
+  min-height: 300px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+  padding: 10px;
+  background: var(--bg-hei1);
+
+}
+
+.ho-right9 ul {
+  width: 48%;
+  padding: 8px;
+  border: 1px dashed #1b80ff;
+  border-radius: 12px;
+
+  & li {
+    min-height: 35px;
+    line-height: 35px;
+
+    &:hover {
+      background: var(--bg-hei0);
+    }
+  }
+
+  & div {
+    font-size: 20px;
+  }
+}
+
+.ho-right9 ul:nth-child(1) {
+  border: 1px dashed #1b80ff;
+
+  & li {
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  & .i {
+    font-size: 25px;
+
+    &:hover {
+      color: #1b80ff;
+    }
+  }
+
+}
+
+.ho-right9 ul:nth-child(2) {
+  padding: 8px;
+  border: 1px dashed #1b80ff;
+  border-radius: 12px;
+}
+
+
+
+
+
+/* 日历 */
+.calendar .body-left {
+  height: 630px;
+}
+
+.calendar .body-left1 {
+  height: 220px;
+}
+
+.calendar .body-left1 p:nth-child(2) {
+  font-size: 60px;
+}
+
+.calendar .body-left2 {
+  display: flex;
+  justify-content: space-between;
+  height: 120px;
+}
+
+.calendar .body-left2 .box1,
+.calendar .body-left2 .box2 {
+  width: 140px;
+}
+
+.calendar .body-left2 .box1 h2,
+.calendar .body-left2 .box2 h2 {
+  width: 40px;
+  height: 40px;
+  margin: 0 auto;
+  border-radius: 50%;
+  background: rgba(225, 0, 0, 0.7);
+}
+
+.calendar .body-left2 .box2 h2 {
+  background: rgba(0, 225, 0, 0.5);
+
+}
+
+.calendar .body-left3 {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  height: 240px;
+}
+
+.calendar .body-left3 .box {
+  width: 32%;
+}
+
+.calendar .body-left3 .box p:nth-child(1) {
+  font-weight: 700;
+}
+
+.calendar .body-left4 {
+  border: 0;
+}
+
+.calendar .body-right {
+  height: 1020px;
+}
+
+.ca-right {
+  height: 990px;
+  width: 650px;
+  margin: 10px auto;
+  padding: 10px;
+  border-radius: 10px;
+  background: var(--bg-hei4);
+}
+
+.ca-right .box1 {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  height: 90px;
+  border-bottom: 1px solid var(--bg-hei6);
+
+  & .boxx3 {
+    position: absolute;
+
+    & textarea {
+      position: absolute;
+      top: 20px;
+      left: 0px;
+      display: none;
+      height: 60px;
+      width: 330px;
+      border-radius: 4px;
+      padding: 4px;
+      /* 轮廓和是否可以被拉伸 */
+      outline: none;
+      resize: none;
+    }
+
+    & i {
+      position: absolute;
+      top: 5px;
+      left: 320px;
+      z-index: 2;
+      display: none;
+      height: 30px;
+      width: 30px;
+      font-size: 20px;
+      cursor: pointer;
+    }
+  }
+
+
+
+}
+
+.ca-right .box1 .boxx1 .boxxx1 {
+  color: red;
+
+  & i {
+    cursor: pointer;
+  }
+}
+
+.ca-right .box1 .boxx1 .boxxx2 {
+  font-size: 40px;
+
+  & p {
+    display: inline-block;
+    user-select: none;
+  }
+
+  & i {
+    font-size: 40px;
+    cursor: pointer;
+  }
+}
+
+.ca-right .box1 .boxx2 {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  text-align: center;
+}
+
+.ca-right .box1 .boxx2 input {
+  width: 80px;
+  height: 19px;
+  padding-left: 3px;
+  border: 1px solid #444;
+  border-radius: 3px;
+  font-size: 14px;
+  outline: none;
+}
+
+.ca-right .box1 .boxx2 p:nth-child(3) {
+  height: 26px;
+  width: 50px;
+  margin-left: auto;
+  padding-top: 5px;
+  background: #1b80ff;
+  font-size: 10px;
+  clip-path: polygon(0% 20%, 60% 20%, 60% 0%, 100% 50%, 60% 100%, 60% 80%, 0% 80%);
+  cursor: pointer;
+
+  & i {
+    font-size: 10px;
+  }
+}
+
+
+.ca-right .box2 {
+  height: 28px;
+  border: 1px solid var(--bg-hei3);
+}
+
+.ca-right .box2 ul {
+  display: flex;
+  justify-content: space-between;
+  height: 28px;
+  text-align: center;
+
+  & li {
+    width: 100px;
+  }
+}
+
+.ca-right .box3 ul {
+  display: flex;
+  flex-wrap: wrap;
+  background: var(--bg-hei5);
+}
+
+.ca-right .box3 ul li {
+  position: relative;
+  width: 90px;
+  height: 140px;
+  border: 0.5px solid var(--bg-hei3);
+  /* 文本无法选中 */
+  user-select: none;
+  cursor: pointer;
+
+  &:hover {
+    box-shadow: 0 0 10px var(--bg-hei8) inset !important;
+  }
+
+  & i {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 30px;
+    height: 30px;
+    font-size: 30px;
+  }
+}
+
+.li-boxShadow {
+  box-shadow: 0 0 15px rgba(50, 178, 142, 0.5) inset !important;
+}
+
+.ca-right .box3 ul li div:nth-child(1) {
+  height: 40px;
+  text-align: center;
+  font-size: 30px;
+}
+
+.ca-right .box3 ul li div:nth-child(2) {
+  height: 40px;
+  border-bottom: 0.5px solid var(--bg-hei3);
+  text-align: center;
+  line-height: 38px;
+}
+
+.ca-right .box3 ul li div:nth-child(3) {
+  height: 60px;
+  border-bottom: 5px solid var(--bg-hei3);
+  color: #607D8B;
+  overflow: auto;
+  /* 隐藏滚动条 */
+  scrollbar-width: none;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+/* 朋友圈/小随笔/任务 */
+.pyq-rw {
+  border: 1px dashed #1b80ff !important;
+}
+
+.moments .body-left2 {
+  height: 50px;
+}
+
+.moments .body-left3 {
+  display: flex;
+  justify-content: space-between;
+}
+
+.moments .body-left3 .box0 {
+  width: 100px;
+  height: 100px;
+  padding: 10px 0;
+  border-radius: 10px;
+  background: var(--bg-hei2);
+  cursor: pointer;
+}
+
+.moments .body-left3 .zj {
+  cursor: default;
+}
+
+
+.moments .body-left3 .box0 samp {
+  display: block;
+  margin-top: 15px;
+  font-size: 20px;
+}
+
+.moments .body-left4 .box0 {
+  width: 150px;
+  height: 32px;
+  margin: 0 auto;
+  padding-top: 2px;
+  border-radius: 16px;
+  border: 1px solid var(--bg-hei7);
+  cursor: pointer;
+
+  &:hover {
+    box-shadow: 0 0 5px rgba(225, 225, 225, 0.7);
+  }
+}
+
+.moments .mo-right2 .pyq,
+.moments .body-right .mo-right1 {
+  display: flex;
+  justify-content: space-between;
+  width: 700px;
+  height: 140px;
+  margin: 20px auto;
+  padding: 20px;
+  border-radius: 10px;
+  background: var(--bg-hei1);
+}
+
+.moments .body-right {
+  overflow: auto;
+}
+
+.moments .mo-right2 .pyq img,
+.moments .mo-right1 .box1 img {
+  width: 50px;
+  border-radius: 50%;
+}
+
+.moments .mo-right1 .box2 {
+  width: 480px;
+}
+
+.moments .mo-right1 .box2 textarea {
+  padding: 10px;
+  width: 480px;
+  height: 60px;
+  background: #f1f1f1;
+  border-radius: 10px;
+  font-size: 16px;
+  transition: all 600ms;
+  outline: none;
+  /* resize: none; */
+}
+
+.moments .mo-right1 .box2 textarea:focus {
+  height: 80px;
+  background: #fff;
+}
+
+.moments .mo-right1 .box2 samp {
+  display: block;
+  margin-left: auto;
+  width: 50px;
+  opacity: 0;
+}
+
+.moments .mo-right1 .box3 button {
+  width: 100px;
+  height: 50px;
+  border: 0;
+  border-radius: 20px;
+  font-size: 24px;
+  background: #5fccfe;
+}
+
+.moments .mo-right2 .pyq {
+  display: block;
+  height: 220px;
+}
+
+.moments .mo-right2 .pyq1 {
+  display: flex;
+  width: 650px;
+}
+
+
+.moments .mo-right2 .pyq1 i:nth-child(3) {
+  position: relative;
+  margin: 28px 0 0 480px;
+  font-size: 24px;
+  cursor: pointer;
+
+  &:hover div {
+    display: flex;
+  }
+}
+
+.moments .mo-right2 .pyq1 i div {
+  position: absolute;
+  display: none;
+  top: -30px;
+  left: 0;
+  width: 130px;
+  height: 40px;
+  background: var(--bg-hei2);
+  padding: 6px;
+  clip-path: polygon(0% 0%, 100% 0%, 100% 75%, 37% 76%, 16% 100%, 17% 75%, 0% 75%);
+  font-size: 12px;
+}
+
+.moments .mo-right2 .pyq1 i div samp {
+  width: 25px;
+  height: 25px;
+  border: 1px solid pink;
+  margin-top: -3px;
+  border-radius: 50%;
+  line-height: 25px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.moments .mo-right2 .pyq2 {
+  position: relative;
+  height: 100px;
+  width: 650px;
+  margin-top: 15px;
+  padding: 2px 10px;
+  border-radius: 8px;
+  background: #f1f1f1;
+  color: #444;
+
+  & b {
+    position: absolute;
+    bottom: 0;
+    right: 5px;
+    color: #444;
+    font-size: 24px;
+    cursor: pointer;
+  }
+
+  & textarea {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100px;
+    width: 650px;
+    padding: 10px;
+    border-radius: 10px;
+  }
+}
+
+.moments .mo-right2 samp {
+  display: block;
+  width: 150px;
+  margin-left: auto;
+}
+
+/* 任务记录 由API渲染 */
+.moments .mo-right1-rw .rw {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  height: 100px;
+  width: 650px;
+  margin: 20px auto;
+  padding: 10px 30px;
+  border-radius: 12px;
+  background: var(--bg-hei1);
+
+  & samp,
+  i {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    font-size: 24px;
+    cursor: pointer;
+  }
+
+  & i {
+    right: 50px;
+  }
+
+  & p {
+    line-height: 60px;
+  }
+
+  & textarea {
+    display: none;
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    height: 100px;
+    width: 650px;
+    padding: 10px;
+    border-radius: 10px;
+    background: var(--bg-hei1);
+    color: var(--bg-hei7);
+  }
+}
+
+
+
+
+
+
+
+
+
+/* 项目pr */
+.project {
+  justify-content: center;
+}
+
+.project .body-right {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  width: 1200px;
+  height: 1400px;
+  padding: 30px;
+}
+
+.project .body-right .pr-right0 {
+  width: 540px;
+  height: 400px;
+  border: 1px solid #666;
+  border-radius: 15px;
+  overflow: hidden;
+  transition: all 0.4s;
+
+  &:hover {
+    margin-top: -7px;
+  }
+
+  &:hover .box {
+    height: 120px;
+    margin-top: 280px;
+  }
+}
+
+.project .body-right .pr-right0 .box {
+  height: 100px;
+  background: var(--bg-hei1);
+  padding: 20px;
+  margin-top: 300px;
+  transition: all 0.4s;
+}
+
+.project .body-right .pr-right0 .boxx {
+  display: flex;
+  justify-content: space-between;
+}
+
+.project .body-right .pr-right1 {
+  background: url(./图片库/zgzw.png) no-repeat center !important;
+  background-size: cover !important;
+}
+
+.project .body-right .pr-right2 {
+  background: url(./图片库/gitee.png) no-repeat center !important;
+  background-size: cover !important;
+}
+
+.project .body-right .pr-right3 {
+  background: url(./图片库/dds99.png) no-repeat center !important;
+  background-size: cover !important;
+}
+
+.project .body-right .pr-right4 {
+  background: url(./图片库/fqxs.png) no-repeat center !important;
+  background-size: cover !important;
+}
+
+.project .body-right .pr-right5 {
+  background: url(./图片库/xtx.png) no-repeat center !important;
+  background-size: cover !important;
+}
+
+.project .body-right .pr-right6 {
+  position: relative;
+
+  & p {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 25px;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+/* 固定定位 */
+.popup {
+  position: fixed;
+  right: 8px;
+  bottom: 10%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-content: space-between;
+  height: 70px;
+  width: 70px;
+  padding: 5px;
+  border-radius: 50%;
+  background: var(--bg-hei7);
+  transition: all 0.6s;
+
+  &:hover {
+    height: 180px;
+    width: 180px;
+    border-radius: 8%;
+  }
+
+  &:hover .i1 {
+    display: none;
+  }
+
+  &:hover .popup0 {
+    display: block;
+    opacity: 1;
+    animation: popup 0.6s linear forwards;
+  }
+}
+
+.popup .i1 {
+  display: block;
+  font-size: 50px;
+  margin: -4px 0 0 6px;
+  color: #008b8b;
+  line-height: 70px;
+  transition: all 0.2s;
+}
+
+.popup .popup0 {
+  height: 80px;
+  width: 80px;
+  border-radius: 10px;
+  background: var(--bg-hei1);
+  transition: all 1s;
+}
+
+.popup .popup0 {
+  display: none;
+  text-align: center;
+  color: #008b8b;
+  cursor: pointer;
+
+  & .i2 {
+    font-size: 40px;
+    line-height: 50px;
+  }
+}
+
+@keyframes popup {
+  0% {
+    display: none;
+  }
+
+  80% {
+    display: none;
+  }
+
+  100% {
+    display: block;
+  }
+}
+  </style>
+  <!-- 用于透镜坐标 -->
+  <style>
+    :root {
+      --x: 50%;
+      --y: 50%;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- 画布，用于雪花背景 -->
+  <canvas></canvas>
+  <!-- 导航栏和背景 -->
+  <div class="head">
+    <div class="head-left">
+      <img src="./图片库/logo.jpg" alt="">
+      <p>首页</p>
+      <p><i class="iconfont icon-setting"></i></p>
+      <div class="box">
+        <div class="boxx">
+          <p>雪花个数：</p><input type="range">
+        </div>
+        <div class="boxx">
+          <p>雪花速度：</p><input type="range">
+        </div>
+      </div>
+    </div>
+    <div class="head-right">
+      <ul>
+        <li>首页</li>
+        <li>日历</li>
+        <li>项目</li>
+        <li>朋友圈/任务</li>
+        <div class="box"></div>
+      </ul>
+      <div class="head-right1">
+        <i class="iconfont icon-taiyang" style="display: none;"></i>
+        <i class="iconfont icon-moon-fill"></i>
+      </div>
+    </div>
+  </div>
+  <div class="bg"></div>
+  <!-- 首页 简称为ho -->
+  <div class="homepage">
+    <!-- 首页左侧 -->
+    <div class="body-left">
+      <div class="body-left1">
+        <img src="./图片库/logo.jpg" alt="">
+        <p>小琳琳的个人空间</p>
+        <i>
+          <div></div>zlc<div></div>
+        </i>
+      </div>
+      <div class="body-left2">
+        <p>联系方式</p>
+        <i class="iconfont icon-weixin">
+          <div>
+            加我一起聊天吧~
+            <img src="./图片库/vx.jpg" alt="">
+          </div>
+        </i>
+        <i class="iconfont icon-QQ">
+          <div>
+            加我一起聊天吧~
+            <img src="./图片库/qq.jpg" alt="">
+          </div>
+        </i>
+        <i class="iconfont icon-youxiang">
+          <div>
+            加我一起聊天吧~
+            <img src="./图片库/yx.jpg" alt="">
+          </div>
+        </i>
+        <i class="iconfont icon-lianxifangshi-xianxing">
+          <div>
+            <p>不愿透露</p>
+            <p>去别的地方看看风景吧~</p><br>
+            <p>嘿嘿嘿</p>
+            <!-- <img src="./图片库/vx.jpg" alt=""> -->
+          </div>
+        </i>
+      </div>
+      <div class="body-left3">
+        <p>基本信息</p>
+        <div class="jbxx">
+          <div class="lfet">
+            <p>所在院校</p>
+            <p>所在城市</p>
+            <p>年纪</p>
+          </div>
+          <div class="right">
+            <p>广东海洋大学</p>
+            <p>广东 梅州/广东 湛江</p>
+            <p>大一</p>
+          </div>
+        </div>
+      </div>
+      <div class="body-left4">
+        <!-- 彩蛋 -->
+        <div class="left">
+          <ul>
+            <li>行行代码，皆创世之力</li>
+            <li>我以代码铸世界之基</li>
+            <li>修bug\</li>
+            <li>伟大的程序员在cv代码</li>
+            <li>“代码能跑就别动它”</li>
+            <li>嘻嘻</li>
+          </ul>
+          <img src="./图片库/数模logo1.jpg" alt="">
+        </div>
+        <div class="right">
+          <p>鼠标放在这里<i class="iconfont icon-arrowright"></i></p>
+        </div>
+        <div class="box box1"><i class="iconfont icon-right"></i></div>
+        <div class="box box2"><i class="iconfont icon-left"></i></div>
+      </div>
+    </div>
+
+
+
+
+
+    <!-- 首页右侧 -->
+    <div class="body-right">
+      <div class="ho-right1">
+        <p>"Hello, world!"</p>
+        <p>欢迎来到小琳琳的个人空间</p>
+        <div>了解一下我？</div>
+      </div>
+      <div class="ho-right2">
+        <div class="box">
+          <p>我的前端项目</p>
+          <ul>
+            <li>中国知网</li>
+            <li>Gitee</li>
+            <li>番茄小说</li>
+          </ul>
+        </div>
+        <div class="box">
+          <p>我的获奖（不只前端）</p>
+          <ul>
+            <li>全球气象青年证书</li>
+            <li>乡村振兴践行者</li>
+            <li>xx证书</li>
+          </ul>
+        </div>
+        <div class="box">
+          <p>我的爱好与梦想</p>
+          <ul>
+            <li>羽毛球<i></i></li>
+            <li>和平精英</li>
+            <li>没想好先放个unll</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="ho-right3">
+        <div>我的故事（功能说明）</div>
+        <div></div>
+        <div>1~部分</div>
+      </div>
+      <div class="ho-right4">
+        <p>
+          我来自一个普普通通的家庭，考到了一个普普通通学校，心存梦想，想猛攻数模，凑字数凑字数凑字数凑字数凑字数凑字数凑字数凑字数凑字数凑字数凑字数，其实悬浮框里面有个神秘链接，点进去看看吧~~，凑字数凑字数凑字数凑字数凑字数凑字数，日历右键可以添加日程（都设计了回车添加），添加后对应还有星标显示，可以在朋友圈/任务里面的任务栏里看到任务，点击右上角太阳可以切换白天黑夜，可在左上角设置里调节雪花，凑字数凑字数凑字数凑字数凑字数凑字数凑字数凑字数其实首页的那个轮播图是可以拖拽的，日历的添加日程回车就可以添加，凑字数凑字数凑字数凑字数凑字数凑字数每一次刷新都会有丝滑的衔接效果（透明度0~1，位置-10px~0）凑字数凑字数凑字数凑字数凑字数凑字数凑字数凑字数html
+          css文件开头前几行都有结构布局1说明凑字数凑字数凑字数凑字数凑字数凑字数 <b>最后祝师哥师姐元旦快乐~</b></p>
+      </div>
+      <!-- 第二部分我的能力-技术 -->
+      <div class="ho-right3">
+        <div>我的能力-技术</div>
+        <div></div>
+        <div>2~部分</div>
+      </div>
+      <div class="ho-right5">
+        <div class="box1 box0 ">
+          <p>纯css斜向轮播图</p>
+          <p>灵感：Gitee</p>
+
+          <div class="img">
+            <div class="img1">
+              <div>
+                <img src="./图片库/kaiyuan0.png" alt="">
+                <img src="./图片库/kaiyuan1.png" alt="">
+                <img src="./图片库/kaiyuan2.png" alt="">
+                <img src="./图片库/kaiyuan3.png" alt="">
+                <img src="./图片库/kaiyuan4.png" alt="">
+
+                <img src="./图片库/kaiyuan0.png" alt="">
+                <img src="./图片库/kaiyuan1.png" alt="">
+                <img src="./图片库/kaiyuan2.png" alt="">
+              </div>
+            </div>
+            <div class="img2">
+              <div>
+                <img src="./图片库/kaiyuan0.png" alt="">
+                <img src="./图片库/kaiyuan1.png" alt="">
+                <img src="./图片库/kaiyuan2.png" alt="">
+                <img src="./图片库/kaiyuan3.png" alt="">
+                <img src="./图片库/kaiyuan4.png" alt="">
+
+                <img src="./图片库/kaiyuan0.png" alt="">
+                <img src="./图片库/kaiyuan1.png" alt="">
+                <img src="./图片库/kaiyuan2.png" alt="">
+              </div>
+            </div>
+            <div class="img3">
+              <div>
+                <img src="./图片库/kaiyuan0.png" alt="">
+                <img src="./图片库/kaiyuan1.png" alt="">
+                <img src="./图片库/kaiyuan2.png" alt="">
+                <img src="./图片库/kaiyuan3.png" alt="">
+                <img src="./图片库/kaiyuan4.png" alt="">
+
+                <img src="./图片库/kaiyuan0.png" alt="">
+                <img src="./图片库/kaiyuan1.png" alt="">
+                <img src="./图片库/kaiyuan2.png" alt="">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="box2 box0">
+          <p>毛玻璃</p>
+          <p>灵感：@艾恩小灰灰</p>
+          <div class="mbl">
+            <div>
+              <h1>01</h1>总有人会赢
+            </div>
+            <div>
+              <h1>02</h1>那为什么
+            </div>
+            <div>
+              <h1>03</h1>不能是我呢
+            </div>
+          </div>
+        </div>
+
+        <div class="box3 box0">
+          <p>透镜</p>
+          <p>灵感：追逐小球</p>
+          <div class="boxx1 boxx0"></div>
+          <div class="boxx2 boxx0"></div>
+        </div>
+        <div class="box4 box0">
+          <p>追逐小球</p>
+          <p>灵感：@小k师兄</p>
+          <div class="div">
+            <div class="boxx"></div>
+          </div>
+        </div>
+      </div>
+      <div class="ho-right6">
+        看看项目咯&nbsp;&nbsp;<i class="iconfont icon-arrowright"></i>
+      </div>
+      <!-- 第三部分关于我 -->
+      <div class="ho-right3">
+        <div>关于我</div>
+        <div></div>
+        <div>3~部分</div>
+      </div>
+      <div class="ho-right7">
+        <div class="box1">
+          <h2>☀️ 每一天，都在代码中...</h2>
+          <div class="ul">
+            <ul>
+              <li><i></i><i class="iconfont icon-yumaoqiu"></i>羽毛球的修炼</li>
+              <li><i></i><i class="iconfont icon-wangzherongyao"></i>王者荣耀~</li>
+              <li><i></i><i class="iconfont icon-jiaxiangx"></i>故地重游</li>
+              <li><i></i><i class="iconfont icon-sanjitou"></i>和平精英~</li>
+              <li><i></i><i class="iconfont icon-location"></i>世界客都</li>
+              <li><i></i><i class="iconfont icon-dianshiju"></i>三十年河东，三十年河西</li>
+              <li><i></i><i class="iconfont icon-w_cunzhuang"></i>村</li>
+              <li><i></i><i class="iconfont icon-jiaxiangrenzaishenzhen"></i>城</li>
+              <li><i></i><i class="iconfont icon-xuexi"></i>初三</li>
+              <li><i></i><i class="iconfont icon-xuexi1"></i>高三</li>
+              <li><i></i><i class="iconfont icon-yumaoqiu"></i>羽毛球的修炼</li>
+              <li><i></i><i class="iconfont icon-wangzherongyao"></i>王者荣耀~</li>
+              <li><i></i><i class="iconfont icon-jiaxiangx"></i>故地重游</li>
+              <li><i></i><i class="iconfont icon-sanjitou"></i>和平精英~</li>
+              <li><i></i><i class="iconfont icon-location"></i>世界客都</li>
+              <li><i></i><i class="iconfont icon-dianshiju"></i>三十年河东，三十年河西</li>
+              <li><i></i><i class="iconfont icon-w_cunzhuang"></i>村</li>
+            </ul>
+          </div>
+        </div>
+        <div class="box2">
+          <h2>丰富每一天</h2>
+          <ul>
+            <li><img src="./图片库/tu0.jpg" alt="">
+              <p>羽毛球的修炼</p>
+            </li>
+            <li><img src="./图片库/tu1.jpg" alt="">
+              <p>王者荣耀~</p>
+            </li>
+            <li><img src="./图片库/tu2.jpg" alt="">
+              <p>故地重游</p>
+            </li>
+            <li><img src="./图片库/tu3.jpg" alt="">
+              <p>和平精英~</p>
+            </li>
+            <li><img src="./图片库/tu4.jpg" alt="">
+              <p>世界客都</p>
+            </li>
+            <li><img src="./图片库/tu5.jpg" alt="">
+              <p>三十年河东，三十年河西</p>
+            </li>
+            <li><img src="./图片库/tu6.jpg" alt="">
+              <p>村</p>
+            </li>
+            <li><img src="./图片库/tu7.jpg" alt="">
+              <p>城</p>
+            </li>
+            <li><img src="./图片库/tu8.jpg" alt="">
+              <p>初三</p>
+            </li>
+            <li><img src="./图片库/tu9.jpg" alt="">
+              <p>高三</p>
+            </li>
+            <li><img src="./图片库/tu0.jpg" alt="">
+              <p>羽毛球的修炼</p>
+            </li>
+          </ul>
+          <div class="lbt">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+          </div>
+        </div>
+      </div>
+      <!-- 第四部分音乐 -->
+      <div class="ho-right3">
+        <div>无聊？听听音乐🎵🎵🎵🎵</div>
+        <div></div>
+        <div>4~部分</div>
+      </div>
+      <div class="ho-right8">
+        <div class="box1">
+          <div class="boxx1">
+            搜索：<input type="text" name="" id="" placeholder="歌曲、作者、歌词">
+            <button>搜索</button>
+          </div>
+          <div class="boxx2">
+            <ul>
+              <div>期待你的输入...</div>
+            </ul>
+          </div>
+          <p>右键可以收藏音乐哦ヽ(；▽；)ノ</p>
+        </div>
+        <div class="box2">
+          <div class="boxx1">
+            <p>
+              搜索不到？去别处看看~
+              <a href="https://y.qq.com/" class="iconfont icon-QQyinle1" target="_blank"></a>
+              <a href="https://music.163.com/" class="iconfont icon-wangyiyunyinle" target="_blank"></a>
+            </p>
+            <img src="./图片库/geshou1.png" alt="">
+          </div>
+          <div class="boxx2">
+            <p>歌名：</p>
+            <p>歌手：</p>
+            <p>专辑：</p>
+            <audio src="" controls>
+          </div>
+        </div>
+      </div>
+      <div class="ho-right9">
+        <ul>
+          <!-- 收藏内容，由js渲染 -->
+        </ul>
+        <ul>
+          <div>这里是评论区，不是无人区(゜-゜)つロ </div>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <!-- 日历 简称ca -->
+  <div class="calendar" style="display: none;">
+    <div class="body-left">
+      <div class="body-left1">
+        <!-- 依次对应 年月星期、号数、年份农历、天干地支、节气节日 -->
+        <p></p>
+        <p></p>
+        <p></p>
+        <p></p>
+        <p></p>
+      </div>
+      <div class="body-left2">
+        <div class="box1">
+          <h2>宜</h2>
+          <p></p>
+        </div>
+        <div class="box2">
+          <h2>忌</h2>
+          <p></p>
+        </div>
+      </div>
+      <div class="body-left3">
+        <div class="box">
+          <p>值神</p>
+          <p></p>
+        </div>
+        <div class="box">
+          <p>五行</p>
+          <p></p>
+        </div>
+        <div class="box">
+          <p>今日星座</p>
+          <p></p>
+        </div>
+        <div class="box">
+          <p>二十八宿</p>
+          <p></p>
+        </div>
+        <div class="box">
+          <p>今日胎神</p>
+          <p></p>
+        </div>
+        <div class="box">
+          <p>彭祖百忌</p>
+          <p></p>
+        </div>
+      </div>
+      <div class="body-left4">
+        右键日历可添加任务（日程）ヽ(；▽；)ノ
+      </div>
+    </div>
+    <div class="body-right">
+      <div class="ca-right">
+        <div class="box1">
+          <div class="boxx1">
+            <div class="boxxx1">
+              <p><b></b>年</p>
+            </div>
+            <div class="boxxx2">
+              <i class="iconfont icon-left"></i>
+              <p></p><i class="iconfont icon-right"></i>
+            </div>
+          </div>
+          <div class="boxx2">
+            <p>输入你想跳转的时间~</p>
+            <div>
+              年：<input type="text" value="" placeholder="输入年">
+              月：<input type="text" value="" placeholder="输入月">
+            </div>
+            <p>出发<i class="iconfont icon-arrowright"></i></p>
+          </div>
+          <div class="boxx3">
+            <textarea name="" id="" placeholder="请输入那天的任务吧~"></textarea>
+            <i class="iconfont icon-quxiao"></i>
+          </div>
+        </div>
+        <div class="box2">
+          <ul>
+            <li>日</li>
+            <li>一</li>
+            <li>二</li>
+            <li>三</li>
+            <li>四</li>
+            <li>五</li>
+            <li>六</li>
+          </ul>
+        </div>
+        <div class="box3">
+          <!-- js渲染 -->
+          <ul>
+            <!-- li*42>div*3+i -->
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- 项目 简称pr -->
+  <div class="project" style="display: none;">
+    <!-- <div class="body-left"></div>         左侧模板此部分不用-->
+    <div class="body-right">
+      <div class="pr-right1 pr-right0">
+        <div class="box">
+          <div class="boxx">
+            <p>中国知网的页面复刻</p>
+            <a href="../其他项目文件夹/中国知网/数模考核.html" target="_blank">前去看看<i class="iconfont icon-zhifeiji"></i></a>
+          </div>
+          <samp>2025年11月16日</samp>
+        </div>
+      </div>
+      <div class="pr-right2 pr-right0">
+        <div class="box">
+          <div class="boxx">
+            <p>gitee的页面复刻</p>
+            <a href="../其他项目文件夹/gitee/cpp.html" target="_blank">前去看看<i class="iconfont icon-zhifeiji"></i></a>
+          </div>
+          <samp>2025年12月14日</samp>
+        </div>
+      </div>
+      <div class="pr-right3 pr-right0">
+        <div class="box">
+          <div class="boxx">
+            <p>99行代码敲出来的打地鼠小游戏</p>
+            <a href="../其他项目文件夹/99行的打地鼠/打地鼠.html" target="_blank">前去看看<i class="iconfont icon-zhifeiji"></i></a>
+          </div>
+          <samp>2025年11月30日</samp>
+        </div>
+      </div>
+      <div class="pr-right4 pr-right0">
+        <div class="box">
+          <div class="boxx">
+            <p>番茄小说的页面复刻</p>
+            <a href="../其他项目文件夹/番茄小说/番茄小说.html" target="_blank">前去看看<i class="iconfont icon-zhifeiji"></i></a>
+          </div>
+          <samp>2025年11月12日</samp>
+        </div>
+      </div>
+      <div class="pr-right5 pr-right0">
+        <div class="box">
+          <div class="boxx">
+            <p>小兔鲜儿的页面复刻</p>
+            <a href="../其他项目文件夹/小兔鲜/兔鲜儿.html" target="_blank">前去看看<i class="iconfont icon-zhifeiji"></i></a>
+          </div>
+          <samp>2025年...忘了..</samp>
+        </div>
+      </div>
+      <div class="pr-right6 pr-right0">
+        <p>等待更新，尽情期待~</p>
+      </div>
+
+    </div>
+  </div>
+  <!-- 朋友圈/小随笔 简称mo -->
+  <div class="moments" style="display: none;">
+    <div class="body-left">
+      <div class="body-left1">
+        <img src="./图片库/logo.jpg" alt="">
+        <p>小琳琳的个人空间</p>
+        <i>
+          <div></div>zlc<div></div>
+        </i>
+      </div>
+      <div class="body-left2">
+        <p>统计</p>
+      </div>
+      <div class="body-left3">
+        <div class="box0 pyq">
+          <p>朋友圈</p>
+          <samp>22</samp>
+        </div>
+        <div class="box0 rw">
+          <p>任务</p>
+          <samp>22</samp>
+        </div>
+        <div class="box0 zj">
+          <p>总计</p>
+          <samp>22</samp>
+        </div>
+      </div>
+      <div class="body-left4">
+        <div class="box0">
+          发一个动态吧~
+        </div>
+        <br>
+        <p>朋友圈记录美好生活</p>
+      </div>
+    </div>
+    <div class="body-right" style="display: block;">
+      <div class="mo-right1">
+        <div class="box1">
+          <img src="./图片库/logo.jpg" alt="">
+        </div>
+        <div class="box2">
+          <textarea name="" id="" placeholder="发表一下今天的感悟吧~"></textarea>
+          <samp>0/200</samp>
+        </div>
+        <div class="box3"><button>发布</button></div>
+      </div>
+      <div class="mo-right2">
+        <!-- 朋友圈部分 由js渲染 -->
+      </div>
+    </div>
+    <div class="body-right" style="display: none;">
+      <div class="mo-right1-rw">
+        <!-- 任务部分 由js渲染-->
+      </div>
+    </div>
+  </div>
+  <!-- 固定定位 -->
+  <div class="popup">
+    <i class="i1 iconfont icon-huiyuanxiaohuojian"></i>
+    <div class="popup0 popup1">
+      <p>回到顶部</p>
+      <i class="i2 iconfont icon-huiyuanxiaohuojian"></i>
+    </div>
+    <div class="popup0 popup2">
+      <p>回到首页</p>
+      <i class="i2 iconfont icon-home"></i>
+    </div>
+    <div class="popup0 popup3">
+      <p>刷新页面</p>
+      <i class="i2 iconfont icon-shuaxin"></i>
+    </div>
+    <div class="popup0 popup4">
+      <p>神秘按钮</p>
+      <i class="i2 iconfont icon-a-fenxiang2"></i>
+    </div>
+  </div>
+
+  <script>
+    // 当本地存储为null时，代入默认的data
+!function () {
+  //朋友圈
+  if (JSON.parse(localStorage.getItem('data')) === null) {
+    const data = [
+      { pyq: '元旦快乐哦', shijian: '2026/1/1 00:00:00' },
+      { pyq: '起飞吧~前端', shijian: '2025/11/11 00:00:00' },
+      { pyq: '计算机梦开始的地方', shijian: '1970/1/1 00:00:00' },
+    ]
+    localStorage.setItem('data', JSON.stringify(data))
+  }
+  //任务
+  if (JSON.parse(localStorage.getItem('datas')) === null) {
+    const datas = [
+      { rw: '元旦节要交数模考核，不要忘了', shijian: '2026年1月1日' },
+    ]
+    localStorage.setItem('datas', JSON.stringify(datas))
+  }
+  //收藏音乐
+  if (JSON.parse(localStorage.getItem('datass')) === null) {
+    const datass = [
+      { id: 2097826775, geming: '慢慢', geshou: '岳燃', zhuanji: '慢慢' },
+      { id: 1999956412, geming: '在你的身边', geshou: '盛哲', zhuanji: '哲' },
+      { id: 1330348068, geming: '起风了', geshou: '买辣椒也用券', zhuanji: '起风了' },
+      { id: 1413585838, geming: '与我无关', geshou: '阿冗', zhuanji: '与我无关' },
+      { id: 1403318151, geming: '把回忆拼好给你', geshou: '王贰浪', zhuanji: '把回忆拼好给你' },
+    ]
+    localStorage.setItem('datass', JSON.stringify(datass))
+  }
+
+}()
+
+
+//导航栏
+!function () {
+  //滑块，top栏，右侧文字，看看项目跳转
+  const head_right_box = document.querySelector('.head-right .box')
+  const head_right_ul = document.querySelector('.head-right ul')
+  const head_left_p = document.querySelector('.head-left p')
+  const ho_right6 = document.querySelector('.ho-right6')
+  //复原
+  function fuyuan() {
+    document.documentElement.scrollTop = 0
+    document.querySelector('.homepage').style.display = 'none'  //首页
+    document.querySelector('.calendar').style.display = 'none'  //日历
+    document.querySelector('.project').style.display = 'none'   //项目
+    document.querySelector('.moments').style.display = 'none'   //朋友圈
+  }
+
+  head_right_ul.addEventListener('click', (e) => {
+    //滑块位置
+    head_right_box.style.left = `${e.target.offsetLeft}px`
+    //修改左侧
+    head_left_p.innerHTML = e.target.innerHTML
+    if (e.target === head_right_ul.children[0]) {
+      fuyuan()
+      document.querySelector('.homepage').style.display = 'flex'
+    }
+    if (e.target === head_right_ul.children[1]) {
+      fuyuan()
+      document.querySelector('.calendar').style.display = 'flex'
+    }
+    if (e.target === head_right_ul.children[2]) {
+      fuyuan()
+      document.querySelector('.project').style.display = 'flex'
+    }
+    if (e.target === head_right_ul.children[3]) {
+      fuyuan()
+      document.querySelector('.moments').style.display = 'flex'
+    }
+  })
+  //点击 看看项目咯~~ 跳转
+  ho_right6.addEventListener('click', () => {
+    fuyuan()
+    document.querySelector('.project').style.display = 'flex'
+    head_right_box.style.left = `${head_right_ul.children[2].offsetLeft}px`
+  })
+}()
+
+
+//首页渲染
+!function () {
+  //首页了解一下我
+  !function () {
+    const lxw = document.querySelector('.ho-right1 div')
+    lxw.addEventListener('click', () => {
+      //平滑滚动
+      window.scrollTo({
+        top: 260,
+        behavior: 'smooth'
+      });
+    })
+  }()
+
+  //首页-彩蛋
+  !function () {
+    const caidan = document.querySelectorAll('.homepage .body-left4 .box i')
+    const left = document.querySelector('.homepage .body-left4 .left')      //左按钮
+    const right = document.querySelector('.homepage .body-left4 .right')    //右按钮
+    const ul = document.querySelector('.homepage .body-left4 .left ul')
+    caidan[0].parentNode.parentNode.style.marginLeft = '-270px'
+    left.style.opacity = '0'
+
+    caidan[0].addEventListener('click', function () {
+      caidan[1].parentNode.parentNode.style.marginLeft = '25px'
+      caidan[1].style.cursor = 'pointer'
+      caidan[0].style.cursor = 'not-allowed'
+      left.style.opacity = '1'
+      right.style.opacity = '0'
+    })
+    caidan[1].addEventListener('click', function () {
+      caidan[0].parentNode.parentNode.style.marginLeft = '-270px'
+      caidan[0].style.cursor = 'pointer'
+      caidan[1].style.cursor = 'not-allowed'
+      right.style.opacity = '1'
+      left.style.opacity = '0'
+    })
+    let i = 0
+    //嵌套轮播图
+    setInterval(() => {
+      ul.style.marginTop = `-${(ul.children[2].offsetTop - ul.children[1].offsetTop) * i}px`
+      if (i === 5) {
+        i = -1
+      }
+      i++
+    }, 2000)
+  }()
+
+  //首页-技术-小项目-追逐小球
+  !function () {
+    const div = document.querySelector('.ho-right5 .box4 .div')
+    const box = document.querySelector('.ho-right5 .box4 .div .boxx')
+    let ex = 0
+    let ey = 0
+    div.addEventListener('mousemove', (e) => {
+      ex = e.x - 4 - div.getBoundingClientRect().x
+      ey = e.y - 4 - div.getBoundingClientRect().y
+    })
+    function shufu() {
+      box.style.marginTop = ey + 'px'
+      box.style.marginLeft = ex + 'px'
+    }
+    setInterval(shufu, 120)//适应60HZ分辨率
+  }()
+
+  //首页-技术-小项目-透镜
+  !function () {
+    const box0 = document.querySelectorAll('.ho-right5 .box3 .boxx0')
+    const box1 = document.querySelector('.ho-right5 .box3 .boxx1')
+    const style = document.querySelectorAll('style')
+    let x
+    let y
+    for (let i = 0; i < box0.length; i++) {
+      box0[i].addEventListener("mousemove", e => {
+        //获得鼠标位置相对于盒子的百分比大小
+        x = (e.x - box1.getBoundingClientRect().x) * 100 / box1.getBoundingClientRect().width
+        y = (e.y - box1.getBoundingClientRect().y) * 100 / box1.getBoundingClientRect().height
+        style[1].innerHTML = `:root{
+                                        --x:${x}%;
+                                        --y:${y}%;
+                                    }`
+      })
+    }
+  }()
+
+  //首页-关于我
+  !function () {
+    //左侧轮播效果
+    !function () {
+      const body2_c = document.querySelector('.ho-right7 .box1 .ul ul')
+      const li = document.querySelectorAll('.box1 .ul li')
+
+      let i = 0  //i是左侧的跳转
+      //a函数是为了防止计时器2s的延迟
+      function a() {
+        i++
+        body2_c.style.marginTop = `-${(body2_c.children[2].offsetTop - body2_c.children[1].offsetTop) * i}px`
+
+        //最上和最下透明度小
+        for (let ii = 0; ii < li.length; ii++) {
+          li[ii].style.opacity = '1'
+        }
+        li[i - 1].style.opacity = '0.3'
+        li[i].style.opacity = '0.3'
+        li[(i === 11) ? 6 : (i + 6)].style.opacity = '0.3'
+
+        //i===10时达最末尾，为了先得平滑，先让过渡时间为0
+        if (i === 11) {
+          i = 0
+          body2_c.style.marginTop = `0px`
+          body2_c.style.transition = 'all 0s'
+        } else {
+          body2_c.style.transition = 'all 1s'
+        }
+      }
+      a()
+      setInterval(a, 2000)
+
+    }()
+
+
+    //轮播图部分
+    !function () {
+      const ul = document.querySelector('.ho-right7 .box2 ul')
+      const div = document.querySelectorAll('.ho-right7 .box2 .lbt div')
+      const li = document.querySelectorAll('.box1 .ul li')
+      const l = ul.children[1].offsetLeft - ul.children[0].offsetLeft
+
+      let i = 0 //i是右侧轮播图的跳转
+      //轮播效果
+      function lunbo() {
+        ul.style.transition = 'all 0.5s'//先添加过渡效果
+        if (i === 11) {//到最后面用障眼法取消掉最后面的空白
+          i = 0
+          ul.style.marginLeft = `0`
+        } else {
+          ul.style.marginLeft = `-${l * i}px`//偏移lu位置达到轮播效果
+        }
+
+        for (let j = 0; j < div.length; j++) {
+          div[j].style.background = 'var(--bg-hei0)'
+        }
+        div[i === 10 ? 0 : i].style.background = '#ffa500'
+      }
+
+
+      //左侧点击事件对应右侧效果
+      !function () {
+        for (let ii = 0; ii < li.length; ii++) {
+          li[ii].addEventListener('click', () => {
+            //如果点击对应的li是多出来补充的则进行i--
+            if (ii >= 10) {
+              for (let iii = 0; iii < li.length - div.length + 3; iii++) {
+                ii--
+              }
+            }
+            i = ii
+            for (let iii = 0; iii < div.length; iii++) {
+              div[iii].style.background = 'var(--bg-hei0)'
+            }
+            ul.style.marginLeft = `-${l * i}px`//偏移lu位置达到轮播效果
+            div[i].style.background = '#ffa500'
+          })
+        }
+
+        for (let ii = 0; ii < div.length; ii++) {
+          div[ii].addEventListener('click', () => {
+            i = ii
+            for (let iii = 0; iii < div.length; iii++) {
+              div[iii].style.background = 'var(--bg-hei0)'
+            }
+            ul.style.marginLeft = `-${l * i}px`//偏移lu位置达到轮播效果
+            div[i].style.background = '#ffa500'
+          })
+          div[ii].style.background = 'var(--bg-hei0)'
+        }
+        div[i].style.background = '#ffa500'
+      }()
+
+
+      //鼠标进入暂停计时器，离开开启
+      !function () {
+        let jishiqi = setInterval(() => { i++; lunbo() }, 3000)//定义计时器
+        if (i === 10) {
+          clearInterval(jishiqi)
+        }
+        ul.addEventListener('mouseenter', () => clearInterval(jishiqi))
+        li[0].parentNode.addEventListener('mouseenter', () => clearInterval(jishiqi))
+        ul.addEventListener('mouseleave', () => {
+          jishiqi = setInterval(() => { i++; lunbo() }, 3000)
+        })
+        li[0].parentNode.addEventListener('mouseleave', () => {
+          jishiqi = setInterval(() => { i++; lunbo() }, 3000)
+        })
+      }()
+
+
+      //拖动效果 (虽然略有卡顿)
+      !function () {
+        // 获取鼠标相对于盒子的位置
+        let x1
+        let x2
+        let x
+        let m = false  //仅按下时才触发mousemove的内容
+        let t = new Date() //节流
+        //鼠标离开时让 m=false 防止鼠标不是按下状态时仍然能拖拽
+        ul.addEventListener('mouseleave', () => m = false)
+
+        ul.addEventListener('mousedown', (e) => {//按下
+          m = true
+          x1 = e.x - ul.getBoundingClientRect().x
+        })
+        ul.addEventListener('mousemove', (e) => {//按下时滑动
+          if (m && new Date() - t > 32) {
+            ul.style.marginLeft = `${-l * i + (e.x - x1 - ul.getBoundingClientRect().x)}px`
+            t = new Date()
+          }
+        })
+        ul.addEventListener('mouseup', (e) => {//鼠标弹起
+          m = false
+          x2 = e.x - ul.getBoundingClientRect().x;
+          x = x1 - x2
+          // 处理边界情况的平滑过渡
+          if (x > 100) {//鼠标向右位移>100即切换到下一张
+            if (i === 9) { // 最后一张
+              // 先平滑移动到视觉上的第一张位置
+              ul.style.transition = 'all 0.5s'
+              ul.style.marginLeft = `-${l * 10}px`
+              // 过渡结束后重置位置
+              setTimeout(() => {
+                ul.style.transition = 'none'
+                ul.style.marginLeft = `0px`
+                i = 0
+                // 更新指示器
+                for (let j = 0; j < div.length; j++) {
+                  div[j].style.background = 'var(--bg-hei0)'
+                }
+                div[0].style.background = '#ffa500'
+              }, 500)
+            } else {
+              i++
+              lunbo()
+            }
+          } else if (x > 0 && x <= 100) {
+            lunbo()
+          }
+
+          if (x < -100) { // 鼠标向左位移>100即切换到上一张
+            if (i === 0) { // 第一张
+              // 先平滑移动到视觉上的最后一张位置
+              ul.style.transition = 'all 0.5s'
+              ul.style.marginLeft = `0px`
+              // 过渡结束后重置位置
+              setTimeout(() => {
+                ul.style.transition = 'none'
+                ul.style.marginLeft = `-${l * 9}px`
+                i = 9
+                // 更新指示器
+                for (let j = 0; j < div.length; j++) {
+                  div[j].style.background = 'var(--bg-hei0)'
+                }
+                div[9].style.background = '#ffa500'
+              }, 500)
+            } else {
+              i--
+              lunbo()
+            }
+          } else if (x >= -100 && x <= 0) {
+            lunbo()
+          }
+        });
+      }()
+    }()
+  }()
+
+  //首页-听听音乐
+  !function () {
+    //获取搜索框，搜索结果ul1,收藏项目ul2,评论区ul3,轮播图img
+    const input = document.querySelector('.homepage .ho-right8 .box1 .boxx1 input')
+    const button = document.querySelector('.homepage .ho-right8 .box1 .boxx1 button')
+    const ul1 = document.querySelector('.homepage .ho-right8 .box1 .boxx2 ul')
+    const ul2 = document.querySelector('.homepage .ho-right9 ul')
+    const ul3 = document.querySelector('.homepage .ho-right9 ul:nth-child(2)')
+    const img = document.querySelector('.homepage .ho-right8 .box2 .boxx1 img')
+    //定义空数组装搜索结果
+    let data = []
+    //API函数调用后带出data【】，以及渲染搜索结果
+    function API() {
+      fetch(`http://api.zhyunxi.com/api.php?api=10&key=75929ac7e216b9de760c7431bee042fe&search=${input.value}&type=so&num=10`)
+        .then((e) => e.json()).then((e) => {
+          data = e.data[0].list
+          ul1.innerHTML = ''
+          for (let i = 0; i < data.length; i++) {
+            ul1.appendChild(document.createElement('li'))
+          }
+          const li = ul1.querySelectorAll('li')
+          for (let i = 0; i < li.length; i++) {
+            li[i].setAttribute('data-id', i)
+            li[i].innerHTML = `<p>${data[i].name}</p><samp>${data[i].artist}</samp><samp>${data[i].time}</samp>`
+          }
+        });
+    }
+    button.addEventListener('click', e => {
+      if (input.value !== '') {
+        API()
+      } else {
+        alert('不能搜索空的音乐哦')
+      }
+    })
+    input.addEventListener('keyup', e => {
+      if (e.key === 'Enter') {
+        if (input.value !== '') {
+          API()
+        } else {
+          alert('不能搜索空的音乐哦')
+        }
+      }
+    })
+
+    //用事件委托，点击搜索到的某个data-id，对应获取data【】的id数据，访问得到对应音乐地址
+    ul1.addEventListener('click', e => {
+      //记录点击的对应li的id
+      let j = e.target.dataset.id || e.target.parentNode.dataset.id
+      if (j) {
+        //音乐地址ex.data[0].url
+        fetch(`http://api.zhyunxi.com/api.php?api=10&key=75929ac7e216b9de760c7431bee042fe&search=${data[j].id}&type=song`)
+          .then((e) => e.json()).then(ex => {
+            document.querySelector('.homepage .ho-right8 .box2 .boxx2 p:nth-child(1)').innerHTML = `歌名:${data[j].name}`
+            document.querySelector('.homepage .ho-right8 .box2 .boxx2 p:nth-child(2)').innerHTML = `作者:${data[j].artist}`
+            document.querySelector('.homepage .ho-right8 .box2 .boxx2 p:nth-child(3)').innerHTML = `专辑:${data[j].album}`
+            //判断返回的音乐地址是否404
+            if (ex.data[0].url === 'http://music.163.com/404') {
+              document.querySelector('.homepage .ho-right8 .box2 .boxx2 p:nth-child(1)').innerHTML = `歌名:${data[j].name}`
+              document.querySelector('.homepage .ho-right8 .box2 .boxx2 p:nth-child(2)').innerHTML = `emmmm,这首歌我没有版权嗷嗷嗷`
+              document.querySelector('.homepage .ho-right8 .box2 .boxx2 p:nth-child(3)').innerHTML = ``
+            }
+            document.querySelector('.homepage .ho-right8 .box2 .boxx2 audio').src = ex.data[0].url
+          })
+        //对应音乐评论
+        fetch(`http://api.zhyunxi.com/api.php?api=10&key=75929ac7e216b9de760c7431bee042fe&search=${data[j].id}&type=comment`)
+          .then((e) => e.json()).then(ex => {
+            ul3.innerHTML = ''
+            for (let i = 0; i < Math.min(14, ex.data.length); i++) {
+              ul3.appendChild(document.createElement('li'))
+            }
+            const li = ul3.querySelectorAll('li')
+            for (let i = 0; i < li.length; i++) {
+              //诺访问的为空则跳过本次循环
+              if (ex.data[i] === null || !ex.data[i]) {
+                continue;
+              }
+              li[i].innerHTML = `<b>${ex.data[i].name}</b>：${ex.data[i].msg}`
+            }
+            //诺没有评论则显示(゜-゜)つロ
+            if (ul3.innerText === '') {
+              ul3.innerHTML = '<div>这里是评论区，不是无人区(゜-゜)つロ </div>'
+            }
+          })
+      }
+    })
+
+    //用arr储存默认数据
+    const arr = JSON.parse(localStorage.getItem('datass')) || []
+    //单击后通过arr内的id得到歌曲地址url
+    ul2.addEventListener('click', e => {
+      let j = e.target.dataset.id || e.target.parentNode.dataset.id
+      if (e.target.tagName !== 'I' && (j)) {
+        fetch(`http://api.zhyunxi.com/api.php?api=10&key=75929ac7e216b9de760c7431bee042fe&search=${arr[j].id}&type=song`)
+          .then((e) => e.json()).then(ex => {
+            document.querySelector('.homepage .ho-right8 .box2 .boxx2 p:nth-child(1)').innerHTML = `歌名:${arr[j].geming}`
+            document.querySelector('.homepage .ho-right8 .box2 .boxx2 p:nth-child(2)').innerHTML = `作者:${arr[j].geshou}`
+            document.querySelector('.homepage .ho-right8 .box2 .boxx2 p:nth-child(3)').innerHTML = `专辑:${arr[j].zhuanji}`
+            if (ex.data[0].url === 'http://music.163.com/404') {
+              document.querySelector('.homepage .ho-right8 .box2 .boxx2 p:nth-child(2)').innerHTML = `emmmm,这首歌我没有版权嗷嗷嗷`
+              document.querySelector('.homepage .ho-right8 .box2 .boxx2 p:nth-child(3)').innerHTML = ``
+            }
+            document.querySelector('.homepage .ho-right8 .box2 .boxx2 audio').src = ex.data[0].url
+          })
+        //评论同理
+        fetch(`http://api.zhyunxi.com/api.php?api=10&key=75929ac7e216b9de760c7431bee042fe&search=${arr[j].id}&type=comment`)
+          .then((e) => e.json()).then(ex => {
+            ul3.innerHTML = ''
+            for (let i = 0; i < Math.min(14, ex.data.length); i++) {
+              ul3.appendChild(document.createElement('li'))
+            }
+            const li = ul3.querySelectorAll('li')
+            for (let i = 0; i < li.length; i++) {
+              if (ex.data[i] === null || !ex.data[i]) {
+                continue;
+              }
+              li[i].innerHTML = `<b>${ex.data[i].name}</b>：${ex.data[i].msg}`
+            }
+            if (ul3.innerText === '') {
+              ul3.innerHTML = '<div>这里是评论区，不是无人区(゜-゜)つロ </div>'
+            }
+          })
+      }
+    })
+
+    //右键收藏存入arr，并存入内存
+    function shoucang() {
+      ul1.addEventListener('contextmenu', e => {
+        e.preventDefault()
+        let j = e.target.dataset.id || e.target.parentNode.dataset.id
+        arr.push(
+          {
+            id: data[j].id,
+            geming: data[j].name,
+            geshou: data[j].artist,
+            zhuanji: data[j].album
+          }
+        )
+        xuanran()
+        localStorage.setItem('datass', JSON.stringify(arr))
+      })
+    }
+    shoucang()
+
+    //渲染对应收藏夹ul2
+    function xuanran() {
+      ul2.innerHTML = arr.map(function (arr, i) {
+        return `<li data-id="${i}">
+            <p data-id="${i}"><b class="iconfont icon-shoucang" data-id="${i}"></b>${arr.geming}</p><i class="iconfont icon-lajitong i" data-ids="${i}"></i>
+          </li>`
+      }).join('')
+    }
+    xuanran()
+
+    //单击垃圾桶删除部分
+    function shan() {
+      ul2.addEventListener('click', e => {
+        if (e.target.tagName === 'I') {
+          arr.splice(e.target.dataset.ids, 1)
+          xuanran()
+          localStorage.setItem('datass', JSON.stringify(arr))
+        }
+      })
+    }
+    shan()
+
+
+
+    //背景歌手自动轮播图
+    setInterval(() => {
+      fetch(`http://api.zhyunxi.com/api.php?api=9&key=75929ac7e216b9de760c7431bee042fe&lx=fengjing`).then(e => e.json()).then(e => {
+        img.src = e.data[0].imgurl
+      })
+    }, 3000)
+  }()
+}()
+
+
+
+// 日历渲染    有辅助函数rili1 默认渲染函数 api函数 日程管理函数 用户输入年月部分以及左右月份跳转按钮函数
+!function () {
+  //部署结构
+  const ul = document.querySelector('.ca-right .box3 ul')
+  for (let i = 0; i < 42; i++) {
+    //在ul中创造42个li>div*3+i
+    ul.appendChild(document.createElement('li'))
+  }
+  const li = document.querySelectorAll('.ca-right .box3 ul li')
+  for (let i = 0; i < 42; i++) {
+    li[i].setAttribute('data-id', i)
+    li[i].appendChild(document.createElement('div'))
+    li[i].appendChild(document.createElement('div'))
+    li[i].appendChild(document.createElement('div'))
+    //五角星
+    li[i].appendChild(document.createElement('i'))
+  }
+  //获取元素
+  //div 对应日历右侧的号数、农历、节日
+  const div1 = document.querySelectorAll('.ca-right .box3 ul li div:nth-child(1)')
+  const div2 = document.querySelectorAll('.ca-right .box3 ul li div:nth-child(2)')
+  const div3 = document.querySelectorAll('.ca-right .box3 ul li div:nth-child(3)')
+  //五角星
+  const li_i = document.querySelectorAll('.ca-right .box3 ul li i')
+  //左侧的基本信息 宜 忌 其他-五行...
+  const jbxx = document.querySelectorAll('.calendar .body-left1 p')
+  const yi = document.querySelectorAll('.calendar .body-left2 .box1 p')
+  const ji = document.querySelectorAll('.calendar .body-left2 .box2 p')
+  const qita = document.querySelectorAll('.calendar .body-left3 .box p:nth-child(2)')
+  //得到当前年月
+  const yuefenzhuanhuan = ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月']
+  document.querySelector('.calendar .body-right .ca-right .boxxx1 b').innerHTML = new Date().getFullYear()
+  document.querySelector('.calendar .body-right .ca-right .boxxx2 p').innerHTML = yuefenzhuanhuan[new Date().getMonth()]
+
+
+  //函数rili1：输入年n和月y返回【这个月天数r，对应的第一天的星期xq】
+  function rili1(n, y) {
+    const yuetianshu = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+    let r
+    //如果二月且闰年
+    if (y === 2 && ((n % 4 === 0 && n % 100 !== 0) || (n % 400 === 0))) {
+      r = 29;
+    } else {
+      r = yuetianshu[y - 1]
+    }
+    // 获取当月第一天是星期几  0=星期日
+    const xq = new Date(n, y - 1, 1).getDay()
+    return [r, xq]
+  }
+
+  //默认渲染 左侧的“今天”信息
+  !function () {
+    fetch(`http://api.zhyunxi.com/api.php?api=129&key=9542b0cb75af833eb55e139d4955a69b&date=${new Date().getFullYear()}/${new Date().getMonth() + 1}/${new Date().getDate()}`)
+      .then(e => e.json()).then(e => {
+        const data = e.data
+        //点击后渲染左侧基本信息
+        yi[0].innerHTML = data[0].Yi
+        ji[0].innerHTML = data[0].Ji
+        jbxx[0].innerHTML = `${data[0].GregorianDateTime}&nbsp;&nbsp;&nbsp;&nbsp;${data[0].Day}`
+        jbxx[1].innerHTML = new Date().getDate()
+        jbxx[2].innerHTML = `【${data[0].LYear}】&nbsp;&nbsp农历${data[0].LMonth}${data[0].LDay}`
+        jbxx[3].innerHTML = `${data[0].TianGanDiZhiYear}&nbsp;&nbsp${data[0].TianGanDiZhiMonth}&nbsp;&nbsp${data[0].TianGanDiZhiDay}`
+        jbxx[4].innerHTML = `节日：${data[0].GJie || '无'}&nbsp;&nbsp;&nbsp;&nbsp;节气：${data[0].SolarTermName || '无'}`
+        qita[0].innerHTML = data[0].JianShen
+        qita[1].innerHTML = `${data[0].WuxingJiazi}<br>${data[0].WuxingNaDay}`
+        qita[2].innerHTML = data[0].XingWest
+        qita[3].innerHTML = data[0].XingEast
+        qita[4].innerHTML = data[0].Taishen
+        qita[5].innerHTML = data[0].PengZu
+      })
+  }()
+
+
+  // //函数API,输入年月日得到数组e.data 日历渲染部分这里完成
+  //开关用于解决事件监听器问题
+  function API(n, y) {
+    const tian_xingqi = rili1(n, y)
+    //标记现在
+    for (let i = 0; i < li.length; i++) {
+      li[i].classList.remove('li-boxShadow')
+    }
+    //给当前时间的li添加标记
+    if (new Date().getFullYear() === n) {
+      if (new Date().getMonth() === y - 1) {
+        console.log(li[tian_xingqi[1] + new Date().getDate() - 1]);
+        li[tian_xingqi[1] + new Date().getDate() - 1].classList.add('li-boxShadow')
+      }
+    }
+
+    //记录星星
+    !function () {
+      const arrr = JSON.parse(localStorage.getItem('datas')) || []//防止无数据
+      let jiluarr = [] //将任务数据暂时存入其中，【 [年，月，日]，[年，月，日]，.... 】
+      //遍历去除每个li里面的原来的星星
+
+      for (let i = 0; i < li.length; i++) {
+        li_i[i].classList.remove('iconfont')
+        li_i[i].classList.remove('icon-shoucang')
+      }
+      //遍历记录存入
+      for (let i = 0; i < arrr.length; i++) {
+        jiluarr.push(arrr[i].shijian.match(/\d+/g))
+      }
+
+      //检测年月是否对的上，然后添加星星
+      for (let i = 0; i < arrr.length; i++) {
+        if (+jiluarr[i][0] === +n) {
+          if (+jiluarr[i][1] === +y) {
+            li_i[+jiluarr[i][2] + tian_xingqi[1] - 1].classList.add('iconfont')
+            li_i[+jiluarr[i][2] + tian_xingqi[1] - 1].classList.add('icon-shoucang')
+          }
+        }
+      }
+    }()
+
+    //还原右侧基本信息 移除上一次调用的事件监听器！！！（目前没有做到）
+    fetch(`http://api.zhyunxi.com/api.php?api=129&key=9542b0cb75af833eb55e139d4955a69b&date=${n}/${y}`)
+      .then(e => e.json()).then(e => {
+
+        const data = e.data
+
+        for (let i = 0; i < li.length; i++) {
+          div1[i].innerHTML = ''
+          div2[i].innerHTML = ''
+          div3[i].innerHTML = ''
+        }
+
+        for (let j = 0; j < tian_xingqi[0]; j++) {
+          //渲染右侧基本信息
+          div1[tian_xingqi[1] + j].innerHTML = j + 1
+          div2[tian_xingqi[1] + j].innerHTML = data[j].LDay
+          div3[tian_xingqi[1] + j].innerHTML = data[j].GJie
+        }
+
+        //用事件委托增加性能
+        ul.addEventListener('click', e => {
+          //点击后对应的li添加阴影标记
+          if ((e.target.dataset.id >= 0 && e.target.dataset.id < 42) || (e.target.parentNode.dataset.id >= 0 && e.target.parentNode.dataset.id < 42)) {
+            for (let i = 0; i < li.length; i++) {
+              li[i].style.boxShadow = 'none'
+            }
+            li[e.target.dataset.id || e.target.parentNode.dataset.id].style.boxShadow = ' 0 0 15px var(--bg-hei9) inset'
+          }
+          //当点击到空日程时，左侧记为空
+          if (e.target.dataset.id < tian_xingqi[1] || e.target.dataset.id >= tian_xingqi[0] + tian_xingqi[1] || e.target.parentNode.dataset.id < tian_xingqi[1] || e.target.parentNode.dataset.id >= tian_xingqi[0] + tian_xingqi[1]) {
+            for (let ii = 0; ii < jbxx.length; ii++) {
+              jbxx[ii].innerHTML = ''
+              qita[ii].innerHTML = ''
+            }
+            yi[0].innerHTML = ''
+            ji[0].innerHTML = ''
+            qita[5].innerHTML = ''
+            jbxx[0].innerHTML = '当天无日程哦，去别处看看吧~'
+          }
+          //当点击到有对应日程时，渲染右侧
+          if ((e.target.dataset.id >= tian_xingqi[1] && e.target.dataset.id < tian_xingqi[0] + tian_xingqi[1]) || (e.target.parentNode.dataset.id >= tian_xingqi[1] && e.target.parentNode.dataset.id < tian_xingqi[0] + tian_xingqi[1])) {
+            //对应li的当天号数
+            let j = (e.target.dataset.id || e.target.parentNode.dataset.id) - tian_xingqi[1]
+            yi[0].innerHTML = data[j].Yi
+            ji[0].innerHTML = data[j].Ji
+            jbxx[0].innerHTML = `${data[j].GregorianDateTime}&nbsp;&nbsp;&nbsp;&nbsp;${data[j].Day}`
+            jbxx[1].innerHTML = li[j + tian_xingqi[1]].children[0].innerHTML
+            jbxx[2].innerHTML = `【${data[j].LYear}】&nbsp;&nbsp农历${data[j].LMonth}${data[j].LDay}`
+            jbxx[3].innerHTML = `${data[j].TianGanDiZhiYear}&nbsp;&nbsp${data[j].TianGanDiZhiMonth}&nbsp;&nbsp${data[j].TianGanDiZhiDay}`
+            jbxx[4].innerHTML = `节日：${data[j].GJie || '无'}&nbsp;&nbsp;&nbsp;&nbsp;节气：${data[j].SolarTermName || '无'}`
+            qita[0].innerHTML = data[j].JianShen
+            qita[1].innerHTML = `${data[j].WuxingJiazi}<br>${data[j].WuxingNaDay}`
+            qita[2].innerHTML = data[j].XingWest
+            qita[3].innerHTML = data[j].XingEast
+            qita[4].innerHTML = data[j].Taishen
+            qita[5].innerHTML = data[j].PengZu
+          }
+        })
+      })
+  }
+
+
+  //日程管理 包括右键添加日程 文本域 内容计入内存
+  !function () {
+    //获取文本框
+    const textarea = document.querySelector('.ca-right .box1 textarea')
+    let n  //年
+    let y  //月
+    let r  //日
+    //创建arr储存添加的日程的数据
+    const arr = JSON.parse(localStorage.getItem('datas')) || []//防止无数据
+
+    //右键添加日程
+    let biaojiwujiaoxing  //用于放五角星
+    ul.addEventListener('contextmenu', e => {
+      e.preventDefault()
+      if ((e.target.dataset.id >= 0 && e.target.dataset.id < 42) || (e.target.parentNode.dataset.id >= 0 && e.target.parentNode.dataset.id < 42)) {
+        if (li[e.target.dataset.id || e.target.parentNode.dataset.id].innerText === '') {
+          alert('不能为空的时间添加日程哦')
+        } else {
+          n = document.querySelector('.calendar .body-right .box1 .boxx1 .boxxx1 p b').innerHTML
+          y = document.querySelector('.calendar .body-right .box1 .boxx1 .boxxx2 p').innerHTML
+          r = li[e.target.dataset.id || e.target.parentNode.dataset.id].children[0].innerHTML
+          textarea.style.display = 'block'
+          document.querySelector('.ca-right .box1 .boxx3 i').style.display = 'block'
+          textarea.placeholder = `请输入${y}${r}号的任务吧~`
+          biaojiwujiaoxing = li_i[e.target.dataset.id || e.target.parentNode.dataset.id]  //记录添加的位置i
+        }
+      }
+    })
+
+    //给取消添加事件
+    document.querySelector('.ca-right .box1 .boxx3 i').addEventListener('click', () => {
+      textarea.value = ''
+      textarea.style.display = 'none'
+      document.querySelector('.ca-right .box1 .boxx3 i').style.display = 'none'
+    })
+
+    //给文本域添加键盘事件 记录任务
+    textarea.addEventListener('keyup', e => {
+      if (e.key === 'Enter') {
+        console.log(textarea.value);
+        if (textarea.value.trim() === '') {
+          alert('不能发布空的任务哦')
+        } else {
+          // 将月转换成数字
+          for (let i = 0; i < yuefenzhuanhuan.length; i++) {
+            if (yuefenzhuanhuan[i] === y) {
+              y = i + 1
+            }
+          }
+          arr.push({
+            rw: textarea.value.replace(/[&<>]/g, (f) => { return { '<': '&lt;', '>': '&gt;', '&': '&amp;', }[f] }), shijian: `${n}年${y}月${r}日`
+          })
+          xuanran()
+          textarea.value = ''
+          textarea.style.display = 'none'
+          document.querySelector('.ca-right .box1 .boxx3 i').style.display = 'none'
+          biaojiwujiaoxing.classList.add('iconfont')
+          biaojiwujiaoxing.classList.add('icon-shoucang')
+        }
+      }
+    })
+    //计入任务部分
+    //渲染
+    function xuanran() {
+      document.querySelector('.mo-right1-rw').innerHTML = arr.map(function (arr, index) {
+        return `<div class="rw">
+                            <p>${arr.shijian}的任务是：${arr.rw}</p>
+                            <samp class="iconfont icon-lajitong" data-id="${index}"></samp>
+                            <i class="iconfont icon-edit-fill" data-ids="${index}"></i>
+                            <textarea name="" id="">${arr.rw}</textarea>
+                        </div>`
+      }).join('')
+      //保存arr到内存datas
+      localStorage.setItem('datas', JSON.stringify(arr))
+      //记录
+      const renwu = document.querySelectorAll('.moments .box0 samp')
+      renwu[1].innerHTML = arr.length
+    }
+    xuanran()
+
+    //删除
+    function shan() {
+      const samp = document.querySelector('.moments .mo-right1-rw')
+      samp.addEventListener('mouseup', e => {
+        if (e.target.tagName === 'SAMP') {
+          arr.splice(e.target.dataset.id, 1)
+          xuanran()
+          //保存最新的arr
+          localStorage.setItem('datas', JSON.stringify(arr))
+          //重新刷新一遍api函数，防止星星删了还在
+          for (let i = 0; i < yuefenzhuanhuan.length; i++) {
+            if (document.querySelector('.calendar .body-right .ca-right .boxxx2 p').innerHTML === yuefenzhuanhuan[i]) {
+              API(document.querySelector('.calendar .body-right .ca-right .boxxx1 b').innerHTML, i + 1)
+            }
+          }
+
+        }
+      })
+    }
+    shan()
+
+    //改
+    function gai() {
+      const textarea = document.querySelector('.moments .mo-right1-rw')
+      //事件委托点击切换文本框，修改后Enter修改
+      textarea.addEventListener('mouseup', function (e) {
+        if (e.target.tagName === 'I') {
+          e.target.nextElementSibling.style.display = 'block'
+          e.target.nextElementSibling.focus()
+          e.target.nextElementSibling.value = arr[e.target.dataset.ids].rw
+          e.target.nextElementSibling.addEventListener('keyup', function keyup(ex) {
+            if (ex.key === "Enter") {
+              if (this.value.trim() === '') {
+                alert('不能发布空的东西哦')
+              } else {
+                arr[e.target.dataset.ids].rw = this.value.replace(/[&<>]/g, (f) => { return { '<': '&lt;', '>': '&gt;', '&': '&amp;', }[f] })
+                this.style.display = 'none'
+                localStorage.setItem('datas', JSON.stringify(arr))
+                xuanran()
+                this.removeEventListener('keyup', keyup)
+              }
+            }
+          })
+        }
+      })
+    }
+    gai()
+  }()
+
+
+  //用户输入年月部分以及左右月份跳转按钮
+  !function () {
+    const chufa = document.querySelector('.ca-right .box1 .boxx2 p:nth-child(3)')
+    const nian = document.querySelector('.ca-right .box1 .boxx1 .boxxx1 p b')
+    const yue = document.querySelector('.ca-right .box1 .boxx1 .boxxx2 p')
+    //当前的时间
+    API(new Date().getFullYear(), new Date().getMonth() + 1)
+
+    //月份转换
+    let time = new Date().getFullYear()
+
+    //输入部分
+    !function () {
+      const input = document.querySelectorAll('.ca-right .box1 .boxx2 input')
+      //函数a为 输入验证函数
+      function a() {
+        //输入验证
+        if (!(1969 < +input[0].value && +input[0].value < 2100 && +input[1].value > 0 && +input[1].value < 13)) {
+          alert('输入有误或这个年月有点久远暂无数据哦')
+          input[0].value = ''
+          input[1].value = ''
+          return
+        } else {
+          if (+input[0].value % 1 !== 0 || +input[1].value % 1 !== 0) {
+            alert('输入有误或这个年月有点久远暂无数据哦')
+            input[0].value = ''
+            input[1].value = ''
+            return
+          }
+        }
+        //改变年月
+        nian.innerHTML = `${input[0].value}`
+        yue.innerHTML = yuefenzhuanhuan[+input[1].value - 1]
+        time = input[0].value
+
+        API(input[0].value, input[1].value)
+        input[0].value = ''
+        input[1].value = ''
+      }
+      chufa.addEventListener('click', a)
+      input[0].addEventListener('keyup', e => {
+        if (e.key === 'Enter') {
+          input[1].focus()
+        }
+      })
+      input[1].addEventListener('keyup', e => {
+        if (e.key === 'Enter') {
+          a()
+        }
+      })
+    }()
+
+
+    //左右按钮部分
+    !function () {
+      const anniu = document.querySelectorAll('.ca-right .box1 .boxx1 i')
+      anniu[0].addEventListener('click', () => {
+        for (let i = 0; i < yuefenzhuanhuan.length; i++) {
+          if (yue.innerText === yuefenzhuanhuan[i]) {
+            let yuefen = i // 当前月份（索引号，后面+1）
+            if (yuefen === 0) {
+              yuefen = 11 //12月
+            } else {
+              yuefen -= 1 //其他月份
+            }
+            yue.innerText = yuefenzhuanhuan[yuefen]
+            API(time, yuefen + 1)
+            break        //防止继续循环使其跳转两次
+          }
+        }
+      })
+
+      anniu[1].addEventListener('click', () => {
+        for (let ii = yuefenzhuanhuan.length - 1; ii > -1; ii--) {
+          if (yue.innerText === yuefenzhuanhuan[ii]) {
+            let yuefen = ii
+            if (yuefen === 11) {
+              yuefen = 0       //一月
+            } else {
+              yuefen += 1  //其他月份
+            }
+            yue.innerText = yuefenzhuanhuan[yuefen];
+            API(time, yuefen + 1)
+            break
+          }
+        }
+      })
+    }()
+  }()
+}()
+
+
+//发布小随笔/朋友圈
+!function () {
+  const pyq = document.querySelector('.mo-right2')
+  //arr里存储的是每一个data构成的数组，后面会一个个追加
+  const arr = JSON.parse(localStorage.getItem('data')) || []//防止无数据
+
+  //发布 清空发布框 补全arr
+  function fabu() {
+    function fabu1() {
+      //去掉左右空格
+      if (document.querySelector('.box2 textarea').value.trim() === '') {
+        alert('不能发布空的东西哦')
+        return
+      }
+      arr.push({
+        pyq: document.querySelector('.box2 textarea').value.replace(/[&<>]/g, (f) => { return { '<': '&lt;', '>': '&gt;', '&': '&amp;', }[f] }),
+        shijian: new Date().toLocaleString()
+      })
+      document.querySelector('.box2 textarea').value = ''
+      xuanran()
+    }
+
+    //点击发布
+    document.querySelector('.box3 button').addEventListener('click', fabu1)
+    //回车发布
+    document.querySelector('.box2 textarea').addEventListener('keyup', function (e) {
+      if (e.key === 'Enter') {
+        fabu1()
+      }
+    })
+  }
+  fabu()
+
+  //渲染
+  function xuanran() {
+    //得到数组元素并渲染
+    pyq.innerHTML = arr.map(function (arr, index) {
+      return `
+                <div class="pyq">
+                    <div class="pyq1">
+                        <img src="./图片库/logo.jpg" alt="">
+                        <div>
+                            <p>喵呜</p>
+                            <p>发表的内容</p>
+                        </div>
+                        <i class="iconfont icon-lajitong"><div>真的要删掉我吗<samp data-id="${index}">嗯</samp></div></i>
+                    </div>
+                    <div class="pyq2">
+                        ${arr.pyq}
+                        <b class="iconfont icon-edit-fill" data-ids="${index}"></b>
+                        <textarea name="" id=""  data-ids="${index}">${arr.pyq}</textarea>
+                    </div>
+                    <samp>${arr.shijian}</samp>
+                </div>`
+    }).join('')
+    //存储到本地的data
+    localStorage.setItem('data', JSON.stringify(arr))
+    //记录
+    const pengyouquan = document.querySelectorAll('.moments .box0 samp')
+    pengyouquan[0].innerHTML = arr.length
+  }
+  xuanran()
+
+  //删除事件
+  function shan() {
+    const samp = document.querySelector('.moments .body-right .mo-right2')
+
+    samp.addEventListener('mouseup', e => {
+      if (e.target.tagName === 'SAMP') {
+        arr.splice(e.target.dataset.id, 1)
+        xuanran()
+        //保存最新的arr
+        localStorage.setItem('data', JSON.stringify(arr))
+      }
+    })
+  }
+  shan()
+
+  // 修改部分
+  function gai() {
+    const textarea = document.querySelector('.moments .body-right .mo-right2')
+    //事件委托点击切换文本框，修改后Enter修改
+    textarea.addEventListener('mouseup', function (e) {
+      if (e.target.tagName === 'B') {
+        e.target.nextElementSibling.style.display = 'block'
+        e.target.nextElementSibling.focus()
+        e.target.nextElementSibling.value = arr[e.target.dataset.ids].pyq
+        e.target.nextElementSibling.addEventListener('keyup', function keyup(ex) {
+          if (ex.key === "Enter") {
+            if (this.value.trim() === '') {
+              alert('不能发布空的东西哦')
+            } else {
+              arr[e.target.dataset.ids].pyq = this.value.replace(/[&<>]/g, (f) => { return { '<': '&lt;', '>': '&gt;', '&': '&amp;', }[f] })
+              this.style.display = 'none'
+              localStorage.setItem('data', JSON.stringify(arr))
+              xuanran()
+              this.removeEventListener('keyup', keyup);
+            }
+          }
+        })
+      }
+    })
+  }
+  gai()
+
+}()
+
+
+//朋友圈与任务栏的切换
+!function () {
+  const pyq = document.querySelector('.moments .body-left3 .pyq')
+  const pyq_ = document.querySelector('.moments .body-right:nth-child(2)')
+  const rw = document.querySelector('.moments .body-left3 .rw')
+  const rw_ = document.querySelector('.moments .body-right:nth-child(3)')
+  const textarea = document.querySelector('.moments .mo-right1 .box2 textarea')
+  rw.classList.remove('pyq-rw')
+  pyq.classList.add('pyq-rw')
+  //实时监测任务和朋友圈数量的和
+  setInterval(() => {
+    document.querySelector('.moments .body-left3 .zj samp').innerText = (+document.querySelector('.moments .body-left3 .rw samp').innerText) + (+document.querySelector('.moments .body-left3 .pyq samp').innerText)
+  }, 10)
+  //点击对应出现对应的右侧
+  document.querySelector('.moments .body-left4 .box0').addEventListener('click', () => {
+    rw.classList.remove('pyq-rw')
+    pyq.classList.add('pyq-rw')
+    rw_.style.display = 'none'
+    pyq_.style.display = 'block'
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    })
+    textarea.focus()
+  })
+  pyq.addEventListener('click', () => {
+    rw.classList.remove('pyq-rw')
+    pyq.classList.add('pyq-rw')
+    rw_.style.display = 'none'
+    pyq_.style.display = 'block'
+  })
+  rw.addEventListener('click', () => {
+    rw.classList.add('pyq-rw')
+    pyq.classList.remove('pyq-rw')
+    rw_.style.display = 'block'
+    pyq_.style.display = 'none'
+  })
+}()
+
+
+//固定定位
+!function () {
+  const popup = document.querySelectorAll('.popup0')
+  const homepage = document.querySelector('.homepage')
+  const calendar = document.querySelector('.calendar')
+  const project = document.querySelector('.project')
+  const moments = document.querySelector('.moments')
+  const head_right_box = document.querySelector('.head-right .box')
+  //回到顶部
+  popup[0].addEventListener('click', () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  })
+  //回到首页
+  popup[1].addEventListener('click', () => {
+    calendar.style.display = 'none'
+    project.style.display = 'none'
+    moments.style.display = 'none'
+    homepage.style.display = 'flex'
+    head_right_box.style.left = 0
+  })
+  //刷新页面
+  popup[2].addEventListener('click', () => {
+    location.reload()
+  })
+  //神秘链接
+  popup[3].addEventListener('click', () => {
+    location.href = 'https://www.bilibili.com/video/BV1UT42167xb?t=12.0'
+  })
+}()
+
+
+// 背景切换
+!function () {
+  const head_right1 = document.querySelector('.head-right1')
+  //通过切换样式表style的css变量来达到白天黑夜切换效果
+  const style = document.querySelector('style')
+  //太阳月亮的字体图标切换
+  const zttb = document.querySelectorAll('.head-right1 i')
+  const shumo = document.querySelector('.homepage .body-left4 .left img')
+  //ii为奇数则为白天，偶数为黑夜
+  let ii = 0
+  head_right1.addEventListener('click', function () {
+    ii++
+    if (ii % 2 === 1) {
+      style.innerHTML = ` :root{
+                                --bg-hei0:#eee;
+                                --bg-hei1:#f8f8f8;
+                                --bg-hei2:#eee;
+                                --bg-hei3:#444;
+                                --bg-hei4:#f8f8f8;
+                                --bg-hei5:#e8e8e8;
+                                --bg-hei6:#ddd;
+                                --bg-hei7:#000;
+                                --bg-hei8:rgba(0, 0, 0, 0.2);
+                                --bg-hei9:rgba(0, 0, 0, 0.5);
+                            }`
+      zttb[0].style.display = 'block'
+      zttb[1].style.display = 'none'
+      shumo.src = `./图片库/数模logo2.jpg`
+    } else {
+      style.innerHTML = ` :root{
+                                --bg-hei0:#02152c;
+                                --bg-hei1:#00263c;
+                                --bg-hei2:#021825;
+                                --bg-hei3:#444;
+                                --bg-hei4:#222;
+                                --bg-hei5:#111;
+                                --bg-hei6:#000;
+                                --bg-hei7:#fff;
+                                --bg-hei8:rgba(225, 225, 225, 0.2);
+                                --bg-hei9:rgba(225, 225, 225, 0.5);
+                            }`
+      zttb[1].style.display = 'block'
+      zttb[0].style.display = 'none'
+      shumo.src = `./图片库/数模logo1.jpg`
+    }
+  })
+}()
+
+//背景雪花与背景图
+!function () {
+  //获取进度条、画布、画笔
+  const input = document.querySelectorAll('.head-left input')
+  let huabu = document.querySelector('canvas')
+  let huabi = huabu.getContext('2d')
+  huabu.width = window.innerWidth
+  huabu.height = window.innerHeight
+  //储存雪花位置，大小
+  let xy = []
+  for (let i = 0; i < input[0].value * 6; i++) {
+    xy.push({
+      x: Math.random() * huabu.width,
+      y: Math.random() * huabu.height,
+      r: Math.random() * 10 + 1
+    })
+  }
+  //运动函数，16毫秒刷新一次
+  function yundong() {
+    //xy方向上位置用随机数叠加
+    for (let i = 0; i < input[0].value * 3; i++) {
+      xy[i].x += Math.random() * (input[1].value / 33) + 0.7
+      xy[i].y += Math.random() * (input[1].value / 33) + 0.7
+      //溢出画布则：
+      //诺画布横向x超过宽度，那么宽度为0，即：(末尾，y)=>(0，y)
+      //诺画布横向y超过高度，那么宽度为0，即：(x,末尾)=>(x，0)
+      if (xy[i].x > huabu.width) {
+        xy[i].x = 0
+      }
+      if (xy[i].y > huabu.height) {
+        xy[i].y = 0
+      }
+    }
+  }
+
+  setInterval(() => {
+    //在画布上画圆
+    huabi.clearRect(0, 0, huabu.width, huabu.height)
+    huabi.fillStyle = '#fff'//填充颜色
+    huabi.shadowColor = '#fff'//阴影样式
+    huabi.shadowBlur = 10//模糊半径
+    huabi.beginPath()//绘制
+
+    for (let i = 0; i < input[0].value * 3; i++) {
+      //移动画笔位置
+      huabi.moveTo(xy[i].x, xy[i].y)
+      //画一个圆
+      huabi.arc(xy[i].x, xy[i].y, xy[i].r, 0, Math.PI * 2)
+    }
+    huabi.fill()//在画布上绘制圆（渲染）
+    yundong()
+  }, 15)
+
+  //总背景图，10s切换一次
+  const bg = document.querySelector('.bg')
+  let i = 0
+  setInterval(() => {
+    i++
+    if (i > 4) {
+      i = 1
+    }
+    bg.style.background = `url(./图片库/bg${i}.jpg) no-repeat center`
+    bg.style.backgroundSize = 'cover'
+  }, 10000)
+
+  //雪花数量、速度设置
+  let ii = 0
+  document.querySelector('.head-left i').addEventListener('click', () => {
+    ii++
+    if (ii % 2 === 1) {
+      document.querySelector('.head-left .box').style.display = 'block'
+    } else {
+      document.querySelector('.head-left .box').style.display = 'none'
+    }
+  })
+
+}()
+  </script>
+</body>
+
+</html>
