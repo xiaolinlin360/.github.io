@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>导入通用-支持CSV、Excel、TXT</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+
+    button {
+      background: #0078d4;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+
+    button:hover {
+      background: #005a9e;
+    }
+
+    pre {
+      background: #f4f4f4;
+      padding: 15px;
+      margin-top: 20px;
+      border-radius: 5px;
+      overflow-x: auto;
+    }
+  </style>
+  <script src="https://cdn.sheetjs.com/xlsx-0.20.2/package/dist/xlsx.full.min.js"></script>
+</head>
+
+<body>
+  <input type="file" id="fileInput" accept=".csv,.xlsx,.xls,.txt">
+  <button id="importBtn"> 导入文件</button>
+
+  <script>
+    let data = [];
+    document.querySelector('button').addEventListener('click', importFile);
+    
+    function importFile() {
+      const file = document.querySelector('#fileInput').files[0];
+      if (!file) return alert('请选择文件');
+
+      //得到一文件 file 对象
+      
+      
+      
+      const reader = new FileReader();
+      reader.addEventListener('load', e => {
+        const ext = file.name.split('.').pop().toLowerCase();//文件后缀
+        
+        if (ext === 'xlsx' || ext === 'xls') {
+          // Excel → [{},{}]
+          const workbook = XLSX.read(e.target.result, { type: 'binary' });
+          const sheet = workbook.Sheets[workbook.SheetNames[0]];
+          data = XLSX.utils.sheet_to_json(sheet);
+        } 
+        else if (ext === 'csv') {
+          // CSV → [{},{}]
+          const lines = e.target.result.trim().split('\n');
+          const headers = lines[0].split(',');
+          data = lines.slice(1).map(line => {
+            const values = line.split(',');
+            return headers.reduce((obj, h, i) => ({ ...obj, [h]: values[i] }), {});
+          });
+        } 
+        else {
+          // TXT → 字符串
+          data = e.target.result;
+        }
+        
+        console.log('导入结果:', data);
+        alert('导入成功！查看控制台');
+      });
+      
+      const ext = file.name.split('.').pop().toLowerCase();
+      if (ext === 'xlsx' || ext === 'xls') {
+        reader.readAsBinaryString(file);
+      } else {
+        reader.readAsText(file, 'UTF-8');
+      }
+    }
+  
+  </script>
+</body>
+
+</html>
