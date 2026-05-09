@@ -299,7 +299,7 @@ footer {
           </div>
           <div class="form-group">
             <label for="inbound-location">存储位置：</label>
-            <input type="text" id="inbound-location" placeholder="格式：库区-货架-层号，如A-10-1">
+            <input type="text" id="inbound-location" placeholder="格式：库区-货架-层号，如A-10-01">
           </div>
           <div class="form-group">
             <label for="inbound-quantity">库存数量：</label>
@@ -357,7 +357,7 @@ footer {
           </div>
           <div class="form-group">
             <label for="transfer-location">新存储位置：</label>
-            <input type="text" id="transfer-location" placeholder="格式：库区-货架-层号，如A-10-1">
+            <input type="text" id="transfer-location" placeholder="格式：库区-货架-层号，如A-10-01">
           </div>
           <button type="submit">提交调拨</button>
         </form>
@@ -371,6 +371,7 @@ footer {
           <button data-query-type="precise">精准查询</button>
           <button data-query-type="category">分类查询</button>
           <button data-query-type="warning">库存预警查询</button>
+          <button data-query-type="expiry">过期预警查询</button>
         </div>
 
         <!-- 精准查询 -->
@@ -412,6 +413,14 @@ footer {
           </form>
           <div id="warning-result" class="result"></div>
         </div>
+
+        <!-- 过期预警查询 -->
+        <div id="expiry-query" class="query-content">
+          <h3>过期预警查询</h3>
+          <p style="color: #666; font-size: 0.9rem;">查询食品类货物的保质期状态</p>
+          <button id="expiry-button" style="margin-top: 10px;">查询过期预警</button>
+          <div id="expiry-result" class="result"></div>
+        </div>
       </section>
 
       <!-- 库存盘点 -->
@@ -449,218 +458,176 @@ footer {
     </footer>
   </div>
   <script>
-    /**
- * 智能仓储货物管理系统 - JavaScript逻辑
- * 实现货物的入库、出库、调拨、查询、盘点、清理和文件操作等功能
- */
+    //存储货物数据的数组
+let goodsArray = []
 
-// 全局变量：存储货物数据的数组
-let goodsArray = [];
+// 初始化表单提交事件
+initFormSubmissions()
 
-// 页面加载完成后初始化
-document.addEventListener('DOMContentLoaded', function () {
-  // 初始化选项卡切换
-  initTabs();
+// 初始化按钮点击事件
+initButtonClicks()
 
-  // 初始化查询选项卡
-  initQueryTabs();
-
-  // 初始化盘点选项卡
-  initInventoryTabs();
-
-  // 初始化表单提交事件
-  initFormSubmissions();
-
-  // 初始化按钮点击事件
-  initButtonClicks();
-
-  // 从localStorage加载数据
-  loadFromLocalStorage();
-});
-
-/**
- * 初始化选项卡切换
- */
-function initTabs() {
-  const navLinks = document.querySelectorAll('nav ul li a');
-  const tabContents = document.querySelectorAll('.tab-content');
-
-  navLinks.forEach(link => {
-    link.addEventListener('click', function (e) {
-      e.preventDefault();
-
-      // 移除所有选项卡的active类
-      navLinks.forEach(l => l.classList.remove('active'));
-      tabContents.forEach(content => content.classList.remove('active'));
-
-      // 添加当前选项卡的active类
-      this.classList.add('active');
-      const tabId = this.getAttribute('data-tab');
-      document.getElementById(tabId).classList.add('active');
-    });
-  });
-
-  // 默认激活第一个选项卡
-  navLinks[0].click();
+// 加载原始数据
+loadFromLocalStorage()
+function loadFromLocalStorage() {
+  const storedData = localStorage.getItem('inventoryData')
+  if (storedData) {
+    goodsArray = JSON.parse(storedData)
+  }
 }
 
-/**
- * 初始化查询选项卡
- */
-function initQueryTabs() {
-  const queryButtons = document.querySelectorAll('.query-tabs button');
-  const queryContents = document.querySelectorAll('.query-content');
+// top-选项切换
+!(function () {
+  // top-选项切换
+  initTabs()
 
-  queryButtons.forEach(button => {
-    button.addEventListener('click', function () {
-      // 移除所有按钮的active类
-      queryButtons.forEach(btn => btn.classList.remove('active'));
-      queryContents.forEach(content => content.classList.remove('active'));
+  // top-查询选项卡
+  initQueryTabs()
 
-      // 添加当前按钮的active类
-      this.classList.add('active');
-      const queryType = this.getAttribute('data-query-type');
-      document.getElementById(`${queryType}-query`).classList.add('active');
-    });
-  });
+  // top-盘点选项卡
+  initInventoryTabs()
 
-  // 默认激活第一个查询选项卡
-  queryButtons[0].click();
-}
+  function initTabs() {
+    const navLinks = document.querySelectorAll('nav ul li a')
+    const tabContents = document.querySelectorAll('.tab-content')
 
-/**
- * 初始化盘点选项卡
- */
-function initInventoryTabs() {
-  const inventoryButtons = document.querySelectorAll('.inventory-tabs button');
+    navLinks.forEach((link) => {
+      link.addEventListener('click', function (e) {
+        e.preventDefault()
+        // 移除所有选项卡的active类
+        navLinks.forEach((l) => l.classList.remove('active'))
+        tabContents.forEach((content) => content.classList.remove('active'))
 
-  inventoryButtons.forEach(button => {
-    button.addEventListener('click', function () {
-      // 移除所有按钮的active类
-      inventoryButtons.forEach(btn => btn.classList.remove('active'));
+        // 添加当前选项卡的active类
+        this.classList.add('active')
+        const tabId = this.getAttribute('data-tab')
+        document.getElementById(tabId).classList.add('active')
+      })
+    })
+    navLinks[0].click()
+  }
 
-      // 添加当前按钮的active类
-      this.classList.add('active');
-      const inventoryType = this.getAttribute('data-inventory-type');
+  function initQueryTabs() {
+    const queryButtons = document.querySelectorAll('.query-tabs button')
+    const queryContents = document.querySelectorAll('.query-content')
+    queryButtons.forEach((button) => {
+      button.addEventListener('click', function () {
+        queryButtons.forEach((btn) => btn.classList.remove('active'))
+        queryContents.forEach((content) => content.classList.remove('active'))
+        this.classList.add('active')
+        const queryType = this.getAttribute('data-query-type')
+        document.getElementById(`${queryType}-query`).classList.add('active')
+      })
+    })
+    queryButtons[0].click()
+  }
 
-      // 执行盘点
-      if (inventoryType === 'all') {
-        performFullInventory();
-      } else if (inventoryType === 'category') {
-        performCategoryInventory();
-      }
-    });
-  });
+  function initInventoryTabs() {
+    const inventoryButtons = document.querySelectorAll('.inventory-tabs button')
+    inventoryButtons.forEach((button) => {
+      button.addEventListener('click', function () {
+        inventoryButtons.forEach((btn) => btn.classList.remove('active'))
+        this.classList.add('active')
+        const inventoryType = this.getAttribute('data-inventory-type')
+        if (inventoryType === 'all') {
+          performFullInventory()
+        } else if (inventoryType === 'category') {
+          performCategoryInventory()
+        }
+      })
+    })
+    inventoryButtons[0].click()
+  }
+})()
 
-  // 默认激活第一个盘点选项卡
-  inventoryButtons[0].click();
-}
-
-/**
- * 初始化表单提交事件
- */
+// 初始化表单提交事件
+//用于提交之后的调用对应处理函数
 function initFormSubmissions() {
-  // 货物入库表单
-  document.getElementById('inbound-form').addEventListener('submit', function (e) {
-    e.preventDefault();
-    handleInbound();
-  });
+  const forms = [
+    { id: 'inbound-form', handler: handleInbound }, // 货物入库表单
+    { id: 'outbound-form', handler: handleOutbound }, // 货物出库表单
+    { id: 'transfer-form', handler: handleTransfer }, // 货物转移表单
+    { id: 'precise-form', handler: handlePreciseQuery }, // 精确查询表单
+    { id: 'category-form', handler: handleCategoryQuery }, // 分类查询表单
+    { id: 'warning-form', handler: handleWarningQuery }, // 警告查询表单
+  ]
 
-  // 货物出库表单
-  document.getElementById('outbound-form').addEventListener('submit', function (e) {
-    e.preventDefault();
-    handleOutbound();
-  });
-
-  // 库存调拨表单
-  document.getElementById('transfer-form').addEventListener('submit', function (e) {
-    e.preventDefault();
-    handleTransfer();
-  });
-
-  // 精准查询表单
-  document.getElementById('precise-form').addEventListener('submit', function (e) {
-    e.preventDefault();
-    handlePreciseQuery();
-  });
-
-  // 分类查询表单
-  document.getElementById('category-form').addEventListener('submit', function (e) {
-    e.preventDefault();
-    handleCategoryQuery();
-  });
-
-  // 库存预警查询表单
-  document.getElementById('warning-form').addEventListener('submit', function (e) {
-    e.preventDefault();
-    handleWarningQuery();
-  });
+  // 过期预警查询按钮
+  const expiryButton = document.getElementById('expiry-button')
+  if (expiryButton) {
+    expiryButton.addEventListener('click', handleExpiryQuery)
+  }
+  forms.forEach((form) => {
+    const element = document.getElementById(form.id)
+    if (element) {
+      element.addEventListener('submit', (e) => {
+        e.preventDefault()
+        form.handler()
+      })
+    }
+  })
 }
 
-/**
- * 初始化按钮点击事件
- */
+// 初始化按钮点击事件
 function initButtonClicks() {
   // 数据清理按钮
-  document.getElementById('cleanup-button').addEventListener('click', handleCleanup);
+  document.getElementById('cleanup-button').addEventListener('click', handleCleanup)
 
   // 导入数据按钮
   document.getElementById('import-button').addEventListener('click', function () {
-    document.getElementById('file-input').click();
-  });
+    document.getElementById('file-input').click()
+  })
 
   // 文件输入变化事件
-  document.getElementById('file-input').addEventListener('change', handleFileImport);
+  document.getElementById('file-input').addEventListener('change', handleFileImport)
 
   // 导出数据按钮
-  document.getElementById('export-button').addEventListener('click', handleFileExport);
+  document.getElementById('export-button').addEventListener('click', handleFileExport)
 }
 
-/**
- * 处理货物入库
- */
+// 处理货物入库
 function handleInbound() {
   // 获取表单数据
-  const id = document.getElementById('inbound-id').value;
-  const name = document.getElementById('inbound-name').value;
-  const spec = document.getElementById('inbound-spec').value;
-  const manufacturer = document.getElementById('inbound-manufacturer').value;
-  const location = document.getElementById('inbound-location').value;
-  const quantity = parseInt(document.getElementById('inbound-quantity').value);
-  const weight = parseFloat(document.getElementById('inbound-weight').value);
-  const volume = parseFloat(document.getElementById('inbound-volume').value);
-  const date = document.getElementById('inbound-date').value;
-  const expiry = document.getElementById('inbound-expiry').value;
-  const warranty = parseInt(document.getElementById('inbound-warranty').value);
+  const id = document.getElementById('inbound-id').value
+  const name = document.getElementById('inbound-name').value
+  const spec = document.getElementById('inbound-spec').value
+  const manufacturer = document.getElementById('inbound-manufacturer').value
+  const location = document.getElementById('inbound-location').value
+  const quantity = parseInt(document.getElementById('inbound-quantity').value)
+  const weight = parseFloat(document.getElementById('inbound-weight').value)
+  const volume = parseFloat(document.getElementById('inbound-volume').value)
+  const date = document.getElementById('inbound-date').value
+  const expiry = document.getElementById('inbound-expiry').value
+  const warranty = parseInt(document.getElementById('inbound-warranty').value)
 
   // 验证货号
   if (!/^\d{6}$/.test(id)) {
-    showMessage('inbound-message', '货号必须是6位整数', 'error');
-    return;
+    showMessage('inbound-message', '货号必须是6位整数', 'error')
+    return
   }
 
   // 验证货号唯一性
-  if (goodsArray.some(good => good.id === id)) {
-    showMessage('inbound-message', `货号 ${id} 已存在，入库失败`, 'error');
-    return;
+  if (goodsArray.some((good) => good.id === id)) {
+    showMessage('inbound-message', `货号 ${id} 已存在，入库失败`, 'error')
+    return
   }
 
   // 验证存储位置
-  if (!/^[ABC]-\d{2}-[1-4]$/.test(location)) {
-    showMessage('inbound-message', '存储位置无效，格式应为：库区-货架-层号，如A-10-1', 'error');
-    return;
+  if (!/^[ABC]-\d{2}-0[1-4]$/.test(location)) {
+    showMessage('inbound-message', '存储位置无效，格式应为：库区-货架-层号，如A-10-01', 'error')
+    return
   }
 
   // 验证入库日期
   if (!/^\d{8}$/.test(date)) {
-    showMessage('inbound-message', '入库日期格式无效，应为YYYYMMDD', 'error');
-    return;
+    showMessage('inbound-message', '入库日期格式无效，应为YYYYMMDD', 'error')
+    return
   }
 
   // 验证保质期
   if (!/^\d{8}$/.test(expiry)) {
-    showMessage('inbound-message', '保质期格式无效，应为YYYYMMDD', 'error');
-    return;
+    showMessage('inbound-message', '保质期格式无效，应为YYYYMMDD', 'error')
+    return
   }
 
   // 创建货物对象
@@ -675,127 +642,119 @@ function handleInbound() {
     volume,
     date,
     expiry,
-    warranty
-  };
+    warranty,
+  }
 
   // 添加到数组
-  goodsArray.push(newGood);
+  goodsArray.push(newGood)
 
   // 保存到localStorage
-  saveToLocalStorage();
+  saveToLocalStorage()
 
   // 显示成功消息
-  console.log(goodsArray);
-
-  showMessage('inbound-message', '货物入库成功', 'success');
+  showMessage('inbound-message', '货物入库成功', 'success')
 
   // 清空表单
-  document.getElementById('inbound-form').reset();
+  document.getElementById('inbound-form').reset()
 }
 
-/**
- * 处理货物出库
- */
+// 处理货物出库
 function handleOutbound() {
-  const id = document.getElementById('outbound-id').value;
-  const quantity = parseInt(document.getElementById('outbound-quantity').value);
+  const id = document.getElementById('outbound-id').value
+  const quantity = parseInt(document.getElementById('outbound-quantity').value)
 
   // 验证货号
   if (!/^\d{6}$/.test(id)) {
-    showMessage('outbound-message', '货号必须是6位整数', 'error');
-    return;
+    showMessage('outbound-message', '货号必须是6位整数', 'error')
+    return
   }
 
   // 查找货物
-  const index = goodsArray.findIndex(good => good.id === id);
+  const index = goodsArray.findIndex((good) => good.id === id)
   if (index === -1) {
-    showMessage('outbound-message', '货物未登记', 'error');
-    return;
+    showMessage('outbound-message', '货物未登记', 'error')
+    return
   }
 
-  const good = goodsArray[index];
+  const good = goodsArray[index]
 
   // 验证出库数量
   if (quantity > good.quantity) {
-    showMessage('outbound-message', '库存不足', 'error');
-    return;
+    showMessage('outbound-message', '库存不足', 'error')
+    return
   }
 
   // 更新库存
-  good.quantity -= quantity;
+  good.quantity -= quantity
 
   // 如果库存为0，删除记录
   if (good.quantity === 0) {
-    goodsArray.splice(index, 1);
+    goodsArray.splice(index, 1)
   }
 
   // 保存到localStorage
-  saveToLocalStorage();
+  saveToLocalStorage()
 
   // 显示成功消息
-  showMessage('outbound-message', '货物出库成功', 'success');
+  showMessage('outbound-message', '货物出库成功', 'success')
 
   // 清空表单
-  document.getElementById('outbound-form').reset();
+  document.getElementById('outbound-form').reset()
 }
 
-/**
- * 处理库存调拨
- */
+// 处理库存调拨
 function handleTransfer() {
-  const id = document.getElementById('transfer-id').value;
-  const newLocation = document.getElementById('transfer-location').value;
+  const id = document.getElementById('transfer-id').value
+  const newLocation = document.getElementById('transfer-location').value
 
   // 验证货号
   if (!/^\d{6}$/.test(id)) {
-    showMessage('transfer-message', '货号必须是6位整数', 'error');
-    return;
+    showMessage('transfer-message', '货号必须是6位整数', 'error')
+    return
   }
 
   // 验证存储位置
-  if (!/^[ABC]-\d{2}-[1-4]$/.test(newLocation)) {
-    showMessage('transfer-message', '存储位置无效，格式应为：库区-货架-层号，如A-10-1', 'error');
-    return;
+  if (!/^[ABC]-\d{2}-0[1-4]$/.test(newLocation)) {
+    showMessage('transfer-message', '存储位置无效，格式应为：库区-货架-层号，如A-10-01', 'error')
+    return
   }
 
   // 查找货物
-  const good = goodsArray.find(good => good.id === id);
+  const good = goodsArray.find((good) => good.id === id)
   if (!good) {
-    showMessage('transfer-message', '货物未登记', 'error');
-    return;
+    showMessage('transfer-message', '货物未登记', 'error')
+    return
   }
 
   // 更新存储位置
-  good.location = newLocation;
+  good.location = newLocation
 
   // 保存到localStorage
-  saveToLocalStorage();
+  saveToLocalStorage()
 
   // 显示成功消息
-  showMessage('transfer-message', '库存调拨成功', 'success');
+  showMessage('transfer-message', '库存调拨成功', 'success')
 
   // 清空表单
-  document.getElementById('transfer-form').reset();
+  document.getElementById('transfer-form').reset()
 }
 
-/**
- * 处理精准查询
- */
+// 处理精准查询
 function handlePreciseQuery() {
-  const id = document.getElementById('precise-id').value;
+  const id = document.getElementById('precise-id').value
 
   // 验证货号
   if (!/^\d{6}$/.test(id)) {
-    document.getElementById('precise-result').innerHTML = '<p>货号必须是6位整数</p>';
-    return;
+    document.getElementById('precise-result').innerHTML = '<p>货号必须是6位整数</p>'
+    return
   }
 
   // 查找货物
-  const good = goodsArray.find(good => good.id === id);
+  const good = goodsArray.find((good) => good.id === id)
 
   if (!good) {
-    document.getElementById('precise-result').innerHTML = '<p>无匹配货物</p>';
-    return;
+    document.getElementById('precise-result').innerHTML = '<p>无匹配货物</p>'
+    return
   }
 
   // 显示货物信息
@@ -814,26 +773,24 @@ function handlePreciseQuery() {
       <tr><th>保质期</th><td>${good.expiry}</td></tr>
       <tr><th>保修期限(月)</th><td>${good.warranty}</td></tr>
     </table>
-  `;
+  `
 
-  document.getElementById('precise-result').innerHTML = resultHTML;
+  document.getElementById('precise-result').innerHTML = resultHTML
 }
 
-/**
- * 处理分类查询
- */
+// 处理分类查询
 function handleCategoryQuery() {
-  const category = document.getElementById('category-type').value;
+  const category = document.getElementById('category-type').value
 
   // 过滤货物
-  const filteredGoods = goodsArray.filter(good => good.id.startsWith(category));
+  const filteredGoods = goodsArray.filter((good) => good.id.startsWith(category))
 
   // 按货号升序排序
-  filteredGoods.sort((a, b) => a.id.localeCompare(b.id));
+  filteredGoods.sort((a, b) => a.id.localeCompare(b.id))
 
   if (filteredGoods.length === 0) {
-    document.getElementById('category-result').innerHTML = '<p>该类别下无货物</p>';
-    return;
+    document.getElementById('category-result').innerHTML = '<p>该类别下无货物</p>'
+    return
   }
 
   // 显示货物列表
@@ -847,9 +804,9 @@ function handleCategoryQuery() {
         <th>存储位置</th>
         <th>保质期</th>
       </tr>
-  `;
+  `
 
-  filteredGoods.forEach(good => {
+  filteredGoods.forEach((good) => {
     resultHTML += `
       <tr>
         <td>${good.id}</td>
@@ -858,28 +815,26 @@ function handleCategoryQuery() {
         <td>${good.location}</td>
         <td>${good.expiry}</td>
       </tr>
-    `;
-  });
+    `
+  })
 
-  resultHTML += '</table>';
-  document.getElementById('category-result').innerHTML = resultHTML;
+  resultHTML += '</table>'
+  document.getElementById('category-result').innerHTML = resultHTML
 }
 
-/**
- * 处理库存预警查询
- */
+// 处理库存预警查询
 function handleWarningQuery() {
-  const threshold = parseInt(document.getElementById('warning-threshold').value);
+  const threshold = parseInt(document.getElementById('warning-threshold').value)
 
   // 过滤货物
-  const filteredGoods = goodsArray.filter(good => good.quantity <= threshold);
+  const filteredGoods = goodsArray.filter((good) => good.quantity <= threshold)
 
   // 按库存降序排序
-  filteredGoods.sort((a, b) => b.quantity - a.quantity);
+  filteredGoods.sort((a, b) => b.quantity - a.quantity)
 
   if (filteredGoods.length === 0) {
-    document.getElementById('warning-result').innerHTML = '<p>无库存预警货物</p>';
-    return;
+    document.getElementById('warning-result').innerHTML = '<p>无库存预警货物</p>'
+    return
   }
 
   // 显示货物列表
@@ -892,9 +847,9 @@ function handleWarningQuery() {
         <th>库存</th>
         <th>存储位置</th>
       </tr>
-  `;
+  `
 
-  filteredGoods.forEach(good => {
+  filteredGoods.forEach((good) => {
     resultHTML += `
       <tr>
         <td>${good.id}</td>
@@ -902,22 +857,157 @@ function handleWarningQuery() {
         <td>${good.quantity}</td>
         <td>${good.location}</td>
       </tr>
-    `;
-  });
+    `
+  })
 
-  resultHTML += '</table>';
-  document.getElementById('warning-result').innerHTML = resultHTML;
+  resultHTML += '</table>'
+  document.getElementById('warning-result').innerHTML = resultHTML
 }
 
-/**
- * 执行全量盘点
- */
+// 处理过期预警查询
+function handleExpiryQuery() {
+  // 获取当前日期
+  const now = new Date()
+  const currentYear = now.getFullYear()
+  const currentMonth = String(now.getMonth() + 1).padStart(2, '0')
+  const currentDay = String(now.getDate()).padStart(2, '0')
+  const currentDateStr = `${currentYear}${currentMonth}${currentDay}`
+
+  // 计算三个月后的日期
+  const threeMonthsLater = new Date(now)
+  threeMonthsLater.setMonth(threeMonthsLater.getMonth() + 3)
+  const futureYear = threeMonthsLater.getFullYear()
+  const futureMonth = String(threeMonthsLater.getMonth() + 1).padStart(2, '0')
+  const futureDay = String(threeMonthsLater.getDate()).padStart(2, '0')
+  const futureDateStr = `${futureYear}${futureMonth}${futureDay}`
+
+  // 过滤食品类货物（货号以03开头）
+  const foodGoods = goodsArray.filter((good) => good.id.startsWith('03'))
+
+  // 分类：已过期、即将过期、正常
+  const expiredGoods = []
+  const soonExpiredGoods = []
+  const normalGoods = []
+
+  foodGoods.forEach((good) => {
+    const expiryDate = good.expiry
+    
+    // 跳过未设置保质期的记录（00000000）
+    if (expiryDate === '00000000') {
+      return
+    }
+
+    if (expiryDate < currentDateStr) {
+      // 已过期
+      expiredGoods.push(good)
+    } else if (expiryDate <= futureDateStr) {
+      // 三个月内过期
+      soonExpiredGoods.push(good)
+    } else {
+      // 正常
+      normalGoods.push(good)
+    }
+  })
+
+  // 构建结果HTML
+  let resultHTML = '<h3>食品过期预警查询结果</h3>'
+
+  // 已过期货物（红色标注）
+  if (expiredGoods.length > 0) {
+    resultHTML += `
+      <h4 style="color: #dc3545; margin-top: 15px;">🔴 已过期（${expiredGoods.length}件）</h4>
+      <table>
+        <tr>
+          <th>货号</th>
+          <th>名称</th>
+          <th>库存</th>
+          <th>存储位置</th>
+          <th>保质期</th>
+        </tr>
+    `
+    expiredGoods.forEach((good) => {
+      resultHTML += `
+        <tr style="background-color: #ffebee;">
+          <td>${good.id}</td>
+          <td style="color: #dc3545; font-weight: bold;">${good.name}</td>
+          <td>${good.quantity}</td>
+          <td>${good.location}</td>
+          <td style="color: #dc3545;">${good.expiry}</td>
+        </tr>
+      `
+    })
+    resultHTML += '</table>'
+  }
+
+  // 即将过期货物（橙色标注）
+  if (soonExpiredGoods.length > 0) {
+    resultHTML += `
+      <h4 style="color: #fd7e14; margin-top: 15px;">🟠 三个月内过期（${soonExpiredGoods.length}件）</h4>
+      <table>
+        <tr>
+          <th>货号</th>
+          <th>名称</th>
+          <th>库存</th>
+          <th>存储位置</th>
+          <th>保质期</th>
+        </tr>
+    `
+    soonExpiredGoods.forEach((good) => {
+      resultHTML += `
+        <tr style="background-color: #fff3e0;">
+          <td>${good.id}</td>
+          <td style="color: #fd7e14;">${good.name}</td>
+          <td>${good.quantity}</td>
+          <td>${good.location}</td>
+          <td style="color: #fd7e14;">${good.expiry}</td>
+        </tr>
+      `
+    })
+    resultHTML += '</table>'
+  }
+
+  // 正常货物
+  if (normalGoods.length > 0) {
+    resultHTML += `
+      <h4 style="color: #28a745; margin-top: 15px;">🟢 正常（${normalGoods.length}件）</h4>
+      <table>
+        <tr>
+          <th>货号</th>
+          <th>名称</th>
+          <th>库存</th>
+          <th>存储位置</th>
+          <th>保质期</th>
+        </tr>
+    `
+    normalGoods.forEach((good) => {
+      resultHTML += `
+        <tr>
+          <td>${good.id}</td>
+          <td>${good.name}</td>
+          <td>${good.quantity}</td>
+          <td>${good.location}</td>
+          <td>${good.expiry}</td>
+        </tr>
+      `
+    })
+    resultHTML += '</table>'
+  }
+
+  // 如果没有食品类货物
+  if (foodGoods.length === 0) {
+    resultHTML = '<p>暂无食品类货物</p>'
+  }
+
+  document.getElementById('expiry-result').innerHTML = resultHTML
+}
+
+// 执行全量盘点
 function performFullInventory() {
   // 计算统计数据
-  const totalTypes = goodsArray.length;
-  const totalQuantity = goodsArray.reduce((sum, good) => sum + good.quantity, 0);
-  const totalWeight = goodsArray.reduce((sum, good) => sum + good.quantity * good.weight, 0);
-  const totalVolume = goodsArray.reduce((sum, good) => sum + good.quantity * good.volume, 0);
+  const totalTypes = goodsArray.length
+  const totalQuantity = goodsArray.reduce((sum, good) => sum + good.quantity, 0)
+  const totalWeight = goodsArray.reduce((sum, good) => sum + good.quantity * good.weight, 0)
+  const totalVolume = goodsArray.reduce((sum, good) => sum + good.quantity * good.volume, 0)
 
   // 显示盘点结果
   let resultHTML = `
@@ -934,9 +1024,9 @@ function performFullInventory() {
         <th>库存</th>
         <th>存储位置</th>
       </tr>
-  `;
+  `
 
-  goodsArray.forEach(good => {
+  goodsArray.forEach((good) => {
     resultHTML += `
       <tr>
         <td>${good.id}</td>
@@ -944,37 +1034,35 @@ function performFullInventory() {
         <td>${good.quantity}</td>
         <td>${good.location}</td>
       </tr>
-    `;
-  });
+    `
+  })
 
-  resultHTML += '</table>';
-  document.getElementById('inventory-result').innerHTML = resultHTML;
+  resultHTML += '</table>'
+  document.getElementById('inventory-result').innerHTML = resultHTML
 }
 
-/**
- * 执行分类盘点
- */
+// 执行分类盘点
 function performCategoryInventory() {
   // 按类别分组
   const categories = {
     '01': { name: '电子产品', goods: [], totalQuantity: 0, totalWeight: 0, totalVolume: 0 },
     '02': { name: '日用品', goods: [], totalQuantity: 0, totalWeight: 0, totalVolume: 0 },
-    '03': { name: '食品', goods: [], totalQuantity: 0, totalWeight: 0, totalVolume: 0 }
-  };
+    '03': { name: '食品', goods: [], totalQuantity: 0, totalWeight: 0, totalVolume: 0 },
+  }
 
   // 统计数据
-  goodsArray.forEach(good => {
-    const category = good.id.substring(0, 2);
+  goodsArray.forEach((good) => {
+    const category = good.id.substring(0, 2)
     if (categories[category]) {
-      categories[category].goods.push(good);
-      categories[category].totalQuantity += good.quantity;
-      categories[category].totalWeight += good.quantity * good.weight;
-      categories[category].totalVolume += good.quantity * good.volume;
+      categories[category].goods.push(good)
+      categories[category].totalQuantity += good.quantity
+      categories[category].totalWeight += good.quantity * good.weight
+      categories[category].totalVolume += good.quantity * good.volume
     }
-  });
+  })
 
   // 显示盘点结果
-  let resultHTML = '<h3>分类盘点结果</h3>';
+  let resultHTML = '<h3>分类盘点结果</h3>'
 
   for (const [code, data] of Object.entries(categories)) {
     resultHTML += `
@@ -990,9 +1078,9 @@ function performCategoryInventory() {
           <th>库存</th>
           <th>存储位置</th>
         </tr>
-    `;
+    `
 
-    data.goods.forEach(good => {
+    data.goods.forEach((good) => {
       resultHTML += `
         <tr>
           <td>${good.id}</td>
@@ -1000,75 +1088,87 @@ function performCategoryInventory() {
           <td>${good.quantity}</td>
           <td>${good.location}</td>
         </tr>
-      `;
-    });
+      `
+    })
 
-    resultHTML += '</table><br>';
+    resultHTML += '</table><br>'
   }
 
-  document.getElementById('inventory-result').innerHTML = resultHTML;
+  document.getElementById('inventory-result').innerHTML = resultHTML
 }
 
-/**
- * 处理数据清理
- */
+// 处理数据清理
 function handleCleanup() {
-  // 获取当前日期
-  const now = new Date();
-  const currentYear = now.getFullYear();
-  const currentMonth = String(now.getMonth() + 1).padStart(2, '0');
-  const currentDay = String(now.getDate()).padStart(2, '0');
-  const currentDateStr = `${currentYear}${currentMonth}${currentDay}`;
-
-  // 过滤出需要保留的货物
-  const filteredGoods = goodsArray.filter(good => {
-    // 计算入库日期与当前日期的差值
-    const inboundYear = parseInt(good.date.substring(0, 4));
-    const yearsDiff = currentYear - inboundYear;
-
-    // 保留条件：入库日期不超过3年，或库存不为0
-    return yearsDiff < 3 || good.quantity > 0;
-  });
-
-  // 计算删除的数量
-  const deletedCount = goodsArray.length - filteredGoods.length;
-
-  // 更新数组
-  goodsArray = filteredGoods;
-
-  // 保存到localStorage
-  saveToLocalStorage();
-
-  // 显示成功消息
-  showMessage('cleanup-message', `数据清理完成，删除了 ${deletedCount} 条记录`, 'success');
+  // 获取当前时间戳（毫秒）
+  const now = new Date().getTime()
+  
+  // 3年的毫秒数：3 * 365 * 24 * 60 * 60 * 1000
+  const threeYearsMs = 3 * 365 * 24 * 60 * 60 * 1000
+  
+  const filteredGoods = goodsArray.filter((good) => {
+    // 解析入库日期为时间戳
+    const year = parseInt(good.date.substring(0, 4))
+    const month = parseInt(good.date.substring(4, 6)) - 1  // JS月份从0开始
+    const day = parseInt(good.date.substring(6, 8))
+    const inboundDate = new Date(year, month, day).getTime()
+    
+    // 计算实际天数差
+    const daysDiff = Math.floor((now - inboundDate) / (1000 * 60 * 60 * 24))
+    
+    // 保留条件：入库未超过3年（1095天），或者库存不为0
+    return daysDiff <= 1095 || good.quantity > 0
+  })
+  
+  const deletedCount = goodsArray.length - filteredGoods.length
+  goodsArray = filteredGoods
+  saveToLocalStorage()
+  showMessage('cleanup-message', `数据清理完成，删除了 ${deletedCount} 条记录`, 'success')
 }
-
-/**
- * 处理文件导入
- */
+// 处理文件导入
 function handleFileImport(e) {
-  const file = e.target.files[0];
-  if (!file) return;
+  const file = e.target.files[0]
+  if (!file) return
 
-  const reader = new FileReader();
+  const reader = new FileReader()
   reader.onload = function (e) {
-    const content = e.target.result;
-    const lines = content.split('\n');
+    // 获取文件的二进制数据
+    const arrayBuffer = e.target.result
+
+    // 尝试多种编码解码
+    let content = decodeText(arrayBuffer)
+    if (!content) {
+      showMessage('file-message', '无法识别文件编码，请确保文件为UTF-8或GBK编码', 'error')
+      return
+    }
+
+    const lines = content.split('\n')
 
     // 跳过注释行
-    let importedCount = 0;
+    let importedCount = 0
     for (let i = 1; i < lines.length; i++) {
-      const line = lines[i].trim();
-      if (!line) continue;
+      const line = lines[i].trim()
+      if (!line) continue
 
       // 解析CSV格式
-      const fields = line.split(',');
-      if (fields.length !== 11) continue;
+      const fields = line.split(',')
+      if (fields.length !== 11) continue
 
-      const [id, name, spec, manufacturer, location, quantity, weight, volume, date, expiry, warranty] = fields;
+      const [
+        id,
+        name,
+        spec,
+        manufacturer,
+        location,
+        quantity,
+        weight,
+        volume,
+        date,
+        expiry,
+        warranty,
+      ] = fields
 
       // 验证货号唯一性
-      if (goodsArray.some(good => good.id === id)) continue;
+      if (goodsArray.some((good) => good.id === id)) continue
 
       // 创建货物对象
       const newGood = {
@@ -1082,93 +1182,126 @@ function handleFileImport(e) {
         volume: parseFloat(volume),
         date,
         expiry,
-        warranty: parseInt(warranty)
-      };
+        warranty: parseInt(warranty),
+      }
 
       // 添加到数组
-      goodsArray.push(newGood);
-      importedCount++;
+      goodsArray.push(newGood)
+      importedCount++
     }
 
     // 保存到localStorage
-    saveToLocalStorage();
+    saveToLocalStorage()
 
     // 显示成功消息
-    showMessage('file-message', `数据导入完成，成功导入 ${importedCount} 条记录`, 'success');
-  };
+    showMessage('file-message', `数据导入完成，成功导入 ${importedCount} 条记录`, 'success')
+  }
 
-  reader.readAsText(file, 'UTF-8');
+  // 以二进制方式读取文件，以便检测编码
+  reader.readAsArrayBuffer(file)
 }
 
-/**
- * 处理文件导出
- */
+// 尝试多种编码解码文本
+function decodeText(arrayBuffer) {
+  // 定义可能的编码顺序
+  const encodings = ['UTF-8', 'GBK', 'GB2312', 'GB18030']
+
+  for (const encoding of encodings) {
+    try {
+      const decoder = new TextDecoder(encoding, { fatal: true })
+      const text = decoder.decode(arrayBuffer)
+
+      // 检查是否包含乱码特征字符
+      if (!containsGarbledChars(text)) {
+        return text
+      }
+    } catch (e) {
+      // 编码不匹配，继续尝试下一个
+      continue
+    }
+  }
+
+  return null
+}
+
+// 检测文本是否包含乱码特征
+function containsGarbledChars(text) {
+  // 常见的乱码特征字符
+  const garbledPatterns = [
+    /\ufffd/g, // UTF-8替换字符
+    /\u0080-\u00ff/g, // Latin-1补充字符（通常是乱码）
+  ]
+
+  for (const pattern of garbledPatterns) {
+    if (pattern.test(text)) {
+      return true
+    }
+  }
+
+  // 检测是否有连续的不可读字符
+  const unreadableCharCount = (text.match(/[\x80-\xff]/g) || []).length
+  if (unreadableCharCount > text.length * 0.1) {
+    return true
+  }
+
+  return false
+}
+
+// 处理文件导出
 function handleFileExport() {
   // 按货号升序排序
-  const sortedGoods = [...goodsArray].sort((a, b) => a.id.localeCompare(b.id));
+  const sortedGoods = [...goodsArray].sort((a, b) => a.id.localeCompare(b.id))
 
   // 计算统计数据
-  const totalTypes = sortedGoods.length;
-  const totalQuantity = sortedGoods.reduce((sum, good) => sum + good.quantity, 0);
-  const totalWeight = sortedGoods.reduce((sum, good) => sum + good.quantity * good.weight, 0);
-  const totalVolume = sortedGoods.reduce((sum, good) => sum + good.quantity * good.volume, 0);
+  const totalTypes = sortedGoods.length
+  const totalQuantity = sortedGoods.reduce((sum, good) => sum + good.quantity, 0)
+  const totalWeight = sortedGoods.reduce((sum, good) => sum + good.quantity * good.weight, 0)
+  const totalVolume = sortedGoods.reduce((sum, good) => sum + good.quantity * good.volume, 0)
 
   // 构建CSV内容
-  let csvContent = '# 货号,货物名称,规格型号,生产厂家,存储位置,库存数量,单位重量,单位体积,入库日期,保质期,保修期限\n';
+  let csvContent =
+    '# 货号,货物名称,规格型号,生产厂家,存储位置,库存数量,单位重量,单位体积,入库日期,保质期,保修期限\n'
 
-  sortedGoods.forEach(good => {
-    csvContent += `${good.id},${good.name},${good.spec},${good.manufacturer},${good.location},${good.quantity},${good.weight},${good.volume},${good.date},${good.expiry},${good.warranty}\n`;
-  });
+  sortedGoods.forEach((good) => {
+    csvContent += `${good.id},${good.name},${good.spec},${good.manufacturer},${good.location},${good.quantity},${good.weight},${good.volume},${good.date},${good.expiry},${good.warranty}\n`
+  })
 
   // 添加统计行
-  csvContent += `# 总种类数：${totalTypes}, 总库存件数：${totalQuantity}, 总重量：${totalWeight.toFixed(2)} kg, 总体积：${totalVolume.toFixed(3)} m³`;
+  csvContent += `# 总种类数：${totalTypes}, 总库存件数：${totalQuantity}, 总重量：${totalWeight.toFixed(2)} kg, 总体积：${totalVolume.toFixed(3)} m³`
 
   // 创建下载链接
-  const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-  const url = 网站.createObjectURL(blob);
-  const link = document.createElement('a');
-  link.setAttribute('href', url);
-  link.setAttribute('download', `inventory_${new Date().toISOString().split('T')[0]}.csv`);
-  link.style.visibility = 'hidden';
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
+  const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' })
+  const url = 网站.createObjectURL(blob)
+  const link = document.createElement('a')
+  link.setAttribute('href', url)
+  link.setAttribute('download', `inventory_${new Date().toISOString().split('T')[0]}.csv`)
+  link.style.visibility = 'hidden'
+  document.body.appendChild(link)
+  link.click()
+  document.body.removeChild(link)
 
   // 显示成功消息
-  showMessage('file-message', '数据导出成功', 'success');
+  showMessage('file-message', '数据导出成功', 'success')
 }
 
-/**
- * 显示消息
- */
+//弹窗显示
 function showMessage(elementId, message, type) {
-  const element = document.getElementById(elementId);
-  element.textContent = message;
-  element.className = `message ${type}`;
+  const element = document.getElementById(elementId)
+  element.textContent = message
+  element.className = `message ${type}`
 
   // 3秒后清除消息
   setTimeout(() => {
-    element.textContent = '';
-    element.className = 'message';
-  }, 3000);
+    element.textContent = ''
+    element.className = 'message'
+  }, 3000)
 }
 
-/**
- * 保存数据到localStorage
- */
+// 保存数据到localStorage
 function saveToLocalStorage() {
-  localStorage.setItem('inventoryData', JSON.stringify(goodsArray));
+  localStorage.setItem('inventoryData', JSON.stringify(goodsArray))
 }
 
-/**
- * 从localStorage加载数据
- */
-function loadFromLocalStorage() {
-  const storedData = localStorage.getItem('inventoryData');
-  if (storedData) {
-    goodsArray = JSON.parse(storedData);
-  }
-}
   </script>
 </body>
 
