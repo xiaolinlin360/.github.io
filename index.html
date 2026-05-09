@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>项目导航</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Microsoft YaHei', 'Segoe UI', sans-serif;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+    }
+
+    h1 {
+      color: white;
+      font-size: 2.5rem;
+      margin-bottom: 2rem;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+      animation: fadeInDown 0.6s ease-out;
+    }
+
+    .nav-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+      max-width: 1000px;
+      width: 100%;
+    }
+
+    .nav-card {
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(10px);
+      border-radius: 15px;
+      padding: 30px;
+      text-align: center;
+      transition: all 0.3s ease;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      animation: fadeInUp 0.6s ease-out backwards;
+    }
+
+    .nav-card:hover {
+      background: rgba(255, 255, 255, 0.25);
+      transform: translateY(-8px);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+    }
+
+    .nav-card:nth-child(1) { animation-delay: 0.1s; }
+    .nav-card:nth-child(2) { animation-delay: 0.2s; }
+    .nav-card:nth-child(3) { animation-delay: 0.3s; }
+    .nav-card:nth-child(4) { animation-delay: 0.4s; }
+
+    .nav-card a {
+      text-decoration: none;
+      color: white;
+      font-size: 1.3rem;
+      font-weight: 600;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .nav-card .icon {
+      font-size: 3rem;
+      transition: transform 0.3s ease;
+    }
+
+    .nav-card:hover .icon {
+      transform: scale(1.2);
+    }
+
+    .nav-card .title {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 10px 20px;
+      border-radius: 25px;
+      transition: background 0.3s ease;
+    }
+
+    .nav-card:hover .title {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    @keyframes fadeInDown {
+      from {
+        opacity: 0;
+        transform: translateY(-30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 1.8rem;
+      }
+
+      .nav-card {
+        padding: 20px;
+      }
+
+      .nav-card a {
+        font-size: 1.1rem;
+      }
+
+      .nav-card .icon {
+        font-size: 2.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>🚀 项目导航</h1>
+  <div class="nav-container">
+    <div class="nav-card">
+      <a href="./智能仓库管理系统.html">
+        <span class="icon">🏭</span>
+        <span class="title">智能仓库管理系统</span>
+      </a>
+    </div>
+    <div class="nav-card">
+      <a href="./导出文件.html">
+        <span class="icon">📤</span>
+        <span class="title">文件导出示例</span>
+      </a>
+    </div>
+    <div class="nav-card">
+      <a href="./文件上传通用.html">
+        <span class="icon">📥</span>
+        <span class="title">文件上传通用</span>
+      </a>
+    </div>
+    <div class="nav-card">
+      <a href="./个人博客.html">
+        <span class="icon">📝</span>
+        <span class="title">个人博客</span>
+      </a>
+    </div>
+  </div>
+</body>
+</html>
