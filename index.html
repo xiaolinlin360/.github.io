@@ -1,1 +1,180 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🚀 项目控制台</title>
+  <style>
+    /* 全局重置 */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
+    body {
+      font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+      min-height: 100vh;
+      background: radial-gradient(circle at 10% 20%, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+      color: #ffffff;
+    }
+
+    /* 主标题 */
+    h1 {
+      font-size: 2.8rem;
+      font-weight: 700;
+      margin-bottom: 2.5rem;
+      letter-spacing: 1px;
+      background: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 0 20px rgba(161, 140, 209, 0.3);
+      animation: fadeInDown 0.8s ease-out;
+    }
+
+    /* 网格容器 - 自动适配 */
+    .nav-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 25px;
+      max-width: 1100px;
+      width: 100%;
+    }
+
+    /* 卡片基本样式 */
+    .nav-card {
+      position: relative;
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      padding: 35px 20px;
+      text-align: center;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      overflow: hidden;
+      cursor: pointer;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+      animation: fadeInUp 0.6s ease-out backwards;
+      text-decoration: none;
+      color: white;
+    }
+
+    /* 卡片高级光效背景 */
+    .nav-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      border-radius: 20px;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, transparent 100%);
+      opacity: 0;
+      transition: opacity 0.5s ease;
+      pointer-events: none;
+    }
+
+    /* 不同卡片赋予不同的色彩渐变色块（增加高级感） */
+    .nav-card:nth-child(1) { background: linear-gradient(145deg, rgba(138, 43, 226, 0.25), rgba(30, 30, 46, 0.8)); border-color: rgba(138, 43, 226, 0.4); }
+    .nav-card:nth-child(2) { background: linear-gradient(145deg, rgba(0, 206, 209, 0.25), rgba(30, 30, 46, 0.8)); border-color: rgba(0, 206, 209, 0.4); }
+    .nav-card:nth-child(3) { background: linear-gradient(145deg, rgba(255, 165, 0, 0.25), rgba(30, 30, 46, 0.8)); border-color: rgba(255, 165, 0, 0.4); }
+    .nav-card:nth-child(4) { background: linear-gradient(145deg, rgba(255, 69, 0, 0.25), rgba(30, 30, 46, 0.8)); border-color: rgba(255, 69, 0, 0.4); }
+    .nav-card:nth-child(5) { background: linear-gradient(145deg, rgba(175, 238, 238, 0.25), rgba(30, 30, 46, 0.8)); border-color: rgba(175, 238, 238, 0.4); }
+
+    /* 悬停时：放大、高亮、光效 */
+    .nav-card:hover {
+      transform: translateY(-8px) scale(1.02);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+      border-color: rgba(255, 255, 255, 0.6);
+    }
+
+    .nav-card:hover::before {
+      opacity: 1;
+    }
+
+    /* 图标与文字 */
+    .icon {
+      display: block;
+      font-size: 3.5rem;
+      margin-bottom: 15px;
+      transition: transform 0.4s ease;
+    }
+
+    .nav-card:hover .icon {
+      transform: scale(1.2) rotate(5deg);
+    }
+
+    .title {
+      font-size: 1.3rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      position: relative;
+      z-index: 2;
+      display: inline-block;
+      padding: 8px 20px;
+      border-radius: 30px;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(4px);
+      transition: all 0.3 ease;
+    }
+
+    .nav-card:hover .title {
+      background: rgba(255, 255, 255, 0.2);
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+    }
+
+    /* 入场动画 */
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .nav-card:nth-child(1) { animation-delay: 0.1; }
+    .nav-card:nth-child(2) { animation-delay: 0.2; }
+    .nav-card:nth-child(3) { animation-delay: 0.3; }
+    .nav-card:nth-child(4) { animation-delay: 0.4; }
+    .nav-card:nth-child(5) { animation-delay: 0.5; }
+
+    /* 移动端适配 */
+    @media (max-width: 768px) {
+      h1 { font-size: 2rem; }
+      .nav-card { padding: 25px 15px; }
+      .icon { font-size: 2.8rem; }
+      .title { font-size: 1.1rem; }
+    }
+  </style>
+</head>
+<body>
+  <h1>✨ 项目工作台</h1>
+  <div class="nav-container">
+    <a href="./智能仓库管理系统.html" class="nav-card">
+      <span class="icon">🏭</span>
+      <span class="title">智能仓库管理系统</span>
+    </a>
+    <a href="./导出文件.html" class="nav-card">
+      <span class="icon">📤</span>
+      <span class="title">文件导出示例</span>
+    </a>
+    <a href="./文件上传通用.html" class="nav-card">
+      <span class="icon">📥</span>
+      <span class="title">文件上传通用</span>
+    </a>
+    <a href="./个人博客.html" class="nav-card">
+      <span class="icon">📝</span>
+      <span class="title">个人博客</span>
+    </a>
+    <a href="./公司部门与人员管理系统.html" class="nav-card">
+      <span class="icon">👥</span>
+      <span class="title">公司部门与人员管理系统</span>
+    </a>
+  </div>
+</body>
+</html>
