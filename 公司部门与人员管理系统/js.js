@@ -41,7 +41,7 @@
             border-radius: 4px;
             cursor: pointer;
             font-size: 14px;
-            transition: all 0.2s;
+            transition: all 0.2;
             display: inline-flex;
             align-items: center;
             gap: 4px;
