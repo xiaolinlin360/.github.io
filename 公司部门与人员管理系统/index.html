@@ -411,7 +411,484 @@
             </div>
         </div>
     </div>
-    <script src="js.js"></script>
-    <script src="js2.js"></script>
+    <script>
+        let datay = [] //部门数据-二维数组
+let datax = [] //部门数据-树状结构数组
+let dataz = [] //人员数据 [{id, name, deptId, position}]
+/*
+xuanran1 渲染树状结构
+importCSV 导入部门CSV
+importStaffCSV 导入人员CSV
+filterdtata1 将解析的文件转换为二维数组结构
+filterdata2 解析的文件转换为树状结构
+filterdata4 为树状结构添加人员数据
+createTreeNode 递归创建树节点以及dom元素
+findNode 递归查找节点
+getDeptDepth 计算部门深度
+xuanran2 渲染信息
+downloadCSV 导出CSV文件
+*/
+
+!(function () {
+  // 导入部门，人员按钮
+  document.querySelector('#btn-import-dept').addEventListener('click', function () {
+    document.querySelector('#file-dept').click()
+    document.querySelector('#file-dept').addEventListener('change', importCSV)
+  })
+  document.querySelector('#btn-import-staff').addEventListener('click', function () {
+    document.querySelector('#file-staff').click()
+    document.querySelector('#file-staff').addEventListener('change', importStaffCSV)
+  })
+
+  // 导入部门CSV
+  function importCSV() {
+    const file = document.querySelector('#file-dept').files[0]
+    if (!file) return
+    const reader = new FileReader()
+    reader.addEventListener('load', (e) => {
+      const lines = e.target.result.trim().split('\n')
+      const data = lines.map((line) => line.split(','))
+      const rootNodes = filterdtata1(data)
+      const tree = filterdata2(rootNodes)
+      datay = rootNodes
+      datax = tree
+      filterdata4(datax)
+      xuanran1(datax, document.getElementById('tree-container'))
+      alert('部门导入成功!')
+    })
+    reader.readAsText(file, 'UTF-8')
+  }
+
+  // 转换为二维数组结构
+  function filterdtata1(data) {
+    const rootNodes = data.filter((e) => e.length === 3 && !isNaN(+e[0]))
+    rootNodes.forEach((e) => {
+      e[2] = e[2].replace(/\r$/, '')
+    })
+    // 移除末尾的示例数据（根据实际情况调整）
+    for (let i = 0; i < 9; i++) {
+      rootNodes.pop()
+    }
+    return rootNodes
+  }
+
+  // 转换为树状结构
+  function filterdata2(data) {
+    const tree = [{ id: '0000', name: '顶层', children: [] }]
+    function add(parentId, nodes) {
+      nodes.forEach((node) => {
+        const children = data.filter((item) => item[2] === node.id)
+        children.forEach((child) => {
+          const childNode = { id: child[0], name: child[1], children: [] }
+          node.children.push(childNode)
+          add(child[0], [childNode])
+        })
+      })
+    }
+    add('0000', tree)
+    return tree
+  }
+
+  // 渲染部门树
+  function xuanran1(treeData, cHTML) {
+    cHTML.innerHTML = ''
+    const rootUl = document.createElement('ul')
+    rootUl.className = 'tree-node'
+    treeData.forEach((e) => {
+      const li = createTreeNode(e)
+      rootUl.appendChild(li)
+    })
+    cHTML.appendChild(rootUl)
+  }
+
+  // 创建树节点
+  function createTreeNode(node) {
+    const li = document.createElement('li')
+    li.className = 'tree-item'
+    li.dataset.deptId = node.id
+
+    const span1 = document.createElement('span')
+    span1.className = 'tree-toggle'
+    span1.innerText = '▶'
+    if (!node.children || node.children.length === 0) {
+      span1.classList.add('no-children')
+    } else {
+      span1.classList.add('expanded')
+    }
+
+    const span2 = document.createElement('span')
+    span2.className = 'tree-label'
+    span2.innerText = node.name
+
+    li.appendChild(span1)
+    li.appendChild(span2)
+
+    if (node.children && node.children.length > 0) {
+      const childrenUl = document.createElement('ul')
+      childrenUl.className = 'tree-children expanded'
+      node.children.forEach((child) => {
+        const childLi = createTreeNode(child)
+        childrenUl.appendChild(childLi)
+      })
+      li.appendChild(childrenUl)
+    }
+    return li
+  }
+
+  // 树点击事件
+  document.querySelector('#tree-container').addEventListener('click', function (e) {
+    const target = e.target
+    // closest从当前元素开始，向上沿着父元素链查找（直到文档根），返回第一个匹配给定 CSS 选择器的元素；如果找不到，返回 null
+    const treeItem = target.closest('.tree-item')
+    if (!treeItem) return
+
+    // 展开/折叠
+    if (target.classList.contains('tree-toggle') && !target.classList.contains('no-children')) {
+      target.classList.toggle('expanded')
+      const childrenUl = treeItem.querySelector(':scope > ul.tree-children')
+      if (childrenUl) childrenUl.classList.toggle('expanded')
+      return
+    }
+
+    // 选中高亮
+    document.querySelectorAll('.tree-item.active').forEach((e) => e.classList.remove('active'))
+    treeItem.classList.add('active')
+
+    // 更新详情面板
+    const deptId = treeItem.dataset.deptId
+    console.log(deptId)
+
+    xuanran2(deptId)
+  })
+
+  // 添加子部门按钮
+  document.querySelector('#btn-add-child').addEventListener('click', function () {
+    const deptForm = document.querySelector('.kkkkk')
+    deptForm.style.display = 'block'
+  })
+
+  // 添加部门按钮
+  document.querySelector('#btn-add-dept').addEventListener('click', function () {
+    const btn = document.querySelector('.kkkkk')
+    btn.style.display = 'none'
+
+    const value1 = document.querySelector('#btn-add-dept1').value.trim()
+    const value2 = document.querySelector('#btn-add-dept2').value.trim()
+    const value3 = document.querySelector('#btn-add-dept3').value.trim()
+
+    if (!value1 || !/^\d{4}$/.test(value1)) {
+      alert('部门编号格式错误')
+      return
+    }
+    if (!value2 || value2.length > 20) {
+      alert('部门名称格式错误')
+      return
+    }
+    if (!value3 || !/^\d{4}$/.test(value3)) {
+      alert('上级部门编号格式错误')
+      return
+    }
+    if (datay.some((e) => e[0] === value1)) {
+      alert('部门已存在')
+      return
+    }
+    if (value3 !== '0000' && !datay.some((e) => e[0] === value3)) {
+      alert('父部门ID不存在')
+      return
+    }
+
+    // 添加新部门
+    datay.push([value1, value2, value3])
+    datax = filterdata2(datay)
+    filterdata4(datax)
+    xuanran1(datax, document.getElementById('tree-container'))
+
+    // 清空输入框
+    document.querySelector('#btn-add-dept1').value = ''
+    document.querySelector('#btn-add-dept2').value = ''
+    document.querySelector('#btn-add-dept3').value = ''
+
+    alert('部门添加成功')
+  })
+
+  // 导入人员CSV
+  function importStaffCSV() {
+    const file = document.querySelector('#file-staff').files[0]
+    if (!file) return
+    const reader = new FileReader()
+    reader.addEventListener('load', (e) => {
+      const lines = e.target.result.trim().split('\n')
+      dataz = []
+      lines.forEach((line) => {
+        if (!line || line.startsWith('#')) return
+        const parts = line.split(',')
+        if (parts.length >= 4) {
+          const id = parts[0].trim()
+          const name = parts[1].trim()
+          const deptId = parts[2].trim()
+          const position = parts[3].trim()
+          if (!isNaN(+id) && /^\d{4}$/.test(deptId)) {
+            dataz.push({ id, name, deptId, position })
+          }
+        }
+      })
+      filterdata4(datax)
+      alert(`人员导入成功! 共导入 ${dataz.length} 名员工`)
+    })
+    reader.readAsText(file, 'UTF-8')
+  }
+
+  // 将人员信息更新到树结构
+  function filterdata4(tree) {
+    function add(nodes) {
+      nodes.forEach((e) => {
+        e.staff = dataz.filter((s) => s.deptId === e.id)
+        if (e.children && e.children.length > 0) {
+          add(e.children)
+        }
+      })
+    }
+    add(tree)
+  }
+
+  // 获取部门路径
+  function getDeptPath(node) {
+    let path = [node.name]
+    const parentDept = datay.find((d) => d[0] === node.id)
+    if (parentDept && parentDept[2] !== '0000') {
+      const parentNode = findNode(datax, parentDept[2])
+      if (parentNode) {
+        path = getDeptPath(parentNode).concat(path)
+      }
+    }
+    return path
+  }
+
+  // 递归查找节点
+  function findNode(datax, id) {
+    for (let i = 0; i < datax.length; i++) {
+      const n = datax[i]
+      if (n.id === id) return n
+      if (n.children) {
+        const m = findNode(n.children, id)
+        if (m) return m
+      }
+    }
+    return null
+  }
+
+  // 计算部门深度
+  function getDeptDepth(deptId) {
+    let n = 1
+    for (let i = deptId; i !== '0000'; ) {
+      const dept = datay.find((d) => d[0] === i)
+      if (!dept || dept[2] === '0000') break
+      i = dept[2]
+      n++
+    }
+    return n
+  }
+
+  // 更新详情面板
+  function xuanran2(deptId) {
+    const staffTbody = document.querySelector('#staff-tbody')
+    const dept = datay.find((d) => d[0] === deptId) // 找到匹配的部门信息
+    const deptNode = findNode(datax, deptId)
+    const parentDept = datay.find((d) => d[0] === dept[2])
+    const path = getDeptPath(deptNode)
+    //渲染部门编号：部门名称：上级部门：层级深度：完整路径：
+    document.getElementById('dept-id').innerText = dept[0]
+    document.getElementById('dept-name').innerText = dept[1]
+    document.getElementById('dept-parent').innerText = parentDept ? parentDept[1] : '顶层'
+    document.getElementById('dept-depth').innerText = getDeptDepth(deptId)
+    document.getElementById('dept-path').innerText = path.join(' -> ')
+    const staffList = deptNode && deptNode.staff ? deptNode.staff : [] //构建staff列表树
+    //渲染员工列表：工号：姓名：岗位：操作
+    staffTbody.innerHTML = staffList
+      .map(
+        (staff) => `
+        <tr>
+          <td>${staff.id}</td>
+          <td>${staff.name}</td>
+          <td>${staff.position}</td>
+          <td>
+            <button class="btn-sm staff-edit" style="padding:2px 8px; font-size:12px;" data-id="${staff.id}">✏️</button>
+            <button class="btn-sm staff-delete" style="padding:2px 8px; font-size:12px; color:#f56c6c;" data-id="${staff.id}">🗑️</button>
+          </td>
+        </tr>
+      `
+      )
+      .join('')
+  }
+
+  // 添加员工按钮
+  document.querySelector('#btn-add-staff').addEventListener('click', function () {
+    const staffForm = document.querySelector('.yyyyy')
+    staffForm.style.display = 'block'
+  })
+
+  // 添加员工提交
+  document.querySelector('#btn-add-staff-submit').addEventListener('click', function () {
+    const staffForm = document.querySelector('.yyyyy')
+    staffForm.style.display = 'none'
+    const id = document.querySelector('#btn-add-staff1').value.trim()
+    const name = document.querySelector('#btn-add-staff2').value.trim()
+    const deptId = document.querySelector('#btn-add-staff3').value.trim()
+    const position = document.querySelector('#btn-add-staff4').value.trim()
+    // 校验
+    if (!/^\d{4}$/.test(id)) {
+      alert('工号必须为4位数字')
+      return
+    }
+    if (dataz.some((s) => s.id === id)) {
+      alert('工号已存在')
+      return
+    }
+    if (!/^[\u4e00-\u9fa5a-zA-Z]{1,10}$/.test(name)) {
+      alert('姓名必须为中英文，1-10字符')
+      return
+    }
+    if (!datay.some((d) => d[0] === deptId)) {
+      alert('所属部门不存在')
+      return
+    }
+    if (!/^.{1,15}$/.test(position)) {
+      alert('职位必须为1-15字符')
+      return
+    }
+    dataz.push({ id, name, deptId, position })
+    filterdata4(datax)
+    const activeDept = document.querySelector('.tree-item.active')
+    if (activeDept) {
+      xuanran2(activeDept.dataset.deptId)
+    }
+    document.querySelector('#btn-add-staff1').value = ''
+    document.querySelector('#btn-add-staff2').value = ''
+    document.querySelector('#btn-add-staff3').value = ''
+    document.querySelector('#btn-add-staff4').value = ''
+    alert('员工添加成功')
+  })
+
+  // 编辑部门
+  document.querySelector('#btn-edit-dept').addEventListener('click', function () {
+    const activeItem = document.querySelector('.tree-item.active')
+    if (!activeItem) {
+      alert('请先选择一个部门')
+      return
+    }
+    const deptId = activeItem.dataset.deptId
+    const dept = datay.find((d) => d[0] === deptId)
+    if (!dept) return
+
+    const newName = prompt('请输入新的部门名称:', dept[1])
+    if (!newName) return
+
+    dept[1] = newName
+    datax = filterdata2(datay)
+    filterdata4(datax)
+    xuanran1(datax, document.getElementById('tree-container'))
+
+    setTimeout(() => {
+      const newActive = document.querySelector(`.tree-item[data-dept-id="${deptId}"]`)
+      if (newActive) {
+        newActive.classList.add('active')
+        xuanran2(deptId)
+      }
+    }, 50)
+
+    alert('部门编辑成功')
+  })
+
+  // 删除部门
+  document.querySelector('#btn-del-dept').addEventListener('click', function () {
+    const activeItem = document.querySelector('.tree-item.active')
+    if (!activeItem) {
+      alert('请先选择一个部门')
+      return
+    }
+    const deptId = activeItem.dataset.deptId
+    if (datay.some((d) => d[2] === deptId)) {
+      alert('该部门下有子部门，请先删除子部门')
+      return
+    }
+    if (dataz.some((s) => s.deptId === deptId)) {
+      alert('该部门下有员工，请先转移或删除员工')
+      return
+    }
+    if (!confirm('确定要删除该部门吗？')) return
+    datay = datay.filter((d) => d[0] !== deptId)
+    datax = filterdata2(datay)
+    filterdata4(datax)
+    xuanran1(datax, document.getElementById('tree-container'))
+    alert('部门删除成功')
+  })
+
+  // 员工编辑和删除（事件委托）
+  document.querySelector('#staff-tbody').addEventListener('click', function (e) {
+    const target = e.target
+    const row = target.closest('tr')
+    if (!row) return
+    const id = target.dataset.id || row.cells[0].innerText
+    const emp = dataz.find(() => .id === id)
+
+    // 编辑员工
+    if (target.classList.contains('staff-edit') || target.innerText.includes('✏️')) {
+      if (!emp) return
+      const newName = prompt('请输入新的员工姓名:', emp.name)
+      if (!newName) return
+      const newPosition = prompt('请输入新的职位:', emp.position)
+      if (newPosition === null) return
+      emp.name = newName
+      emp.position = newPosition
+      filterdata4(datax)
+      const activeDept = document.querySelector('.tree-item.active')
+      if (activeDept) {
+        xuanran2(activeDept.dataset.deptId)
+      }
+      alert('员工信息更新成功')
+    }
+
+    // 删除员工
+    if (target.classList.contains('staff-delete') || target.innerText.includes('🗑️')) {
+      if (!confirm('确定要删除该员工吗？')) return
+      dataz = dataz.filter(() => .id !== id)
+      filterdata4(datax)
+      const activeDept = document.querySelector('.tree-item.active')
+      if (activeDept) {
+        xuanran2(activeDept.dataset.deptId)
+      }
+      alert('员工删除成功')
+    }
+  })
+
+  // 导出CSV文件函数
+  function downloadCSV(data, filename) {
+    const csvContent = data.map((row) => row.join(',')).join('\n')
+    const blob = new Blob(['\uFEFF' + csvContent], { type: 'text/csv;charset=utf-8;' })
+    const link = document.createElement('a')
+    const url = 网站.createObjectURL(blob)
+    link.setAttribute('href', url)
+    link.setAttribute('download', filename)
+    link.style.visibility = 'hidden'
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+  }
+  // 导出全部CSV
+  document.querySelector('#btn-export').addEventListener('click', function () {
+    // 导出部门CSV
+    if (datay.length > 0) {
+      const deptData = datay.map((d) => [d[0], d[1], d[2]])
+      downloadCSV(deptData, '部门数据.csv')
+    }
+    // 导出员工CSV
+    if (dataz.length > 0) {
+      const staffData = dataz.map(() => [.id, .name, .deptId, .position])
+      setTimeout(() => downloadCSV(staffData, '员工数据.csv'), 300)
+    }
+  })
+})()
+
+    </script>
 </body>
 </html>
