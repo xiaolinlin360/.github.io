@@ -83,6 +83,8 @@
     .nav-card:nth-child(3) { background: linear-gradient(145deg, rgba(255, 165, 0, 0.25), rgba(30, 30, 46, 0.8)); border-color: rgba(255, 165, 0, 0.4); }
     .nav-card:nth-child(4) { background: linear-gradient(145deg, rgba(255, 69, 0, 0.25), rgba(30, 30, 46, 0.8)); border-color: rgba(255, 69, 0, 0.4); }
     .nav-card:nth-child(5) { background: linear-gradient(145deg, rgba(175, 238, 238, 0.25), rgba(30, 30, 46, 0.8)); border-color: rgba(175, 238, 238, 0.4); }
+    /* 新增卡片的颜色：青绿色 */
+    .nav-card:nth-child(6) { background: linear-gradient(145deg, rgba(0, 255, 127, 0.25), rgba(30, 30, 46, 0.8)); border-color: rgba(0, 255, 127, 0.4); }
 
     /* 悬停时：放大、高亮、光效 */
     .nav-card:hover {
@@ -118,7 +120,7 @@
       border-radius: 30px;
       background: rgba(255, 255, 255, 0.1);
       backdrop-filter: blur(4px);
-      transition: all 0.3 ease;
+      transition: all 0.3s ease;
     }
 
     .nav-card:hover .title {
@@ -142,6 +144,7 @@
     .nav-card:nth-child(3) { animation-delay: 0.3; }
     .nav-card:nth-child(4) { animation-delay: 0.4; }
     .nav-card:nth-child(5) { animation-delay: 0.5; }
+    .nav-card:nth-child(6) { animation-delay: 0.6; }
 
     /* 移动端适配 */
     @media (max-width: 768px) {
@@ -174,6 +177,11 @@
     <a href="./公司部门与人员管理系统.html" class="nav-card">
       <span class="icon">👥</span>
       <span class="title">公司部门与人员管理系统</span>
+    </a>
+    <!-- 新增卡片 -->
+    <a href="./大事件项目/index.html" class="nav-card">
+      <span class="icon">⚡</span>
+      <span class="title">大事件项目</span>
     </a>
   </div>
 </body>
