@@ -1,6 +1,6 @@
 {
-  "latest_version": "0.0.3",
-  "apk_url": "https://github.com/xiaolinlin360/.github.io/releases/download/ergen/app-v0.0.3.apk",
+  "latest_version": "0.0.5",
+  "apk_url": "https://github.com/xiaolinlin360/.github.io/releases/download/ergen/app-v0.0.x.apk",
   "release_notes": "- 修复若干问题\n- 新增功能优化",
   "force_update": false
 }
