@@ -1,6 +1,6 @@
 {
   "latest_version": "0.0.6",
-  "apk_url": "https://github.com/xiaolinlin360/.github.io/releases/download/ergen/app-v0.0.x.apk",
-  "release_notes": "- 修复若干问题\n- 新增功能优化",
+  "apk_url": "https://github.com/xiaolinlin360/.github.io/releases/download/ergen/app-v0.0.6.apk",
+  "release_notes": "🚀 新增功能\n- 接入 Sentry 错误监控：自动上报 API 异常，帮助快速定位后端服务问题。\n- 用户关键行为追踪：将用户的核心操作记录为 Sentry 面包屑（Breadcrumbs），发生异常时可回溯完整操作路径。\n- 用户身份自动绑定：登录/登出操作将自动与 Sentry 用户信息绑定，便于进行全链路的异常诊断。\n- 异常过滤优化：API 异常上报逻辑已优化，自动剔除 401（未授权）、403（禁止访问）、404（找不到页面）等正常响应状态，避免误报。\n\n🔧 Bug 修复\n- 修复定位失效：修复了个人页面中定位功能失效的 Bug。\n- 修复食谱规格 Bug：修复了食谱规格选择中，默认值可能选中 null 并导致异常的问题。\n- 监控系统闭环：完成了 Sentry 异常上报系统的闭环收尾工作，确保上报机制稳定。\n\n⚡ 性能优化\n- 首页加载优化：将首页加载流程改为异步执行，大幅提升了页面加载速度。\n- 缓存策略升级：优化了本地缓存逻辑，进入首页时优先读取缓存数据，进一步优化首屏体验。\n\n🛠️ 工程与构建\n- 版本升级：应用版本号正式升级至 0.0.6。\n- 构建脚本配置：配置了 Sentry 符号表（Symbol）上传及 Release 构建脚本，确保崩溃堆栈能正确解析。",
   "force_update": false
 }
